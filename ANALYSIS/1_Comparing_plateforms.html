@@ -117,7 +117,7 @@ $(document).ready(function () {
 </style>
 <script>
 $(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
+  window.initializeCodeFolding("show" === "show");
 });
 </script>
 
@@ -171,7 +171,7 @@ result = data.frame(ask=tmp$a[1], bid=tmp$b[1], last=tmp$c[1], open=tmp$o, low=t
 result</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["ask"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["bid"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["last"],"name":[3],"type":["fctr"],"align":["left"]},{"label":["open"],"name":[4],"type":["fctr"],"align":["left"]},{"label":["low"],"name":[5],"type":["fctr"],"align":["left"]},{"label":["high"],"name":[6],"type":["fctr"],"align":["left"]},{"label":["volume"],"name":[7],"type":["fctr"],"align":["left"]},{"label":["volumeQuote"],"name":[8],"type":["lgl"],"align":["right"]},{"label":["timestamp"],"name":[9],"type":["lgl"],"align":["right"]}],"data":[{"1":"6650.00000","2":"6646.90000","3":"6646.90000","4":"7435.00000","5":"6176.00000","6":"7543.80000","7":"18647.58523682","8":"NA","9":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["ask"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["bid"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["last"],"name":[3],"type":["fctr"],"align":["left"]},{"label":["open"],"name":[4],"type":["fctr"],"align":["left"]},{"label":["low"],"name":[5],"type":["fctr"],"align":["left"]},{"label":["high"],"name":[6],"type":["fctr"],"align":["left"]},{"label":["volume"],"name":[7],"type":["fctr"],"align":["left"]},{"label":["volumeQuote"],"name":[8],"type":["lgl"],"align":["right"]},{"label":["timestamp"],"name":[9],"type":["lgl"],"align":["right"]}],"data":[{"1":"6597.60000","2":"6595.60000","3":"6590.30000","4":"7435.00000","5":"6176.00000","6":"7543.80000","7":"19136.27423299","8":"NA","9":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>We can transform this piece of code in a function.</p>
@@ -186,8 +186,77 @@ result</code></pre>
 <div id="harvest-x-plateforms-for-x-currencies" class="section level1 tabset tabset-fade tabset-pills">
 <h1><span class="header-section-number">2</span> Harvest x plateforms for X currencies</h1>
 <hr />
-<p>I’ve created a text file with one function like the one above per plateform. The file is located in my github. We can source it doing:</p>
-<pre class="r"><code>source(&quot;https://raw.githubusercontent.com/holtzy/Cryp-To/master/FUNCTIONS/Public_Market_Functions.R&quot;)</code></pre>
+<p>I’ve created a text file with one function like the one above per plateform. The file is located in my <a href="https://github.com/holtzy/Cryp-To/blob/master/FUNCTIONS/Public_Market_Functions.R">github</a>. We can source it doing:</p>
+<pre class="r"><code># POTENTIAL PROBLEM WITH THE LOADING OF LIBRARIES
+source(&quot;https://raw.githubusercontent.com/holtzy/Cryp-To/master/FUNCTIONS/Public_Market_Functions.R&quot;)</code></pre>
+<p>Now we are ready for an infinite loop! I’m gonna run these functions for several platforms and several crypto every 10 secondes approx.</p>
+<pre class="r"><code>#Initialize an emtpy result table
+Ticker=as.data.frame(matrix(NA, 0, 12))
+names(Ticker) = c(&quot;time&quot;, &quot;platform&quot;, &quot;ask&quot;, &quot;bid&quot;, &quot;last&quot;, &quot;open&quot;, &quot;low&quot;, &quot;high&quot;, &quot;volume&quot;, &quot;volumeQuote&quot;, &quot;timestamp&quot;, &quot;symbol&quot;)
+
+# Run the analysis
+num=0
+while(TRUE){
+  
+  # Keep a trace of where we are in this loop
+  num=num+1
+  cat(&quot;Let's start the iteration number: &quot;,num, &quot; at &quot;, Sys.time(), &quot;\n&quot; )
+  
+  # BITCOIN (BTC)
+  time=Sys.time()
+  tmp=try(get_coinbase(time, &quot;BTCEUR&quot;)) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
+  tmp=try(get_kraken(time, &quot;BTCEUR&quot;)) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
+  tmp=try(get_bitstamp(time, &quot;BTCEUR&quot;)) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
+  tmp=try(get_bitfinex(time, &quot;BTCEUR&quot;)) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
+  tmp=try(get_cex(time, &quot;BTCEUR&quot;)) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
+  
+  # ETHERUM (ETH)
+  time=Sys.time()
+  tmp=try(get_coinbase(time, &quot;ETHEUR&quot;)) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
+  tmp=try(get_kraken(time, &quot;ETHEUR&quot;)) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
+  tmp=try(get_bitstamp(time, &quot;ETHEUR&quot;)) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
+  tmp=try(get_cex(time, &quot;ETHEUR&quot;)) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
+  
+  # LITECOIN (LTC)
+  time=Sys.time()
+  tmp=try(get_coinbase(time, &quot;LTCEUR&quot;)) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
+  tmp=try(get_kraken(time, &quot;LTCEUR&quot;)) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
+  tmp=try(get_bitstamp(time, &quot;LTCEUR&quot;)) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
+
+  # BITCOINCASH (BCH)
+  time=Sys.time()
+  tmp=try(get_coinbase(time, &quot;BCHEUR&quot;)) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
+  tmp=try(get_kraken(time, &quot;BCHEUR&quot;)) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
+  tmp=try(get_bitstamp(time, &quot;BCHEUR&quot;)) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
+  tmp=try(get_cex(time, &quot;BCHEUR&quot;)) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
+  
+  # RIPPLE (XRP)
+  time=Sys.time()
+  tmp=try(get_kraken(time, &quot;XRPEUR&quot;)) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
+  tmp=try(get_bitstamp(time, &quot;XRPEUR&quot;)) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
+  tmp=try(get_cex(time, &quot;XRPEUR&quot;)) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
+
+  # Every ten loop I save the file
+  if (num %% 1 == 0){  save(Ticker, file=&quot;../DATA/public_ticker_harvest.Rdata&quot;)  }
+
+}</code></pre>
+</div>
+<div id="differences" class="section level1 tabset tabset-fade tabset-pills">
+<h1><span class="header-section-number">3</span> Differences</h1>
+<hr />
+<p>Let’s visualize the differences!</p>
+<pre class="r"><code># Load result
+load(&quot;../DATA/public_ticker_harvest.Rdata&quot;)
+
+# 
+table(Ticker$platform, Ticker$symbol)</code></pre>
+<pre><code>##           
+##            BTCEUR ETHEUR LTCEUR BCHEUR XRPEUR
+##   coinbase     12     12     12     12      0
+##   Kraken       12     12     12     12     12
+##   Bitstamp     12     12     12     12     12
+##   Bitfinex     12      0      0      0      0
+##   Cex          12     12      0     12     12</code></pre>
 </div>
 
  

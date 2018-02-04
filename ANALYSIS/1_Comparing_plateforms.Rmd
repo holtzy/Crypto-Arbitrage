@@ -79,7 +79,7 @@ source("https://raw.githubusercontent.com/holtzy/Cryp-To/master/FUNCTIONS/Public
 
 
 Now we are ready for an infinite loop! I'm gonna run these functions for several platforms and several crypto every 10 secondes approx.
-```{r, EVAL=FALSE}
+```{r, eval=FALSE}
 #Initialize an emtpy result table
 Ticker=as.data.frame(matrix(NA, 0, 12))
 names(Ticker) = c("time", "platform", "ask", "bid", "last", "open", "low", "high", "volume", "volumeQuote", "timestamp", "symbol")
@@ -90,9 +90,9 @@ while(TRUE){
   
   # Keep a trace of where we are in this loop
   num=num+1
-  cat("Let's start the iteration number: ",num, " at ", Sys.time() )
+  cat("Let's start the iteration number: ",num, " at ", Sys.time(), "\n" )
   
-  # BITCOIN
+  # BITCOIN (BTC)
   time=Sys.time()
   tmp=try(get_coinbase(time, "BTCEUR")) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
   tmp=try(get_kraken(time, "BTCEUR")) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
@@ -100,21 +100,20 @@ while(TRUE){
   tmp=try(get_bitfinex(time, "BTCEUR")) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
   tmp=try(get_cex(time, "BTCEUR")) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
   
-  # ETHERUM
+  # ETHERUM (ETH)
   time=Sys.time()
   tmp=try(get_coinbase(time, "ETHEUR")) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
   tmp=try(get_kraken(time, "ETHEUR")) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
   tmp=try(get_bitstamp(time, "ETHEUR")) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
-  tmp=try(get_bitfinex(time, "ETHEUR")) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
   tmp=try(get_cex(time, "ETHEUR")) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
   
-  # LITECOIN
+  # LITECOIN (LTC)
   time=Sys.time()
   tmp=try(get_coinbase(time, "LTCEUR")) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
   tmp=try(get_kraken(time, "LTCEUR")) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
   tmp=try(get_bitstamp(time, "LTCEUR")) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
 
-  # BITCOINCASH
+  # BITCOINCASH (BCH)
   time=Sys.time()
   tmp=try(get_coinbase(time, "BCHEUR")) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
   tmp=try(get_kraken(time, "BCHEUR")) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
@@ -128,13 +127,23 @@ while(TRUE){
   tmp=try(get_cex(time, "XRPEUR")) ; if(is.data.frame(tmp)){ Ticker=rbind(Ticker, tmp) }
 
   # Every ten loop I save the file
-  if (num %% 10 == 0){  save(Ticker, file="../DATA/public_ticker_harvest.Rdata")  }
+  if (num %% 1 == 0){  save(Ticker, file="../DATA/public_ticker_harvest.Rdata")  }
 
 }
 ```
 
 
+# Differences {.tabset .tabset-fade .tabset-pills}
+***
+Let's visualize the differences!
 
+```{r}
+# Load result
+load("../DATA/public_ticker_harvest.Rdata")
+
+# 
+table(Ticker$platform, Ticker$symbol)
+```
 
 
 
