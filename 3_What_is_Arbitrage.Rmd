@@ -1,0 +1,44 @@
+---
+title: "What is Arbitrage"
+author: "by [Yan Holtz](https://github.com/holtzy/) - `r format(Sys.time(), '%d %B %Y')`"
+---
+
+<br><br>
+
+
+
+> What is the definition of Arbitrage?
+
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(rmarkdown)    # You need this library to run this template.
+library(epuRate)      # Install with devtools: install_github("holtzy/epuRate", force=TRUE)
+library(DT)
+```
+
+
+```{r load_data}
+load("DATA/public_ticker_harvest.Rdata")
+Ticker$last <- as.numeric(Ticker$last)
+```
+
+
+#- A simple example
+
+#- Different sort of Arbitrage
+
+#- Limitation
+
+#- Does it work?
+
+
+
+
+
+
+
+
+
+
+

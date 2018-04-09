@@ -64,14 +64,15 @@ get_cex=function(time, currency){
 
 
 
-# BITFINEX: currency= BTCEUR / 
+# BITFINEX: currency= BTCEUR / ETHEUR / IOTEUR / NEOEUR / EOSEUR
+# Bitfinex has a lot of different pairs, but few concern euro. See all pairs at https://api.bitfinex.com/v1/symbols
 get_bitfinex=function(time, currency){
   adress=paste("https://api.bitfinex.com/v2/ticker/t", currency, sep="")
   tmp=fromJSON(getURLContent(adress))
   result = data.frame(time=time, platform="Bitfinex", ask=tmp[3], bid=tmp[1], last=tmp[7], open=NA, low=tmp[10], high=tmp[9], volume=tmp[8], volumeQuote=NA, timestamp=NA, symbol=currency)
   return(result)
 }
-#get_bitfinex(Sys.time(), "BTCEUR")
+#get_bitfinex(Sys.time(), "IOTEUR")
 
 
 

@@ -1,0 +1,119 @@
+---
+title: "Public API"
+author: "by [Yan Holtz](https://github.com/holtzy/) - `r format(Sys.time(), '%d %B %Y')`"
+---
+
+<br><br>
+
+
+
+> What is the cheapest Exchange to buy Crypto?
+
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(rmarkdown)    # You need this library to run this template.
+library(epuRate)      # Install with devtools: install_github("holtzy/epuRate", force=TRUE)
+library(DT)
+```
+
+
+```{r load_data}
+load("DATA/public_ticker_harvest.Rdata")
+Ticker$last <- as.numeric(Ticker$last)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+#- What is the most expensive exchange?
+Is it always the same exchange that is more expensive? Or does it swap? Let's find out!
+
+For bitcoin
+```{r swap, fig.width=10}
+tmp <- Ticker %>%
+  filter(symbol=="BTCEUR") %>%
+  select(time, platform, last) %>% 
+  spread( platform, last) %>%
+  rowwise() %>%
+  mutate( mymean = mean(c(coinbase, Kraken, Bitstamp, Bitfinex, Cex), na.rm=T)) %>%
+  gather( platform, value, -c(1,7)) %>% 
+  mutate( diff=value-mymean) 
+
+tmp %>%
+  mutate(platform=as.factor(platform)) %>%
+  na.omit() %>%
+  ggplot( aes(x=fct_reorder(platform, diff), y=diff, color=platform)) +
+    geom_boxplot() #outlier.shape = NA) #+
+    #coord_cartesian(ylim = quantile(tmp$diff, c(0.1, 0.9), na.rm=T))
+```
+
+This graph shows us several information.
+One of the information is that we can have somteimes really huge difference.
+Let's zoom on a huge difference, where CEX is about 200$ more expensive,
+
+```{r , fig.width=10}
+
+data = Ticker %>% 
+    filter(symbol=="BTCEUR") %>%
+    select(time, platform, last) %>%
+    filter(time>1517890104 ) %>%
+    spread(platform, last)
+  
+  # Go to a xts format
+  library(xts)
+  don=xts( x=data[,-1], order.by=data$time)
+
+  #time_series <- xts(tmp)
+  library(dygraphs)
+  dygraph(don) %>%
+    dyLegend(show = "always", hideOnMouseOut = FALSE) %>%
+    #dyRoller(rollPeriod = 5) %>%
+    dyRangeSelector()
+```
+
+
+
+
+
+For all other crypto
+```{r  fig.width=10}
+tmp <- Ticker %>%
+  select(time, platform, last, symbol) %>% 
+  spread( platform, last) %>%
+  rowwise() %>%
+  mutate( mymean = mean(c(coinbase, Kraken, Bitstamp, Bitfinex, Cex), na.rm=T)) %>%
+  gather( platform, value, -c(1,2,8)) %>% 
+  mutate( diff= (value-mymean)/mymean*100) 
+
+tmp %>%
+  filter(diff>-2 & diff<2) %>%
+  mutate(platform=as.factor(platform)) %>%
+  na.omit() %>%
+  ggplot( aes(x=fct_reorder(platform, diff), y=diff, fill=platform)) +
+    geom_violin(alpha=0.8) +
+    facet_wrap(~symbol, scale="free_y") +
+    xlab("") +
+    theme(legend.position="none")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

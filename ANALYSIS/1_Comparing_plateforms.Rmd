@@ -4,17 +4,16 @@ author: "by [Yan Holtz](https://github.com/holtzy/) - `r format(Sys.time(), '%d 
 output:
   epuRate::epurate:
     toc: FALSE
-    code_folding: "show"
+    code_folding: "hide"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-  
-```{r echo=FALSE}
-# Just to add space between the introduction of the document
-knitr::asis_output(htmltools::htmlPreserve("<br><br>"))
-```
+
+
+
+<br><br>
 
 
 > Crypto currencies are quite trendy those days. Definition. You can buy some in every places. But is the price the same everywhere?
@@ -23,12 +22,13 @@ knitr::asis_output(htmltools::htmlPreserve("<br><br>"))
 library(tidyverse)
 library(rmarkdown)    # You need this library to run this template.
 library(epuRate)      # Install with devtools: install_github("holtzy/epuRate", force=TRUE)
+library(DT)
 ```
 
 
 
 
-# Call a platform API
+#- Call a platform API
 ***
 Let's say you want to harvest the Bitcoin in the Kraken plateform. You have to call it's public API. You can do that in your browser, typing this URL:  
 [https://api.kraken.com/0/public/Ticker?pair=BTCEUR]()
@@ -47,6 +47,7 @@ ticker <- getURLContent(adress)
 require(jsonlite)
 tmp <- fromJSON(ticker)$result[[1]]
 result = data.frame(ask=tmp$a[1], bid=tmp$b[1], last=tmp$c[1], open=tmp$o, low=tmp$l[1], high=tmp$h[1], volume=tmp$v[1], volumeQuote=NA, timestamp=NA)
+#datatable(result, rownames = FALSE, options = list(dom=TRUE) )
 result
 ```
 
@@ -67,12 +68,11 @@ get_kraken=function(time, currency){
 
 
 
-# Harvest x plateforms for X currencies {.tabset .tabset-fade .tabset-pills}
+#- Harvest 5 plateforms for 5 currencies {.tabset .tabset-fade .tabset-pills}
 ***
 I've created a text file with one function like the one above per plateform. The file is located in my [github](https://github.com/holtzy/Cryp-To/blob/master/FUNCTIONS/Public_Market_Functions.R). We can source it doing:
 
 ```{r, warning=FALSE, message=FALSE}
-
 # POTENTIAL PROBLEM WITH THE LOADING OF LIBRARIES
 source("https://raw.githubusercontent.com/holtzy/Cryp-To/master/FUNCTIONS/Public_Market_Functions.R")
 ```
@@ -132,21 +132,276 @@ while(TRUE){
 }
 ```
 
+I've run this script during X days from the to the. This dataset is called `public_ticker_harvest.Rdata` that is available [on github](https://github.com/holtzy/Cryp-To/tree/master/DATA).
 
-# Differences {.tabset .tabset-fade .tabset-pills}
+
+
+#- Visualize currency values {.tabset .tabset-fade .tabset-pills}
 ***
 Let's visualize the differences!
 
-```{r}
+```{r load_data}
 # Load result
 load("../DATA/public_ticker_harvest.Rdata")
+Ticker$last <- as.numeric(Ticker$last)
+#Ticker <- Ticker %>% sample_n(200000)
 
-# 
+# Occurence of each
 table(Ticker$platform, Ticker$symbol)
+```
+
+A function that make a plot for a specific currency:
+```{r function_plot_a_currency}
+plot_ticker=function(currency){
+  
+  # I need a wide format for Dygraph
+  data = Ticker %>% 
+    filter(symbol==currency) %>%
+    select(time, platform, last) %>%
+    spread(platform, last)
+  
+  # Go to a xts format
+  library(xts)
+  don=xts( x=data[,-1], order.by=data$time)
+
+  #time_series <- xts(tmp)
+  library(dygraphs)
+  dygraph(don) %>%
+    dyLegend(show = "always", hideOnMouseOut = FALSE) %>%
+    #dyRoller(rollPeriod = 5) %>%
+    dyRangeSelector()
+}
 ```
 
 
 
+
+##BTC
+```{r show_btc, message=FALSE, warning=FALSE, fig.width=10, fig.align="center"}
+plot_ticker("BTCEUR")
+```
+
+##ETH
+
+```{r, message=FALSE, warning=FALSE, fig.width=10, fig.align="center"}
+plot_ticker("ETHEUR")
+```
+
+##LTC
+```{r, message=FALSE, warning=FALSE, fig.width=10, fig.align="center"}
+plot_ticker("LTCEUR")
+```
+
+##XRP
+```{r, message=FALSE, warning=FALSE, fig.width=10, fig.align="center"}
+plot_ticker("XRPEUR")
+```
+
+##BCH
+```{r, message=FALSE, warning=FALSE, fig.width=10, fig.align="center"}
+plot_ticker("BCHEUR")
+```
+
+
+
+
+
+#- Difference
+
+Can we try to quantify the difference?
+```{r show_differences, fig.width=16, fig.height=8, warning=FALSE}
+diff <- Ticker %>%
+  filter(platform %in% c("Bitstamp", "Cex")) %>%
+  group_by(time, symbol) %>%
+  summarise(max=max( as.numeric(last) ), min=min( as.numeric(last) ) ) %>%
+  mutate( diff=max-min, diff_perc=(max-min)/max*100 )
+
+ggplot(diff, aes(x=time, y=diff_perc, group=symbol, fill=symbol)) +
+    geom_area() +
+    facet_wrap(~symbol, nrow=5) +
+    theme(legend.position="none") +
+    ylim(0,4)
+```
+
+
+
+
+```{r, fig.width=16, fig.height=8, warning=FALSE}
+# A function that calculates the difference between 2 platforms for every currency at each time stamp
+find_differences <- function(plat1, plat2){
+  diff <- Ticker %>% 
+    filter(platform %in% c(plat1, plat2)) %>%
+    select(time, platform, symbol, ask, bid) %>%
+    mutate(ask=as.numeric(ask), bid=as.numeric(bid)) %>%
+    gather(temp, value, -time, -platform, -symbol) %>%
+    mutate(platform=gsub(plat1,"plat1", platform)) %>%
+    mutate(platform=gsub(plat2,"plat2", platform)) %>%
+    unite(temp1, platform, temp, sep="_") %>%
+    spread( key=temp1, value=value) %>%
+    mutate( 
+      diff1=(plat1_bid-plat2_ask)/plat1_bid*100, 
+      diff2=(plat2_bid-plat1_ask)/plat2_bid*100
+    ) %>%
+    rowwise() %>%
+    mutate( diff_perc=max(diff1, diff2) )
+  return(diff)
+} 
+
+# Find differences between kraken and bitstamp
+diff <- find_differences("Bitstamp", "Cex")
+
+ggplot(diff, aes(x=time, y=diff_perc, group=symbol, fill=symbol)) +
+    geom_area() +
+    facet_wrap(~symbol, nrow=5) +
+    theme(legend.position="none") +
+    ylim(0,4)
+```
+
+
+# - Cryptocurrencies are correlated?
+Can I compare the evolution of several crypto on the same plot?
+```{r}
+Ticker %>% 
+  filter(platform=="Kraken") %>%
+  ggplot( aes(x=time, y=last, color=symbol)) +
+    geom_line() +
+    facet_wrap(~symbol, scale="free", ncol=1) +
+    theme( legend.position="none")
+```
+
+Another way to look at that is to compare % of max value for each crypto
+```{r, fig.width=12}
+Ticker %>% 
+  filter(platform=="Cex") %>%
+  group_by(symbol) %>%
+  mutate(last_normalized = last/mean(last)) %>%
+  ggplot( aes(x=time, y=last_normalized, color=symbol)) +
+    geom_line()
+```
+This is really important. It means that we can do another type of arbitrage. Using 2 crypto and considering that the price of 1 crypto will necessarily follow the price of a second one, sooner or later. When one is late, we need to buy some, it will increase one day.
+
+
+# - Significant difference
+What interest us is the number of time the difference between 2 platforms reaches a threshold that allow to perform arbitrage. Let's try to quantify how many times we reach this threshold for every currency between kraken and bitstamp.
+```{r relationship_thres_numDiff, align="center", warning=FALSE}
+
+# A function that counts the number of significant differences for several threshold
+find_signif_diff <- function(diff){
+  nbSignifDiff=data.frame()
+  for( i in seq(0.7,3,0.1)){
+    df <-  diff %>%
+      group_by(symbol) %>%
+      filter(diff_perc > i) %>%
+      summarise( nb_over_thres = n() ) %>%
+      mutate( thres = i) %>%
+      arrange( nb_over_thres )
+    nbSignifDiff <- rbind( nbSignifDiff, df)
+  }
+  return(nbSignifDiff)
+}
+
+nbSignifDiff <- find_signif_diff(diff)
+
+ggplot(nbSignifDiff, aes(x=thres, y=nb_over_thres, group=symbol, color=symbol)) +
+  geom_line() +
+  ylab("Number of cases in x days") +
+  xlab("Difference threshold (%)")
+```
+
+Now, let's make this calculation for every pair of plateform.
+```{r all_over_thres, align="center", warning=FALSE, fig.width=10}
+
+# find all the pairs of platform
+list_platforms <- Ticker$platform %>% unique() %>% as.character()
+list_pairs <- combn(list_platforms, 2)
+
+#
+bilan=data.frame()
+for(i in c(1:ncol(list_pairs))){
+  diff <- find_differences(list_pairs[1,i], list_pairs[2,i])
+  nbSignifDiff <- find_signif_diff(diff)
+  nbSignifDiff$pair <- paste( list_pairs[1,i], list_pairs[2,i], sep="-")
+  bilan <- rbind(bilan, nbSignifDiff)
+}
+
+#
+ggplot(bilan, aes(x=thres, y=nb_over_thres, group=symbol, color=symbol)) +
+  geom_line() +
+  ylab("Number of cases in x days") +
+  xlab("Difference threshold (%)") +
+  facet_wrap(~pair, ncol=5)
+```
+
+
+
+
+
+
+
+
+
+
+#- What is the most expensive exchange?
+Is it always the same exchange that is more expensive? Or does it swap? Let's find out!
+
+For bitcoin
+```{r swap, fig.width=10}
+tmp <- Ticker %>%
+  filter(symbol=="BTCEUR") %>%
+  mutate(Bitfinex=replace(last, last<1000, NA)) %>%
+  select(time, platform, last) %>% 
+  spread( platform, last) %>%
+  rowwise() %>%
+  mutate( mymean = mean(c(coinbase, Kraken, Bitstamp, Bitfinex, Cex), na.rm=T)) %>%
+  gather( platform, value, -c(1,7)) %>% 
+  mutate( diff=value-mymean) 
+
+tmp %>%
+  mutate(platform=as.factor(platform)) %>%
+  na.omit() %>%
+  ggplot( aes(x=fct_reorder(platform, diff), y=diff, color=platform)) +
+    geom_boxplot()
+```
+
+This graph shows us several information.
+One of the information is that we can have somteimes really huge difference.
+Let's zoom on a huge difference, where CEX is about 200$ more expensive,
+
+```{r swap, fig.width=10}
+
+data = Ticker %>% 
+    filter(symbol=="BTCEUR") %>%
+    select(time, platform, last) %>%
+    filter(time>1517890104 ) %>%
+    spread(platform, last)
+  
+  # Go to a xts format
+  library(xts)
+  don=xts( x=data[,-1], order.by=data$time)
+
+  #time_series <- xts(tmp)
+  library(dygraphs)
+  dygraph(don) %>%
+    dyLegend(show = "always", hideOnMouseOut = FALSE) %>%
+    #dyRoller(rollPeriod = 5) %>%
+    dyRangeSelector()
+```
+
+
+
+
+
+
+#- A look to the volumes
+
+```{r volume, fig.width=10}
+Ticker %>% 
+  ggplot( aes(x=time, y=as.numeric(volume), color=platform)) +
+    geom_line() +
+    facet_wrap(~symbol, scale="free")
+```
+
+#- Conclusion
 
 
 

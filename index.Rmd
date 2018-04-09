@@ -1,0 +1,17 @@
+---
+title: "Welcome"
+author: "by [Yan Holtz](https://github.com/holtzy/) - `r format(Sys.time(), '%d %B %Y')`"
+---
+
+<br><br>
+
+
+This document summarizes my work concerning the Vitamin-D GWAS in the UKB. It is composed by several parts:
+
+* **Phenotype description**: explains - how to get the Vitamin-D phenotype - clean it - interaction with period. 
+* **run GWAS**: the code I used to run the GWAS with plink and description of its result.
+* **SMR**: description of the SMR pipeline to find putative genes under the discovered SNPs.
+* **GSMR**: description of the GSMR pipeline to find out if Vitamin-D has a causal effect on several mental diseases.
+* **XIa et al**: GSMR run on their GWAS summary statistics.
+
+
