@@ -18,12 +18,6 @@ library(DT)
 ```
 
 
-```{r load_data}
-load("DATA/public_ticker_harvest.Rdata")
-Ticker$last <- as.numeric(Ticker$last)
-```
-
-
 #- A simple example
 
 #- Different sort of Arbitrage

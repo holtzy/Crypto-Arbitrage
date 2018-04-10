@@ -392,21 +392,6 @@ data = Ticker %>%
 
 
 
-#- A look to the volumes
-
-```{r volume, fig.width=10}
-Ticker %>% 
-  ggplot( aes(x=time, y=as.numeric(volume), color=platform)) +
-    geom_line() +
-    facet_wrap(~symbol, scale="free")
-```
-
-#- Conclusion
-
-
-
-
-
 
 
 

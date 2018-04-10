@@ -35,7 +35,7 @@ get_bitstamp=function(time, currency){
   result = data.frame(time=time, platform="Bitstamp", ask=tmp[8], bid=tmp[4], last=tmp[2], open=tmp[9], low=tmp[7], high=tmp[1], volume=tmp[6], volumeQuote=NA, timestamp=NA, symbol=currency)
   return(result)
 }
-
+#get_bitstamp(Sys.time(), "BCHEUR")
 
 # COINBASE: currency= BTCEUR / ETHEUR / BCHEUR
 get_coinbase=function(time, currency){
