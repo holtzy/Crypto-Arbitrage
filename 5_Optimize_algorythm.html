@@ -249,7 +249,7 @@ library(lubridate)</code></pre>
 <p>This document is based on a dataset described here and available here. We will use the price of bitcoin cash (BCH) between bitstamp and Cex, since we saw that it is here that the best arbitrage opportunities exist.</p>
 <pre class="r"><code># Load result
 load(&quot;DATA/public_ticker_harvest.Rdata&quot;)
-Ticker= head(Ticker, 300000)</code></pre>
+#Ticker= head(Ticker, 300000)</code></pre>
 <p>Clean and reformat the ticker</p>
 <pre class="r"><code># Choose 2 exchanges
 plat1 &lt;- &quot;Bitstamp&quot;
@@ -518,27 +518,27 @@ final=bilan$total[nrow(bilan)]
 # What I would have without arbitrage
 final_without = bilan$total_without_arbitrage[nrow(bilan)]
 cat(paste(&quot;Money I would have without arbitrage: &quot;, final_without, &quot;\n&quot;))</code></pre>
-<pre><code>## Money I would have without arbitrage:  3955.36</code></pre>
+<pre><code>## Money I would have without arbitrage:  4381.63</code></pre>
 <pre class="r"><code># Gain compare to no arbitrage in euro, and in % of investment
 # --&gt; This is what I have to optimize
 diff=final-final_without
 cat(paste(&quot;Difference in euro: &quot;, diff, &quot;\n&quot;))</code></pre>
-<pre><code>## Difference in euro:  89.2836225424799</code></pre>
+<pre><code>## Difference in euro:  95.5411585287002</code></pre>
 <pre class="r"><code>cat(paste(&quot;Diff in %: &quot;, diff/final_without*100, &quot;\n&quot;))</code></pre>
-<pre><code>## Diff in %:  2.25728182877108</code></pre>
+<pre><code>## Diff in %:  2.18049352703675</code></pre>
 <pre class="r"><code># Gain per 24hours?
 length = bilan$time[nrow(bilan)] - bilan$time[1]    # In character
 length = as.numeric(as.duration(length)) / 3600     # In hours
 diff_per_day=24*diff/ length
 cat(paste(&quot;Difference in % per 24h &quot;,diff_per_day/final_without*100, &quot;\n&quot;))</code></pre>
-<pre><code>## Difference in % per 24h  0.61681812045832</code></pre>
+<pre><code>## Difference in % per 24h  0.155959212919354</code></pre>
 </div>
 <div id="optimize" class="section level1">
 <h1><span class="header-section-number">5</span> - Optimize</h1>
 <hr />
 <p>Now that the bot has a correct behaviour, we want to improve its parameters to maximize our profit. We can simulate several parameters until we find the best combination.</p>
-<pre class="r"><code>to_try_low= seq(-1,1,0.2)
-to_try_high= seq(1.5,3.5,0.4)
+<pre class="r"><code>to_try_low= seq(-1,1,0.4)
+to_try_high= seq(1.5,3,0.4)
 mylen=length(to_try_high)*length(to_try_low)
 bilan_optimiz=data.frame(matrix(0,mylen,6))
 colnames(bilan_optimiz)=c(&quot;lowt&quot;, &quot;hight&quot;, &quot;nb_transaction&quot;, &quot;initial&quot;, &quot;final&quot;, &quot;diff_perc&quot;)
@@ -562,7 +562,7 @@ for(lowt in to_try_low){
 <pre class="r"><code>bilan_optimiz %&gt;% arrange(desc(diff_perc)) %&gt;% head(5)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["lowt"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["hight"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["nb_transaction"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["initial"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["final"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["diff_perc"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"-0.2","2":"1.5","3":"443","4":"2000","5":"2089.357","6":"4.467841","_rn_":"1"},{"1":"0.0","2":"1.9","3":"317","4":"2000","5":"2088.701","6":"4.435073","_rn_":"2"},{"1":"0.0","2":"1.5","3":"386","4":"2000","5":"2087.865","6":"4.393261","_rn_":"3"},{"1":"0.2","2":"1.9","3":"299","4":"2000","5":"2086.870","6":"4.343516","_rn_":"4"},{"1":"-0.4","2":"1.5","3":"470","4":"2000","5":"2086.563","6":"4.328152","_rn_":"5"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["lowt"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["hight"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["nb_transaction"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["initial"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["final"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["diff_perc"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"-0.2","2":"1.5","3":"554","4":"2000","5":"2105.952","6":"5.297614","_rn_":"1"},{"1":"0.2","2":"1.5","3":"448","4":"2000","5":"2101.776","6":"5.088784","_rn_":"2"},{"1":"-0.6","2":"1.5","3":"667","4":"2000","5":"2100.268","6":"5.013408","_rn_":"3"},{"1":"0.2","2":"1.9","3":"338","4":"2000","5":"2094.742","6":"4.737098","_rn_":"4"},{"1":"-0.2","2":"1.9","3":"360","4":"2000","5":"2089.626","6":"4.481286","_rn_":"5"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre class="r"><code>library(viridis)

@@ -30,7 +30,7 @@ This document is based on a dataset described here and available here. We will u
 ```{r load_data}
 # Load result
 load("DATA/public_ticker_harvest.Rdata")
-Ticker= head(Ticker, 300000)
+#Ticker= head(Ticker, 300000)
 ```
 
 
@@ -366,8 +366,8 @@ cat(paste("Difference in % per 24h ",diff_per_day/final_without*100, "\n"))
 Now that the bot has a correct behaviour, we want to improve its parameters to maximize our profit. We can simulate several parameters until we find the best combination.
 
 ```{r, message=FALSE, warning=FALSE}
-to_try_low= seq(-1,1,0.2)
-to_try_high= seq(1.5,3.5,0.4)
+to_try_low= seq(-1,1,0.4)
+to_try_high= seq(1.5,3,0.4)
 mylen=length(to_try_high)*length(to_try_low)
 bilan_optimiz=data.frame(matrix(0,mylen,6))
 colnames(bilan_optimiz)=c("lowt", "hight", "nb_transaction", "initial", "final", "diff_perc")

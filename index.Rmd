@@ -1,17 +1,37 @@
 ---
-title: "Welcome"
-author: "by [Yan Holtz](https://github.com/holtzy/) - `r format(Sys.time(), '%d %B %Y')`"
+title: "Analysing the feasibility of crypto arbitrage"
+author: "a few ideas based on real data"
 ---
+
+<hr>
 
 <br><br>
 
 
-This document summarizes my work concerning the Vitamin-D GWAS in the UKB. It is composed by several parts:
+`Arbitrage` is defined as the simultaneous buying and selling of currency in different platforms in order to take advantage of differing prices. This document gives a few insight on its potential application on `crypto currencies`.
 
-* **Phenotype description**: explains - how to get the Vitamin-D phenotype - clean it - interaction with period. 
-* **run GWAS**: the code I used to run the GWAS with plink and description of its result.
-* **SMR**: description of the SMR pipeline to find putative genes under the discovered SNPs.
-* **GSMR**: description of the GSMR pipeline to find out if Vitamin-D has a causal effect on several mental diseases.
-* **XIa et al**: GSMR run on their GWAS summary statistics.
+This work is divided in several parts:
+
+
+
+Note: https://coinmarketcap.com gives historial prices of every crypto
+Library R  'crypto' gives this data in R. --> A voir si je peux récupérer plus de historical data
+I can call this adress to have the detail of a crypto every day
+https://coinmarketcap.com/currencies/kin/historical-data/?start=20130428&end=20180416
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

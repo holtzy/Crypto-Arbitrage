@@ -1,0 +1,224 @@
+---
+mydisqus: "differences"
+mytitle: "Comparing crypto prices between exchanges"
+mysub: "Are there differences? How big? How often? on which exchange and currency?"
+output:
+  html_document:
+      self_contained: false    
+      mathjax: default
+      lib_dir: libs
+      template: template_crypto.html
+      theme: "lumen"
+      css: style.css
+      toc: FALSE
+      toc_float: TRUE
+      toc_depth: 2
+      number_sections: TRUE
+      df_print: "paged"
+      code_folding: "hide"
+      includes: 
+        after_body: footer.html
+---
+
+
+<div class="mycontent">
+
+
+
+
+
+#Data
+***
+Prices of 5 cryto currencies have been harvested for 2 weeks on 5 different exchanges as described [here](). About 800,000 data points are available, allowing to compare prices between exchanges at a high resolution.
+
+<br>
+
+Here is an overview of the Etherum price on the period on the 5 exchanges:
+```{r load_data, fig.align="center", warning=FALSE, message=FALSE, fig.width=10}
+# Library
+library(tidyverse)
+library(DT)
+library(plotly)
+library(hrbrthemes)
+
+# Load result
+load("../DATA/public_ticker_harvest.Rdata")
+Ticker$last <- as.numeric(Ticker$last)
+Ticker= head(Ticker, 100000)
+
+# Plot
+p <- Ticker %>%
+  filter(symbol=="ETHEUR") %>%
+  ggplot( aes(x=time, y=last, color=platform, group=platform)) +
+    geom_line() +
+    theme_ipsum()
+ggplotly(p)
+```
+
+
+*Note*: this graphic is interactive: zoom on a specific area and hover lines for more info.
+
+
+
+
+
+
+
+
+#Differences {.tabset}
+***
+Can we try to quantify the difference? At each timestamp, we can calculate the difference between 2 exchanges, in euros and in %. We can then represent this difference. Here is an example with the difference between Bitstamp and Cex.
+```{r show_differences, fig.width=10, fig.height=5, warning=FALSE}
+plot_last_difference <- function(plat1, plat2, currency){
+
+  # First I calculate the differnce of the 'last' price between both exchanges:
+  diff <- Ticker %>%
+    filter(symbol==currency) %>%
+    filter(platform %in% c(plat1, plat2)) %>%
+    select(time, platform, last, symbol) %>%
+    spread(platform, last) %>%
+    mutate(diff=.[[4]] - .[[3]], diff_perc=(.[[4]] - .[[3]]) / .[[4]] *100 ) %>%
+    filter(!is.na(diff_perc))
+  
+  # Then I plot the result
+  p <- ggplot(diff, aes(x=time, y=diff_perc, group=symbol, fill=symbol)) +
+      geom_area(fill="#69b3a2") +
+      facet_wrap(~symbol, nrow=5) +
+      theme_ipsum() +
+      theme(legend.position="none")
+  
+  ggplotly(p)
+}
+
+plot_last_difference("Kraken", "Bitstamp", "ETHEUR")
+```
+
+*Note*: it is important that this chart represent the price of the last transaction done. However, note that we buy crypto at the `ask` price, and sell it at the `bid` price. Differences are thus smaller than that in reality.
+
+
+
+
+#- What we really get {.tabset}
+***
+It's important . For each time stamp, I can calculate the potential gain taking that into account:
+```{r, fig.width=10, fig.height=8, warning=FALSE}
+# A function that calculates the difference between 2 platforms for every currency at each time stamp
+find_askbid_difference <- function(plat1, plat2){
+  
+  diff <- Ticker %>% 
+    filter(platform %in% c(plat1, plat2)) %>%
+    select(time, platform, symbol, ask, bid) %>%
+    mutate(ask=as.numeric(ask), bid=as.numeric(bid)) %>%
+    gather(temp, value, -time, -platform, -symbol) %>%
+    mutate(platform=gsub(plat1,"plat1", platform)) %>%
+    mutate(platform=gsub(plat2,"plat2", platform)) %>%
+    unite(temp1, platform, temp, sep="_") %>%
+    spread( key=temp1, value=value) %>%
+    mutate( 
+      diff1=(plat1_bid-plat2_ask)/plat1_bid*100, 
+      diff2=(plat2_bid-plat1_ask)/plat2_bid*100
+    ) %>%
+    rowwise() %>%
+    mutate( diff_perc=max(diff1, diff2) ) %>%
+    filter(!is.na(diff_perc))
+  return(diff)
+}
+
+plot_askbid_difference <- function(diff){
+  p <- ggplot(diff, aes(x=time, y=diff_perc, group=symbol, fill=symbol)) +
+        geom_area() +
+        facet_wrap(~symbol, nrow=5) +
+        theme(legend.position="none") 
+    
+  ggplotly(p)
+} 
+```
+
+
+
+
+
+
+#Significant differences
+***
+What interest us is the number of time the difference between 2 platforms reaches a threshold that allow to perform arbitrage. Let's try to quantify how many times we reach this threshold for every currency between kraken and bitstamp.
+
+```{r relationship_thres_numDiff, align="center", warning=FALSE}
+# A function that counts the number of significant differences for several threshold
+find_signif_diff <- function(diff){
+  nbSignifDiff=data.frame()
+  for( i in seq(0.7,4,0.2)){
+    df <-  diff %>%
+      group_by(symbol) %>%
+      filter(diff_perc > i) %>%
+      summarise( nb_over_thres = n() ) %>%
+      mutate( thres = i) %>%
+      arrange( nb_over_thres )
+    nbSignifDiff <- rbind( nbSignifDiff, df)
+  }
+  return(nbSignifDiff)
+}
+
+# A function that plot this number of diff
+plot_signif_diff <- function(nbSignifDiff){
+  ggplot(nbSignifDiff, aes(x=thres, y=nb_over_thres, group=symbol, color=symbol)) +
+    geom_line() +
+    ylab("Number of cases in x days") +
+    xlab("Difference threshold (%)")
+}
+
+# Apply that to a first example:
+diff <- find_askbid_difference("Cex", "Bitstamp")
+nbSignifDiff <- find_signif_diff(diff)
+plot_signif_diff(nbSignifDiff)
+```
+
+
+
+
+
+Now, let's make this calculation for every pair of plateform.
+```{r all_over_thres, align="center", warning=FALSE, fig.width=10}
+
+# find all the pairs of platform
+list_platforms <- Ticker$platform %>% unique() %>% as.character()
+list_pairs <- combn(list_platforms, 2)
+
+# find the number of significant differences for each pair
+bilan=data.frame()
+for(i in c(1:ncol(list_pairs))){
+  diff <- find_askbid_difference(list_pairs[1,i], list_pairs[2,i])
+  nbSignifDiff <- find_signif_diff(diff)
+  nbSignifDiff$pair <- paste( list_pairs[1,i], list_pairs[2,i], sep="-")
+  bilan <- rbind(bilan, nbSignifDiff)
+}
+
+#
+ggplot(bilan, aes(x=thres, y=nb_over_thres, group=symbol, color=symbol)) +
+  geom_line() +
+  ylab("Number of cases in x days") +
+  xlab("Difference threshold (%)") +
+  facet_wrap(~pair, ncol=5)
+```
+
+
+#- Conclusion
+***
+
+- Based on these data, it looks like our best arbitrage opportunity takes place between Cex and Bitstamp.
+- However, since Cex is more expensive than bitstamp on average, it is gonna to keep crypto on Cex and Euro on bitstamp
+- BCH is the best option if we want to perform few transaction with high gain. XRP looks better for more transacation
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+

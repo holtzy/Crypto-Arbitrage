@@ -61,7 +61,7 @@ get_cex=function(time, currency){
   result = data.frame(time=time, platform="Cex", ask=tmp$ask, bid=tmp$bid, last=tmp$last, open=NA, low=tmp$low, high=tmp$high, volume=tmp$volume, volumeQuote=NA, timestamp=tmp$timestamp, symbol=currency)
   return(result)
 }
-
+#get_cex(Sys.time(), "BCHEUR")
 
 
 # BITFINEX: currency= BTCEUR / ETHEUR / IOTEUR / NEOEUR / EOSEUR

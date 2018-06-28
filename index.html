@@ -1,290 +1,381 @@
 <!DOCTYPE html>
+<html lang="en">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
 
-<head>
+    <meta charset="utf-8">
+    <title>Crypto Arbitrage &#8211; A feasibility analysis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Using real data to assess the feasibility of crypto arbitrage">
+    <meta name="keywords" content="Data,Dataviz,Datavisualization,Crypto,Arbitrage,Bitcoin,Etherum">
+    <meta name="author" content="Yan Holtz">
 
-<meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="pandoc" />
+    <meta property="og:title" content="Crypto Arbitrage &#8211; A feasibility analysis">
+    <meta property="og:image" content="img/overview_RGG.png">
+    <meta property="og:description" content="Crypto Arbitrage &#8211; A feasibility analysis">
+    <title>Data to Viz</title>
 
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-<meta name="author" content="by Yan Holtz - 09 April 2018" />
+    <!-- Custom fonts for this template -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
+    <!-- Custom styles for this template -->
+    <link href="css/agency.css" rel="stylesheet">
 
-<title>Welcome</title>
+  </head>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
-<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="site_libs/navigation-1.1/tabsets.js"></script>
-<script src="site_libs/navigation-1.1/codefolding.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
-<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
-
-<style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
-<script type="text/javascript">
-if (window.hljs) {
-  hljs.configure({languages: []});
-  hljs.initHighlightingOnLoad();
-  if (document.readyState && document.readyState === "complete") {
-    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
-  }
-}
-</script>
+  <body id="page-top">
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
 
-<link rel="stylesheet" href="style.css" type="text/css" />
-
-</head>
-
-<body>
-
-<style type = "text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
-img {
-  max-width:100%;
-  height: auto;
-}
-.tabbed-pane {
-  padding-top: 12px;
-}
-button.code-folding-btn:focus {
-  outline: none;
-}
-</style>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+      <div class="container">
+        <a class="js-scroll-trigger" href="#page-top">HOME</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav text-uppercase ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="CONTENT/public_API.html">Get data</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#story">Arbitrage?</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#portfolio">Simulation</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#caveats">Getting rich?</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#poster">Why</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#about">About</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
 
-<style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 54px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 59px;
-  margin-top: -59px;
-}
-
-.section h2 {
-  padding-top: 59px;
-  margin-top: -59px;
-}
-.section h3 {
-  padding-top: 59px;
-  margin-top: -59px;
-}
-.section h4 {
-  padding-top: 59px;
-  margin-top: -59px;
-}
-.section h5 {
-  padding-top: 59px;
-  margin-top: -59px;
-}
-.section h6 {
-  padding-top: 59px;
-  margin-top: -59px;
-}
-</style>
-
-<script>
-// manage active state of menu based on current page
-$(document).ready(function () {
-  // active menu anchor
-  href = window.location.pathname
-  href = href.substr(href.lastIndexOf('/') + 1)
-  if (href === "")
-    href = "index.html";
-  var menuAnchor = $('a[href="' + href + '"]');
-
-  // mark it active
-  menuAnchor.parent().addClass('active');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
-});
-</script>
 
 
-<div class="container-fluid main-container">
 
-<!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
-
-<!-- code folding -->
-<style type="text/css">
-.code-folding-btn { margin-bottom: 4px; }
-</style>
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
+    <!-- Header -->
+    <header class="masthead">
+     <div class="parallax">
+     <div class="container">
+        <div class="intro-text">
+          <br><br><br><br>
+          <h1>Crypto arbitrage: a feasibility analysis</h1>
+          <div class="center-block col-lg-5" style="margin: 0 auto;">
+            <hr>
+          </div>
+          <br>
+          <div class="center-block col-lg-5" style="margin: 0 auto;">
+            <p style="color: grey; font-size: 12px">Arbitrage is defined as the simultaneous buying and selling of currency in different platforms in order to take advantage of differing prices. This document gives a few insight on its potential application on crypto currencies.</p> 
+          </div>
+          <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#portfolio">Tell me more</a>
+        </div>
+      </div>
+      </div>
+    </header>
 
 
 
 
 
 
-<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="index.html">Crypto Adventures</a>
+
+
+
+
+
+
+
+
+
+<!-- ---------------- PORTFOLIO SECTION ------------------------------------------------------------------------------ -->
+
+    <!-- ANCHOR -->
+    <a name="portfolioanchor"></a>
+
+    <section class="bg-light" id="portfolio" style="padding-top: 60px">
+        <div class="container" >
+
+          <div class="row">
+            <div class="col-lg-12 text-center">
+              <h2 class="section-heading text-uppercase">Table of contents</h2>
+              <div class="center-block col-lg-5" style="margin: 0 auto;">
+                <hr>
+              </div>
+              <div class="center-block col-lg-5" style="margin: 0 auto;">
+                 <p class="section-subheading text-muted">This work is organized in several section, each describing in depth a part of the analysis. Click the section that interests you for result and code.</p>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row text-center" style="padding-top: 7%">
+
+            <div class="col-lg-4 col-md-6 text-center">
+              <h2 class="text-uppercase" style="border-bottom: solid; border-width: 1px">Recovering prices</h2>
+              <p style="color: grey">I recovered prices of 5 currencies for several weeks, and provide an output without thousands of data points</p>
+              <button class="btn btn-secondary" onclick="filterSelection('all')">Read</button>
+            </div>
+
+            <div class="col-lg-4 col-md-6 text-center">
+              <h2 class="text-uppercase" style="border-bottom: solid; border-width: 1px">Comparing prices</h2>
+              <p style="color: grey">A comparison of prices on the long and on the short term. Is there any differences between exchanges?</p>
+              <button class="btn btn-secondary" onclick="filterSelection('all')">Read</button>
+            </div>
+
+            <div class="col-lg-4 col-md-6 text-center">
+              <h2 class="text-uppercase" style="border-bottom: solid; border-width: 1px">What is arbitrage</h2>
+              <p style="color: grey">A quick introduction to arbitrage: what it is and what are the potential limitations</p>
+              <button class="btn btn-secondary" onclick="filterSelection('all')">Read</button>
+            </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+
+<!-- ---------------------------------------------------------------------------------------------- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ---------------- CONTACT SECTION ------------------------------------------------------------------------------ -->
+
+    <!-- ANCHOR -->
+    <a name="contactanchor"></a>
+
+
+  <section id="contact" class="bg-light">
+     <div class="container">
+       <div class="row">
+         <div class="col-lg-2 text-center"></div>
+         <div class="col-lg-8 text-center">
+           <br><br><br>
+           <h2 class="section-heading text-uppercase" style="color: black">Contact</h2>
+           <p>This document is a work in progress analysis by Yan Holtz. Any feedback is highly encouraged. You can fill an issue on <a href="https://github.com/holtzy/data_to_viz">Github</a>, drop me a message on <a href="https://twitter.com/R_Graph_Gallery">Twitter</a>, or send an email pasting <a href="">yan.holtz.data</a> with <a href="">gmail.com</a>.</p>
+           <div style="text-align:center">
+              <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="https://github.com/holtzy">Github</a>
+              <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="https://twitter.com/R_Graph_Gallery">Twitter</a>
+            </div>
+
+         </div>
+       </div>
     </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="index.html">Intro</a>
-</li>
-<li>
-  <a href="1_Call_Public_API.html">Public API</a>
-</li>
-<li>
-  <a href="2_Cheapest_Exchange.html">Cheapest Exchange</a>
-</li>
-<li>
-  <a href="3_What_is_Arbitrage.html">Arbitrage: definition</a>
-</li>
-<li>
-  <a href="4_Looking_for_arbitrage_opportunity.html">Opportunity hunting</a>
-</li>
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div><!--/.container -->
-</div><!--/.navbar -->
-<a href="https://github.com/holtzy/" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#2ecc71; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
-
-<div class="fluid-row" id="header">
-
-<div class="btn-group pull-right">
-<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu" style="min-width: 50px;">
-<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
-<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
-</ul>
-</div>
+  </section>
 
 
 
-<h1 class="title toc-ignore">Welcome</h1>
-<h4 class="author"><em>by <a href="https://github.com/holtzy/">Yan Holtz</a> - 09 April 2018</em></h4>
-
-</div>
 
 
-<p><br><br></p>
-<p>This document summarizes my work concerning the Vitamin-D GWAS in the UKB. It is composed by several parts:</p>
-<ul>
-<li><strong>Phenotype description</strong>: explains - how to get the Vitamin-D phenotype - clean it - interaction with period.</li>
-<li><strong>run GWAS</strong>: the code I used to run the GWAS with plink and description of its result.</li>
-<li><strong>SMR</strong>: description of the SMR pipeline to find putative genes under the discovered SNPs.</li>
-<li><strong>GSMR</strong>: description of the GSMR pipeline to find out if Vitamin-D has a causal effect on several mental diseases.</li>
-<li><strong>XIa et al</strong>: GSMR run on their GWAS summary statistics.</li>
-</ul>
+<!-- --------------------------- FOOTER SECTION ------------------------------------------------------------------- -->
+    <footer class="bg-light">
+      <div class="container" >
+        <div class="row">
+          <div class="col-md-4">
+            <span class="copyright">Copyright &copy; crypto project 2018</span>
+          </div>
+          <div class="col-md-4">
+            <ul class="list-inline social-buttons">
+              <li class="list-inline-item">
+                <a href="https://twitter.com/R_Graph_Gallery">
+                  <i class="fa fa-twitter"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="https://github.com/holtzy">
+                  <i class="fa fa-github"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="https://www.linkedin.com/in/yan-holtz-2477534a/">
+                  <i class="fa fa-linkedin"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <ul class="list-inline quicklinks">
+              <li class="list-inline-item">
+                <a href="#">Privacy Policy</a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#">Terms of Use</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
 
-&nbsp;
-<hr />
-<p style="text-align: center;">A work by <a href="https://github.com/holtzy/">Yan Holtz</a></p>
-<p style="text-align: center;"><span style="color: #808080;"><em>Yan.holtz.data@gmail.com</em></span></p>
-
-<!-- Add icon library -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<!-- Add font awesome icons -->
-<p style="text-align: center;">
-	<a href="https://twitter.com/r_graph_gallery?lang=en" class="fa fa-twitter"></a>
-	<a href="https://www.linkedin.com/in/yan-holtz-2477534a/" class="fa fa-linkedin"></a>
-	<a href="https://github.com/holtzy/" class="fa fa-github"></a>
-</p>
-
-&nbsp;
+<!-- ---------------------------------------------------------------------------------------------- -->
 
 
 
-</div>
-
-<script>
-
-// add bootstrap table styles to pandoc tables
-function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
-}
-$(document).ready(function () {
-  bootstrapStylePandocTables();
-});
 
 
-</script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 
-</body>
+
+
+
+
+
+
+
+
+
+
+
+<!-- ------------------------ JAVASCRIPT SECTION ----------------------------- -->
+
+
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Contact form JavaScript -->
+    <script src="js/jqBootstrapValidation.js"></script>
+    <script src="js/contact_me.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="js/agency.min.js"></script>
+
+    <!-- Activate the bootstrap tooltip, must be after jQuery load -->
+    <script>
+	$(function () {
+  		$('[data-toggle="tooltip"]').tooltip()
+	})
+	</script>
+
+
+    <!-- Script for animated portfolio with filter. Found here: https://codepen.io/pramodkumarboda/pen/XdgxmQ -->
+    <script>
+  	$(window).load(function(){
+  	    var $container = $('.portfolioContainer');
+  	    $container.isotope({
+  	        filter: '*',
+  	        animationOptions: {
+  	            duration: 750,
+  	            easing: 'linear',
+  	            queue: false
+  	        }
+  	    });
+  	 
+  	    $('.portfolioFilter a').click(function(){
+  	        $('.portfolioFilter .current').removeClass('current');
+  	        $(this).addClass('current');
+  	 
+  	        var selector = $(this).attr('data-filter');
+  	        $container.isotope({
+  	            filter: selector,
+  	            animationOptions: {
+  	                duration: 750,
+  	                easing: 'linear',
+  	                queue: false
+  	            }
+  	         });
+  	         return false;
+  	    }); 
+  	});
+	</script>
+
+
+
+
+    <!-- Script to give a specific URL to every Modal. TODO: improve it with https://stackoverflow.com/questions/34154370/bootstrap-3-x-how-to-have-url-change-upon-clicking-modal-trigger -->
+    <script>
+      $(document).ready(function(){
+        $(window.location.hash).modal('show');
+        $('a[data-toggle="modal"]').click(function(){
+           window.location.hash = $(this).attr('href');
+        });
+      });
+
+      $('button[data-dismiss="modal"]').click(function(){
+           var original = window.location.href.substr(0, window.location.href.indexOf('#'))
+           history.replaceState({}, document.title, original);
+       });
+
+      $(window.location.hash).modal('show');
+      $('a[data-toggle="modal"]').click(function(){
+          window.location.hash = $(this).attr('href');
+      });
+
+      function revertToOriginalURL() {
+          var original = window.location.href.substr(0, window.location.href.indexOf('#'))
+          history.replaceState({}, document.title, original);
+      }
+
+      $('.modal').on('hidden.bs.modal', function () {
+          revertToOriginalURL();
+      });
+
+  </script>
+
+
+  <script>
+    $('.tip').each(function () {
+      $(this).tooltip(
+      {
+        html: true,
+          title: $('#' + $(this).data('tip')).html()
+      });
+    });
+  </script>
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-79254642-3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-79254642-3');
+  </script>
+
+
+
+
+
+<!----------------------------------------------------------------------------------------------- -->
+
+
+
+  </body>
+
 </html>

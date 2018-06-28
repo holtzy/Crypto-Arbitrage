@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+
+
+
+
+<style>
+.myheader {
+  background-image: url("https://github.com/holtzy/data_to_viz/raw/master/img/overview_RGG_faded.png");
+    min-height: 300px; 
+    background-size: 100% 100%;
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  
+  
+    height: 100%; 
+    width: 100% !important;
+  }
+.mytitle{
+  text-transform: uppercase;
+  font-family: 'Montserrat';
+  font-size: 200%;
+  font-weight: 500;
+  letter-spacing: 4px;
+  }   
+</style>
+
+<div class="myheader" style="text-align: center;">
+  <br>
+  <div style="text-align: left; margin-left: 5%"><a href="https://holtzy.github.io/Cryp-To/">HOME</a></div>
+  <br><br>
+  <br><br>
+  <p class="mytitle">Harvesting crypto currency prices</p>
+  <p style="color: #D0D0D0; font-size: 13px;">Recovering 100k data points on 5 exchanges</p>
+  <br><br>
+  <br><br>
+</div>
+
+
+
+
+
+<title></title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/navigation-1.1/codefolding.js"></script>
+<link href="libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="libs/pagedtable-1.1/js/pagedtable.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+div.sourceCode {
+  overflow-x: visible;
+}
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Show Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+
+<div class="mycontent">
+<h1 id="public-exchange-api">Public exchange API</h1>
+<hr />
+<p>Crypto currencies are bought and sold on different <code>exchanges</code>. Basically it is like a bank, but for crypto. The price at which a token is traded depends on the offer and on the demand. Thus it evolves permanently, every couples of seconds.</p>
+<p><br></p>
+<p>It is possible to recover this price using the public API of exchanges. Let’s say you want to know the <code>Bitcoin price</code> in the <a href="">Kraken</a> exchange. You can do that in your browser, typing this URL:</p>
+<p><a href="https://api.kraken.com/0/public/Ticker?pair=BTCEUR" class="uri">https://api.kraken.com/0/public/Ticker?pair=BTCEUR</a></p>
+<p>It gives you several information, three being of interest:</p>
+<ul>
+<li><code>last</code>: the price at the last transaction</li>
+<li><code>bid</code>: price at which you can sell your crypto</li>
+<li><code>ask</code>: price at which you can buy a crypto</li>
+</ul>
+<h1 id="do-it-programming">Do it programming</h1>
+<hr />
+<p>It is totally possible to do the same <code>programming</code>. This is handy since it will allow to recover the prices every couple of second automatically.</p>
+<p>Here is an example using the R programming language to get the price of the <code>bitcoin</code> on <a href="">Kraken</a> and showing it in a clean table:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># package</span>
+<span class="kw">library</span>(tidyverse)
+
+<span class="co"># Recover the information</span>
+<span class="kw">library</span>(RCurl)
+adress &lt;-<span class="st"> &quot;https://api.kraken.com/0/public/Ticker?pair=BTCEUR&quot;</span>
+ticker &lt;-<span class="st"> </span><span class="kw">getURLContent</span>(adress)
+
+<span class="co"># Make the format more readable</span>
+<span class="kw">require</span>(jsonlite)
+tmp &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(ticker)<span class="op">$</span>result[[<span class="dv">1</span>]]
+result =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">ask=</span>tmp<span class="op">$</span>a[<span class="dv">1</span>], <span class="dt">bid=</span>tmp<span class="op">$</span>b[<span class="dv">1</span>], <span class="dt">last=</span>tmp<span class="op">$</span>c[<span class="dv">1</span>], <span class="dt">open=</span>tmp<span class="op">$</span>o, <span class="dt">low=</span>tmp<span class="op">$</span>l[<span class="dv">1</span>], <span class="dt">high=</span>tmp<span class="op">$</span>h[<span class="dv">1</span>], <span class="dt">volume=</span>tmp<span class="op">$</span>v[<span class="dv">1</span>], <span class="dt">volumeQuote=</span><span class="ot">NA</span>, <span class="dt">timestamp=</span><span class="ot">NA</span>)
+
+<span class="co"># Show result</span>
+<span class="kw">library</span>(kableExtra)
+<span class="kw">options</span>(<span class="dt">knitr.table.format =</span> <span class="st">&quot;html&quot;</span>)
+
+tmp &lt;-<span class="st"> </span>result <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>volumeQuote, <span class="op">-</span>timestamp)
+<span class="kw">apply</span>(tmp, <span class="dv">2</span>, <span class="cf">function</span>(x){<span class="kw">round</span>(<span class="kw">as.numeric</span>(x),<span class="dv">0</span>)}) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">t</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">kable</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">kable_styling</span>(<span class="dt">bootstrap_options =</span> <span class="st">&quot;striped&quot;</span>, <span class="dt">full_width =</span> F)</code></pre></div>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+ask
+</th>
+<th style="text-align:right;">
+bid
+</th>
+<th style="text-align:right;">
+last
+</th>
+<th style="text-align:right;">
+open
+</th>
+<th style="text-align:right;">
+low
+</th>
+<th style="text-align:right;">
+high
+</th>
+<th style="text-align:right;">
+volume
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+5282
+</td>
+<td style="text-align:right;">
+5280
+</td>
+<td style="text-align:right;">
+5283
+</td>
+<td style="text-align:right;">
+5305
+</td>
+<td style="text-align:right;">
+5253
+</td>
+<td style="text-align:right;">
+5321
+</td>
+<td style="text-align:right;">
+379
+</td>
+</tr>
+</tbody>
+</table>
+<h1 id="code-resource">Code resource</h1>
+<hr />
+<p>I’ve written a <a href="https://github.com/holtzy/Cryp-To/blob/master/FUNCTIONS/Public_Market_Functions.R">set of functions</a> allowing to get the price of many different currencies for the 5 main exchanges. You can easily use these functions. For instance, type the code below in R:</p>
+<div style="background-color: grey">
+<pre><code># Source de functions that are stored on github
+source(&quot;https://raw.githubusercontent.com/holtzy/Cryp-To/master/FUNCTIONS/Public_Market_Functions.R&quot;)
+
+# Use it: price of the bitcoin on bitstamp
+get_bitstamp(time, &quot;BTCEUR&quot;)</code></pre>
+</div>
+<h1 id="harvesting-a-lot-of-data">Harvesting (a lot of) data</h1>
+<hr />
+<p>I’ve harvested crypto prices:</p>
+<ul>
+<li><em>for 2 weeks</em> - between the <code>5th and the 19th of February</code>.</li>
+<li><em>for 5 currencies</em> - bitcoin (BTC), bitcoin cash (BCH), etherum (ETH), litecoin (LTC) and ripple (XRP)</li>
+<li><em>for 5 exchanges</em> - Coinbase, Kraken, Bitstamp, Bitfinex and Cex.io</li>
+</ul>
+<p>This was easily done using an infinite loop that called the functions described above. The exact script used for this work is available <a href="">here</a>. 800,000 data points were recovered.</p>
+<p>The resulting dataset is available on <a href="">github</a> in a compressed format. You can easily read it in R doing:</p>
+<pre><code>load(&quot;../DATA/public_ticker_harvest.Rdata&quot;)
+head(Ticker)</code></pre>
+<p>As a teaser, here is the evolution of the etherum price on Bitstamp on this period of time:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">load</span>(<span class="st">&quot;../DATA/public_ticker_harvest.Rdata&quot;</span>)
+
+<span class="kw">library</span>(hrbrthemes)
+Ticker <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>( symbol <span class="op">==</span><span class="st"> &quot;ETHEUR&quot;</span> ) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(platform <span class="op">==</span><span class="st"> &quot;Bitstamp&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">ggplot</span>( <span class="kw">aes</span>(<span class="dt">x=</span>time, <span class="dt">y=</span><span class="kw">as.numeric</span>(last))) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span><span class="dv">450</span>, <span class="dt">ymax=</span><span class="kw">as.numeric</span>(last)),  <span class="dt">fill=</span><span class="st">&quot;#69b3a2&quot;</span>, <span class="dt">color=</span><span class="st">&quot;transparent&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&quot;#69b3a2&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">&quot;Evolution of Etherum price on the period&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;bitcoin price ($)&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">theme_ipsum</span>() <span class="op">+</span>
+<span class="st">    </span><span class="kw">theme</span>(
+      <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">12</span>)
+    )</code></pre></div>
+<p><img src="public_API_files/figure-html/unnamed-chunk-2-1.png" width="864" style="display: block; margin: auto;" /></p>
+</div>
+<p>Next step: <a href="">analysing this dataset</a>.</p>
+
+
+<!-- Insert code for DISQUS comments  -->
+
+      <div class="container">
+        <div id="disqus_thread"></div>
+        <script>
+
+        var disqus_config = function () {
+        this.page.url = https://holtzy.github.io/Cryp-To/content/public_API.html;  
+        this.page.identifier = public_API; 
+        };
+
+        (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://data-to-viz.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+        })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      </div>
+  <!-- Insert code for DISQUS comments  -->
+    
+
+
+&nbsp;
+<hr />
+<p style="text-align: center;">A work by <a href="https://github.com/holtzy/">Yan Holtz</a> for <a href="https://data-to-viz.com">data-to-viz.com</a></p>
+
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Add font awesome icons -->
+<p style="text-align: center;">
+	<a href="https://twitter.com/r_graph_gallery?lang=en" class="fa fa-twitter"></a>
+	<a href="https://www.linkedin.com/in/yan-holtz-2477534a/" class="fa fa-linkedin"></a>
+	<a href="https://github.com/holtzy/" class="fa fa-github"></a>
+</p>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-79254642-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-79254642-3');
+</script>
+
+
+&nbsp;
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+
+</body>
+</html>
