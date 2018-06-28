@@ -1,7 +1,7 @@
 ---
 mydisqus: "public_API"
 mytitle: "Harvesting crypto currency prices"
-mysub: "Recovering 100k data points on 5 exchanges"
+mysub: "Recovering 1M data points on 5 exchanges and 5 currencies"
 output:
   html_document:
       self_contained: false    
@@ -91,15 +91,15 @@ apply(tmp, 2, function(x){round(as.numeric(x),0)}) %>%
 
 I've written a [set of functions](https://github.com/holtzy/Cryp-To/blob/master/FUNCTIONS/Public_Market_Functions.R) allowing to get the price of many different currencies for the 5 main exchanges. You can easily use these functions. For instance, type the code below in R:
 
-<div style="background-color: grey">
+<div style="background-color:#F8F8F8; border-radius: 1px; padding: 20px;">
 
-```
-# Source de functions that are stored on github
-source("https://raw.githubusercontent.com/holtzy/Cryp-To/master/FUNCTIONS/Public_Market_Functions.R")
 
-# Use it: price of the bitcoin on bitstamp
-get_bitstamp(time, "BTCEUR")
-```
+ # Source de functions that are stored on github  
+ source("https://raw.githubusercontent.com/holtzy/Cryp-To/master/FUNCTIONS/Public_Market_Functions.R")
+
+ # Use it: price of the bitcoin on bitstamp  
+ get_bitstamp(time, "BTCEUR")
+
 
 </div>
 
@@ -118,12 +118,19 @@ I've harvested crypto prices:
 
 This was easily done using an infinite loop that called the functions described above. The exact script used for this work is available [here](). 800,000 data points were recovered.
 
+<br>
+
+
 The resulting dataset is available on [github]() in a compressed format. You can easily read it in R doing:
 
-```
-load("../DATA/public_ticker_harvest.Rdata")
-head(Ticker)
-```
+<div style="background-color:#F8F8F8; border-radius: 1px; padding: 20px;">
+
+ load("../DATA/public_ticker_harvest.Rdata")  
+ head(Ticker)
+
+</div>
+
+<br>
 
 As a teaser, here is the evolution of the etherum price on Bitstamp on this period of time:
 

@@ -18,7 +18,7 @@
 <style>
 .myheader {
   background-image: url("https://github.com/holtzy/Cryp-To/raw/master/img/area_bitcoin_fadded_long.png");
-    min-height: 500px; 
+    min-height: 900px; 
     background-size: 100% 100%;
 
     /* Create the parallax scrolling effect */
@@ -46,7 +46,7 @@
   <br><br>
   <br><br>
   <p class="mytitle">Harvesting crypto currency prices</p>
-  <p style="color: grey; font-size: 16px;">Recovering 100k data points on 5 exchanges</p>
+  <p style="color: grey; font-size: 16px;">Recovering 1M data points on 5 exchanges and 5 currencies</p>
   <br>
   <br>
   <br><br>
@@ -284,25 +284,25 @@ volume
 <tbody>
 <tr>
 <td style="text-align:right;">
-5106
+5066
 </td>
 <td style="text-align:right;">
-5103
+5065
 </td>
 <td style="text-align:right;">
-5106
+5068
 </td>
 <td style="text-align:right;">
 5305
 </td>
 <td style="text-align:right;">
-5081
+5057
 </td>
 <td style="text-align:right;">
 5321
 </td>
 <td style="text-align:right;">
-3527
+3624
 </td>
 </tr>
 </tbody>
@@ -310,12 +310,11 @@ volume
 <h1 id="code-resource">Code resource</h1>
 <hr />
 <p>I’ve written a <a href="https://github.com/holtzy/Cryp-To/blob/master/FUNCTIONS/Public_Market_Functions.R">set of functions</a> allowing to get the price of many different currencies for the 5 main exchanges. You can easily use these functions. For instance, type the code below in R:</p>
-<div style="background-color: grey">
-<pre><code># Source de functions that are stored on github
-source(&quot;https://raw.githubusercontent.com/holtzy/Cryp-To/master/FUNCTIONS/Public_Market_Functions.R&quot;)
-
-# Use it: price of the bitcoin on bitstamp
-get_bitstamp(time, &quot;BTCEUR&quot;)</code></pre>
+<div style="background-color:#F8F8F8; border-radius: 1px; padding: 20px;">
+<p># Source de functions that are stored on github<br />
+source(“<a href="https://raw.githubusercontent.com/holtzy/Cryp-To/master/FUNCTIONS/Public_Market_Functions.R" class="uri">https://raw.githubusercontent.com/holtzy/Cryp-To/master/FUNCTIONS/Public_Market_Functions.R</a>”)</p>
+<p># Use it: price of the bitcoin on bitstamp<br />
+get_bitstamp(time, “BTCEUR”)</p>
 </div>
 <h1 id="harvesting-a-lot-of-data">Harvesting (a lot of) data</h1>
 <hr />
@@ -326,9 +325,13 @@ get_bitstamp(time, &quot;BTCEUR&quot;)</code></pre>
 <li><em>for 5 exchanges</em> - Coinbase, Kraken, Bitstamp, Bitfinex and Cex.io</li>
 </ul>
 <p>This was easily done using an infinite loop that called the functions described above. The exact script used for this work is available <a href="">here</a>. 800,000 data points were recovered.</p>
+<p><br></p>
 <p>The resulting dataset is available on <a href="">github</a> in a compressed format. You can easily read it in R doing:</p>
-<pre><code>load(&quot;../DATA/public_ticker_harvest.Rdata&quot;)
-head(Ticker)</code></pre>
+<div style="background-color:#F8F8F8; border-radius: 1px; padding: 20px;">
+<p>load(“../DATA/public_ticker_harvest.Rdata”)<br />
+head(Ticker)</p>
+</div>
+<p><br></p>
 <p>As a teaser, here is the evolution of the etherum price on Bitstamp on this period of time:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">load</span>(<span class="st">&quot;../DATA/public_ticker_harvest.Rdata&quot;</span>)
 

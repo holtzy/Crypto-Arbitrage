@@ -12,3 +12,5 @@ jsonlite
 kableExtra
 hrbrthemes
 bindrcpp
+stringr
+forcats
