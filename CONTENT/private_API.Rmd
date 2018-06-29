@@ -1,0 +1,124 @@
+---
+mydisqus: "private_API"
+mytitle: "Trading crypto in command line using APIs"
+mysub: "What is an API? How does it work? How to buy and sell crypto?"
+output:
+  html_document:
+      self_contained: false    
+      mathjax: default
+      lib_dir: libs
+      template: template_crypto.html
+      theme: "lumen"
+      css: style.css
+      toc: FALSE
+      toc_float: TRUE
+      toc_depth: 2
+      number_sections: TRUE
+      df_print: "paged"
+      code_folding: "show"
+      includes: 
+        after_body: footer.html
+---
+
+
+<div class="mycontent">
+
+
+
+
+
+
+
+
+
+#We need APIs
+***
+As explained in the previous posts, an arbitrage strategy has absolutely no chances of success if not 100% automatized. Trading with your mouse on the web interfaces would take way too long and arbitrage opportunities would be over even before you had the time to seize it.
+
+<br>
+
+Fortunately it is possible to exchange information with crypto exchanges through their API ([Application Programming Interface](https://en.wikipedia.org/wiki/Application_programming_interface)). Basically it allows to buy and sell crypto in command line, and thus to create a bot that do it automatically when a price difference is detected.
+
+
+
+
+#Code resource
+***
+
+Let's suppose I want to know what is my balance on my Bitstamp account. It is possible to do so using the [R programming language]() using the code below. Note that you first need to:
+
+- Have a bitstamp account
+- Set up the account to authorize access through API
+- Get your codes
+
+```{r, eval=FALSE}
+# Some library are necessary to make these function work
+library(dplyr)
+library(digest)       # For the hmac function that allows to create the signature
+library(RCurl)        # Pour récupérer les données en appelant des URLS
+library(jsonlite)     # To go from JSON to data frame
+  
+# to access the Bitstamp API (enter your codes)
+key_bitstamp="yyxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+secret_bitstamp="vfxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+customer_id_bitstamp="zxxxxxx"
+  
+# A function that returns my Bitstamp balance
+get_my_balance_bitstamp=function(){
+    nonce=as.character(as.numeric(Sys.time()) * 1000000)
+    signature = toupper( hmac(key = secret_bitstamp, object = paste0( nonce, customer_id_bitstamp, key_bitstamp), algo = "sha256"))
+    post_data <- paste0("key=", key_bitstamp, "&signature=", signature, "&nonce=", nonce)
+    curl <- getCurlHandle()
+    query_result_json <- rawToChar(getURLContent(curl = curl, url = "https://www.bitstamp.net/api/v2/balance/", binary = TRUE, postfields = post_data))
+    result=fromJSON(query_result_json,  flatten=TRUE) %>% data.frame()
+    result=result[ , c("bch_available", "btc_available", "eth_available", "eur_available", "ltc_available", "xrp_available")]
+    return(result)
+  }
+  
+#Use the function
+get_my_balance_bitstamp()
+```
+
+<br>
+
+I've written a set of function allowing to get balance, buy crypto and sell crypto for Bitstamp, Cex, and Kraken. You can find these function here. Here is an example of utilization:
+```{r, eval=FALSE}
+# Enter your bitstamp codes
+key_bitstamp="yyxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+secret_bitstamp="vfxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+customer_id_bitstamp="zxxxxxx"
+
+# Source the script with bitstamp functions:
+source("Private_API_Functions_Bitstamp.R")
+
+# Buy Etherum
+from_euro_to_crypto_bitstamp(0.05, "ETHEUR" )
+```
+
+
+
+
+#Next step
+***
+Now that we have an arbitrage algorithm and a set of function allowing to buy and sell, let's try with real data!
+<br>
+<center>
+<button class="btn btn-primary" href="">Let's play for real</button>
+</center>
+<br><br>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+

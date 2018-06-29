@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+
+
+
+
+<style>
+.myheader {
+  background-image: url("https://github.com/holtzy/Cryp-To/raw/master/img/area_bitcoin_fadded_long.png");
+    min-height: 400px; 
+    background-size: 10% 100%; !important
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  
+  
+    height: 10%; !important
+    width: 100% !important;
+  }
+.mytitle{
+  text-transform: uppercase;
+  font-family: 'Montserrat';
+  font-size: 200%;
+  font-weight: 500;
+  letter-spacing: 4px;
+  }   
+</style>
+
+<div class="myheader" style="text-align: center;">
+  <br>
+  <div style="text-align: left; margin-left: 5%"><a href="https://holtzy.github.io/Cryp-To/">HOME</a></div>
+  <br><br>
+  <br><br>
+  <p class="mytitle">Trading crypto in command line using APIs</p>
+  <p style="color: grey; font-size: 16px;">What is an API? How does it work? How to buy and sell crypto?</p>
+  <br>
+  <br>
+  <br><br>
+</div>
+
+
+
+
+
+<title></title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/navigation-1.1/codefolding.js"></script>
+<link href="libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+div.sourceCode {
+  overflow-x: visible;
+}
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Show Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+
+<div class="mycontent">
+<h1 id="we-need-apis">We need APIs</h1>
+<hr />
+<p>As explained in the previous posts, an arbitrage strategy has absolutely no chances of success if not 100% automatized. Trading with your mouse on the web interfaces would take way too long and arbitrage opportunities would be over even before you had the time to seize it.</p>
+<p><br></p>
+<p>Fortunately it is possible to exchange information with crypto exchanges through their API (<a href="https://en.wikipedia.org/wiki/Application_programming_interface">Application Programming Interface</a>). Basically it allows to buy and sell crypto in command line, and thus to create a bot that do it automatically when a price difference is detected.</p>
+<h1 id="code-resource">Code resource</h1>
+<hr />
+<p>Let’s suppose I want to know what is my balance on my Bitstamp account. It is possible to do so using the <a href="">R programming language</a> using the code below. Note that you first need to:</p>
+<ul>
+<li>Have a bitstamp account</li>
+<li>Set up the account to authorize access through API</li>
+<li>Get your codes</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Some library are necessary to make these function work</span>
+<span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(digest)       <span class="co"># For the hmac function that allows to create the signature</span>
+<span class="kw">library</span>(RCurl)        <span class="co"># Pour récupérer les données en appelant des URLS</span>
+<span class="kw">library</span>(jsonlite)     <span class="co"># To go from JSON to data frame</span>
+  
+<span class="co"># to access the Bitstamp API (enter your codes)</span>
+key_bitstamp=<span class="st">&quot;yyxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+secret_bitstamp=<span class="st">&quot;vfxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+customer_id_bitstamp=<span class="st">&quot;zxxxxxx&quot;</span>
+  
+<span class="co"># A function that returns my Bitstamp balance</span>
+get_my_balance_bitstamp=<span class="cf">function</span>(){
+    nonce=<span class="kw">as.character</span>(<span class="kw">as.numeric</span>(<span class="kw">Sys.time</span>()) <span class="op">*</span><span class="st"> </span><span class="dv">1000000</span>)
+    signature =<span class="st"> </span><span class="kw">toupper</span>( <span class="kw">hmac</span>(<span class="dt">key =</span> secret_bitstamp, <span class="dt">object =</span> <span class="kw">paste0</span>( nonce, customer_id_bitstamp, key_bitstamp), <span class="dt">algo =</span> <span class="st">&quot;sha256&quot;</span>))
+    post_data &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;key=&quot;</span>, key_bitstamp, <span class="st">&quot;&amp;signature=&quot;</span>, signature, <span class="st">&quot;&amp;nonce=&quot;</span>, nonce)
+    curl &lt;-<span class="st"> </span><span class="kw">getCurlHandle</span>()
+    query_result_json &lt;-<span class="st"> </span><span class="kw">rawToChar</span>(<span class="kw">getURLContent</span>(<span class="dt">curl =</span> curl, <span class="dt">url =</span> <span class="st">&quot;https://www.bitstamp.net/api/v2/balance/&quot;</span>, <span class="dt">binary =</span> <span class="ot">TRUE</span>, <span class="dt">postfields =</span> post_data))
+    result=<span class="kw">fromJSON</span>(query_result_json,  <span class="dt">flatten=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">data.frame</span>()
+    result=result[ , <span class="kw">c</span>(<span class="st">&quot;bch_available&quot;</span>, <span class="st">&quot;btc_available&quot;</span>, <span class="st">&quot;eth_available&quot;</span>, <span class="st">&quot;eur_available&quot;</span>, <span class="st">&quot;ltc_available&quot;</span>, <span class="st">&quot;xrp_available&quot;</span>)]
+    <span class="kw">return</span>(result)
+  }
+  
+<span class="co">#Use the function</span>
+<span class="kw">get_my_balance_bitstamp</span>()</code></pre></div>
+<p>I’ve written a set of function allowing to get balance, buy crypto and sell crypto for Bitstamp, Cex, and Kraken. You can find these function here. Here is an example of utilization:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Enter your bitstamp codes</span>
+key_bitstamp=<span class="st">&quot;yyxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+secret_bitstamp=<span class="st">&quot;vfxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
+customer_id_bitstamp=<span class="st">&quot;zxxxxxx&quot;</span>
+
+<span class="co"># Source the script with bitstamp functions:</span>
+<span class="kw">source</span>(<span class="st">&quot;Private_API_Functions_Bitstamp.R&quot;</span>)
+
+<span class="co"># Buy Etherum</span>
+<span class="kw">from_euro_to_crypto_bitstamp</span>(<span class="fl">0.05</span>, <span class="st">&quot;ETHEUR&quot;</span> )</code></pre></div>
+<h1 id="next-step">Next step</h1>
+<hr />
+Now that we have an arbitrage algorithm and a set of function allowing to buy and sell, let’s try with real data! <br>
+<center>
+<button class="btn btn-primary" href>
+Quantifying differences
+</button>
+</center>
+<p><br><br></p>
+</div>
+
+
+<!-- Insert code for DISQUS comments  -->
+
+      <div class="container">
+        <div id="disqus_thread"></div>
+        <script>
+
+        var disqus_config = function () {
+        this.page.url = https://holtzy.github.io/Cryp-To/content/private_API.html;  
+        this.page.identifier = private_API; 
+        };
+
+        (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://data-to-viz.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+        })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      </div>
+  <!-- Insert code for DISQUS comments  -->
+    
+
+
+&nbsp;
+<hr />
+<p style="text-align: center;">A work by <a href="https://github.com/holtzy/">Yan Holtz</a> for <a href="https://data-to-viz.com">data-to-viz.com</a></p>
+
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Add font awesome icons -->
+<p style="text-align: center;">
+	<a href="https://twitter.com/r_graph_gallery?lang=en" class="fa fa-twitter"></a>
+	<a href="https://www.linkedin.com/in/yan-holtz-2477534a/" class="fa fa-linkedin"></a>
+	<a href="https://github.com/holtzy/" class="fa fa-github"></a>
+</p>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-79254642-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-79254642-3');
+</script>
+
+
+&nbsp;
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+
+</body>
+</html>
