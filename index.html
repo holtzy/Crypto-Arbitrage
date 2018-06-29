@@ -49,19 +49,19 @@
               <a class="nav-link" href="CONTENT/public_API.html">Get data</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="CONTENT/differences.html">Price differences</a>
+              <a class="nav-link" href="CONTENT/differences.html">Price differences</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="CONTENT/definition.html">Arbitrage?</a>
+              <a class="nav-link" href="CONTENT/definition.html">Arbitrage?</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="CONTENT/optimization.html">Simulation</a>
+              <a class="nav-link" href="CONTENT/optimization.html">Simulation</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="CONTENT/private_API.html">private API</a>
             </li>
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#caveats">Getting rich?</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#poster">Why</a>
             </li>
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#about">About</a>
@@ -80,7 +80,7 @@
      <div class="parallax">
      <div class="container">
         <div class="intro-text">
-          <br><br><br><br>
+          <br><br><br><br><br><br>
           <h1>Crypto arbitrage: a feasibility analysis</h1>
           <div class="center-block col-lg-5" style="margin: 0 auto;">
             <hr>
@@ -90,6 +90,7 @@
             <p style="color: grey; font-size: 12px">Arbitrage is defined as the simultaneous buying and selling of currency in different platforms in order to take advantage of differing prices. This document gives a few insight on its potential application on crypto currencies.</p> 
           </div>
           <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#portfolio">Tell me more</a>
+          <br><br>
         </div>
       </div>
       </div>
@@ -114,6 +115,25 @@
     <!-- ANCHOR -->
     <a name="portfolioanchor"></a>
 
+    <style>
+    .textExplanation{ 
+      color: black; 
+      font-size: 15px 
+    }
+    .titleExplanation{
+      border-bottom: solid; 
+      border-width: 1px; 
+      font-size: 16px; 
+      padding: 30px; 
+      padding-bottom: 20px;
+    }
+
+
+
+    </style>
+
+
+
     <section class="bg-light" id="portfolio" style="padding-top: 60px">
         <div class="container" >
 
@@ -123,31 +143,61 @@
               <div class="center-block col-lg-5" style="margin: 0 auto;">
                 <hr>
               </div>
-              <div class="center-block col-lg-5" style="margin: 0 auto;">
+              <div class="center-block col-lg-8" style="margin: 0 auto;">
                  <p class="section-subheading text-muted">This work is organized in several section, each describing in depth a part of the analysis. Click the section that interests you for result and code.</p>
               </div>
             </div>
           </div>
 
 
-          <div class="row text-center" style="padding-top: 7%">
+          <div class="row text-center" style="padding-top: 2%">
 
             <div class="col-lg-4 col-md-6 text-center">
-              <h2 class="text-uppercase" style="border-bottom: solid; border-width: 1px">Recovering prices</h2>
-              <p style="color: grey">I recovered prices of 5 currencies for several weeks, and provide an output without thousands of data points</p>
-              <button class="btn btn-secondary" onclick="filterSelection('all')">Read</button>
+              <a href="CONTENT/public_API.html" class="btn btn-primary mybtnrelated" style="margin-bottom:4px;white-space: normal !important; background-color: white">
+                <p class="text-uppercase titleExplanation mytitlerelated">Recovering prices</p>
+                <p class="textExplanation">I recovered prices of 5 currencies for several weeks, and provide an output without thousands of data points</p>
+                READ
+              </a>
             </div>
 
             <div class="col-lg-4 col-md-6 text-center">
-              <h2 class="text-uppercase" style="border-bottom: solid; border-width: 1px">Comparing prices</h2>
-              <p style="color: grey">A comparison of prices on the long and on the short term. Is there any differences between exchanges?</p>
-              <button class="btn btn-secondary" onclick="filterSelection('all')">Read</button>
+              <a href="CONTENT/differences.html.html" class="btn btn-primary mybtnrelated" style="margin-bottom:4px;white-space: normal !important;">
+                <p class="text-uppercase titleExplanation mytitlerelated">Comparing prices</p>
+                <p class="textExplanation">A comparison of prices on the long and on the short term. Is there any differences between exchanges?</p>
+                READ
+              </a>
             </div>
 
             <div class="col-lg-4 col-md-6 text-center">
-              <h2 class="text-uppercase" style="border-bottom: solid; border-width: 1px">What is arbitrage</h2>
-              <p style="color: grey">A quick introduction to arbitrage: what it is and what are the potential limitations</p>
-              <button class="btn btn-secondary" onclick="filterSelection('all')">Read</button>
+              <a href="CONTENT/definition.html" class="btn btn-primary mybtnrelated" style="margin-bottom:4px;white-space: normal !important;">
+                <p class="text-uppercase titleExplanation mytitlerelated">What is arbitrage</p>
+                <p class="textExplanation">A quick introduction to arbitrage: what it is and what are the potential limitations</p>
+                READ
+              </a>
+            </div>
+
+            <div class="col-lg-4 col-md-6 text-center">
+              <a href="CONTENT/optimization.html" class="btn btn-primary mybtnrelated" style="margin-bottom:4px;white-space: normal !important;">
+                <p class="text-uppercase titleExplanation mytitlerelated">Arbitrage Simulation</p>
+                <p class="textExplanation">Simulating an arbitrage algorithm on the dataset to assess potential benefit and optimize parameters</p>
+                READ
+              </a>
+            </div>
+
+            <div class="col-lg-4 col-md-6 text-center">
+              <a href="CONTENT/private_API.html" class="btn btn-primary mybtnrelated" style="margin-bottom:4px;white-space: normal !important;">
+                <p class="text-uppercase titleExplanation mytitlerelated">the private API</p>
+                <p class="textExplanation">How to buy and sell crypto currencies using programing and private APIs?</p>
+                READ
+              </a>
+            </div>
+
+            <div class="col-lg-4 col-md-6 text-center">
+              <a href="CONTENT/result.html" class="btn btn-primary mybtnrelated" style="margin-bottom:4px;white-space: normal !important;">
+                <p class="text-uppercase titleExplanation mytitlerelated">Running the bot - for real</p>
+                <p class="textExplanation">The algorithm is finally run for real. Does it make any money?</p>
+                READ
+              </a>
             </div>
 
         </div>
@@ -177,7 +227,7 @@
     <a name="contactanchor"></a>
 
 
-  <section id="contact" class="bg-light">
+  <section id="contact" class="" style="background-color: white">
      <div class="container">
        <div class="row">
          <div class="col-lg-2 text-center"></div>

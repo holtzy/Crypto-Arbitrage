@@ -33,7 +33,7 @@ output:
 
 #We need APIs
 ***
-As explained in the previous posts, an arbitrage strategy has absolutely no chances of success if not 100% automatized. Trading with your mouse on the web interfaces would take way too long and arbitrage opportunities would be over even before you had the time to seize it.
+As explained in the previous posts, an arbitrage strategy has absolutely no chances of success if not `100% automatized`. Trading with your mouse through web interfaces would take way too long and arbitrage opportunities would be over even before you had the time to seize it.
 
 <br>
 
@@ -45,7 +45,7 @@ Fortunately it is possible to exchange information with crypto exchanges through
 #Code resource
 ***
 
-Let's suppose I want to know what is my balance on my Bitstamp account. It is possible to do so using the [R programming language]() using the code below. Note that you first need to:
+Let's suppose I want to know what is my balance on my Bitstamp account. It is possible to do so using the [R programming language](https://www.r-project.org) using the code below. Note that you first need to:
 
 - Have a bitstamp account
 - Set up the account to authorize access through API
@@ -81,7 +81,8 @@ get_my_balance_bitstamp()
 
 <br>
 
-I've written a set of function allowing to get balance, buy crypto and sell crypto for Bitstamp, Cex, and Kraken. You can find these function here. Here is an example of utilization:
+I've written a [set of function](https://github.com/holtzy/Cryp-To/tree/master/FUNCTIONS) allowing to `get balance`, `buy` crypto and `sell` crypto for Bitstamp, Cex, and Kraken. You can find these function [here](https://github.com/holtzy/Cryp-To/tree/master/FUNCTIONS). Here is an example of utilization:
+
 ```{r, eval=FALSE}
 # Enter your bitstamp codes
 key_bitstamp="yyxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
@@ -89,7 +90,7 @@ secret_bitstamp="vfxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 customer_id_bitstamp="zxxxxxx"
 
 # Source the script with bitstamp functions:
-source("Private_API_Functions_Bitstamp.R")
+source("https://raw.githubusercontent.com/holtzy/Cryp-To/master/FUNCTIONS/Private_API_Functions_Bitstamp.R")
 
 # Buy Etherum
 from_euro_to_crypto_bitstamp(0.05, "ETHEUR" )
@@ -101,6 +102,7 @@ from_euro_to_crypto_bitstamp(0.05, "ETHEUR" )
 #Next step
 ***
 Now that we have an arbitrage algorithm and a set of function allowing to buy and sell, let's try with real data!
+
 <br>
 <center>
 <button class="btn btn-primary" href="">Let's play for real</button>

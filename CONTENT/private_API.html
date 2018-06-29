@@ -218,12 +218,12 @@ $(document).ready(function () {
 <div class="mycontent">
 <h1 id="we-need-apis">We need APIs</h1>
 <hr />
-<p>As explained in the previous posts, an arbitrage strategy has absolutely no chances of success if not 100% automatized. Trading with your mouse on the web interfaces would take way too long and arbitrage opportunities would be over even before you had the time to seize it.</p>
+<p>As explained in the previous posts, an arbitrage strategy has absolutely no chances of success if not <code>100% automatized</code>. Trading with your mouse through web interfaces would take way too long and arbitrage opportunities would be over even before you had the time to seize it.</p>
 <p><br></p>
 <p>Fortunately it is possible to exchange information with crypto exchanges through their API (<a href="https://en.wikipedia.org/wiki/Application_programming_interface">Application Programming Interface</a>). Basically it allows to buy and sell crypto in command line, and thus to create a bot that do it automatically when a price difference is detected.</p>
 <h1 id="code-resource">Code resource</h1>
 <hr />
-<p>Let’s suppose I want to know what is my balance on my Bitstamp account. It is possible to do so using the <a href="">R programming language</a> using the code below. Note that you first need to:</p>
+<p>Let’s suppose I want to know what is my balance on my Bitstamp account. It is possible to do so using the <a href="https://www.r-project.org">R programming language</a> using the code below. Note that you first need to:</p>
 <ul>
 <li>Have a bitstamp account</li>
 <li>Set up the account to authorize access through API</li>
@@ -254,23 +254,25 @@ get_my_balance_bitstamp=<span class="cf">function</span>(){
   
 <span class="co">#Use the function</span>
 <span class="kw">get_my_balance_bitstamp</span>()</code></pre></div>
-<p>I’ve written a set of function allowing to get balance, buy crypto and sell crypto for Bitstamp, Cex, and Kraken. You can find these function here. Here is an example of utilization:</p>
+<p><br></p>
+<p>I’ve written a <a href="https://github.com/holtzy/Cryp-To/tree/master/FUNCTIONS">set of function</a> allowing to <code>get balance</code>, <code>buy</code> crypto and <code>sell</code> crypto for Bitstamp, Cex, and Kraken. You can find these function <a href="https://github.com/holtzy/Cryp-To/tree/master/FUNCTIONS">here</a>. Here is an example of utilization:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Enter your bitstamp codes</span>
 key_bitstamp=<span class="st">&quot;yyxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
 secret_bitstamp=<span class="st">&quot;vfxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;</span>
 customer_id_bitstamp=<span class="st">&quot;zxxxxxx&quot;</span>
 
 <span class="co"># Source the script with bitstamp functions:</span>
-<span class="kw">source</span>(<span class="st">&quot;Private_API_Functions_Bitstamp.R&quot;</span>)
+<span class="kw">source</span>(<span class="st">&quot;https://raw.githubusercontent.com/holtzy/Cryp-To/master/FUNCTIONS/Private_API_Functions_Bitstamp.R&quot;</span>)
 
 <span class="co"># Buy Etherum</span>
 <span class="kw">from_euro_to_crypto_bitstamp</span>(<span class="fl">0.05</span>, <span class="st">&quot;ETHEUR&quot;</span> )</code></pre></div>
 <h1 id="next-step">Next step</h1>
 <hr />
-Now that we have an arbitrage algorithm and a set of function allowing to buy and sell, let’s try with real data! <br>
+<p>Now that we have an arbitrage algorithm and a set of function allowing to buy and sell, let’s try with real data!</p>
+<br>
 <center>
 <button class="btn btn-primary" href>
-Quantifying differences
+Let’s play for real
 </button>
 </center>
 <p><br><br></p>
