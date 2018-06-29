@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+
+
+
+
+<style>
+.myheader {
+  background-image: url("https://github.com/holtzy/Cryp-To/raw/master/img/area_bitcoin_fadded_long.png");
+    min-height: 400px; 
+    background-size: 10% 100%; !important
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  
+  
+    height: 10%; !important
+    width: 100% !important;
+  }
+.mytitle{
+  text-transform: uppercase;
+  font-family: 'Montserrat';
+  font-size: 200%;
+  font-weight: 500;
+  letter-spacing: 4px;
+  }   
+</style>
+
+<div class="myheader" style="text-align: center;">
+  <br>
+  <div style="text-align: left; margin-left: 5%"><a href="https://holtzy.github.io/Cryp-To/">HOME</a></div>
+  <br><br>
+  <br><br>
+  <p class="mytitle">What is arbitrage</p>
+  <p style="color: grey; font-size: 16px;">What is it? How does it work? What are the potential limits?</p>
+  <br>
+  <br>
+  <br><br>
+</div>
+
+
+
+
+
+<title></title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/navigation-1.1/codefolding.js"></script>
+<link href="libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+div.sourceCode {
+  overflow-x: visible;
+}
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Show Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+
+<div class="mycontent">
+<p><br></p>
+<blockquote>
+<p>“Arbitrage is the practice of taking advantage of a price difference between two or more markets”</p>
+</blockquote>
+<div style="text-align: right">
+<i><a href="https://en.wikipedia.org/wiki/Arbitrage">Wikipedia</a></i>
+</div>
+<h1 id="definition">Definition</h1>
+<hr />
+<p>Crypto currencies are bought and sold on different <code>exchanges</code>. Basically it is like a bank, but for crypto. The price is not allways exactly the same on 2 exchanges, as shown <a href="">here</a>. It is thus possible to buy a crypto where the price is low, and sell it instantly where the price is high to realize a gain without taking any risk.</p>
+<p>Consider the following situation represented in the diagram:</p>
+<ul>
+<li><em>step 1</em> - the price of etherum is 700 euros on Kraken (exchange 1). I take 700 euros and buy 1 Etherum</li>
+<li><em>step 2</em> - I send this etherum to Bitstamp (exchange 2)</li>
+<li><em>step 3</em> - I sell the etherum on Bitstamp, but the price is different: 750. Thus I now have 750 euros, which is a gain of 50 euros.</li>
+<li><em>Again</em></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
+<span class="kw">library</span>(gganimate)
+<span class="kw">library</span>(tweenr)
+
+<span class="co"># Initial data</span>
+init &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+  <span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">4</span>),
+  <span class="dt">y =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">1</span>),
+  <span class="dt">value =</span> <span class="kw">rep</span>(<span class="dv">100</span>, <span class="dv">4</span>),
+  <span class="dt">tot =</span> <span class="kw">rep</span>(<span class="dv">200</span>,<span class="dv">4</span>),
+  <span class="dt">tot_crypto =</span> <span class="kw">rep</span>(<span class="dv">200</span>,<span class="dv">4</span>),
+  <span class="dt">arrow1 =</span> <span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">4</span>),
+  <span class="dt">arrow2 =</span> <span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">4</span>),
+  <span class="dt">arrow3 =</span> <span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">4</span>),
+  <span class="dt">arrow4 =</span> <span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">4</span>)
+)
+
+<span class="co"># A function to trade data</span>
+trade1 &lt;-<span class="st"> </span><span class="cf">function</span>(don){
+  totrade=<span class="dv">50</span>
+  gain=<span class="fl">1.8</span>
+  don<span class="op">$</span>value[<span class="dv">1</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>totrade
+  don<span class="op">$</span>value[<span class="dv">2</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>totrade
+  don<span class="op">$</span>tot &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">3</span>]
+  don<span class="op">$</span>tot_crypto &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">4</span>]
+  don<span class="op">$</span>arrow1 &lt;-<span class="st"> </span><span class="dv">1</span>
+  don<span class="op">$</span>arrow2 &lt;-<span class="st"> </span><span class="dv">0</span>
+  don<span class="op">$</span>arrow3 &lt;-<span class="st"> </span><span class="dv">0</span>
+  don<span class="op">$</span>arrow4 &lt;-<span class="st"> </span><span class="dv">0</span>
+  <span class="kw">return</span>(don)
+}
+trade1bis &lt;-<span class="st"> </span><span class="cf">function</span>(don){
+  totrade=<span class="dv">50</span>
+  gain=<span class="fl">1.8</span>
+  don<span class="op">$</span>value[<span class="dv">3</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">3</span>] <span class="op">+</span><span class="st"> </span>totrade<span class="op">*</span>gain 
+  don<span class="op">$</span>value[<span class="dv">4</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">4</span>] <span class="op">-</span><span class="st"> </span>totrade
+  don<span class="op">$</span>tot &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">3</span>]
+  don<span class="op">$</span>tot_crypto &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">4</span>]
+  don<span class="op">$</span>arrow1 &lt;-<span class="st"> </span><span class="dv">0</span>
+  don<span class="op">$</span>arrow2 &lt;-<span class="st"> </span><span class="dv">1</span>
+  don<span class="op">$</span>arrow3 &lt;-<span class="st"> </span><span class="dv">0</span>
+  don<span class="op">$</span>arrow4 &lt;-<span class="st"> </span><span class="dv">0</span>
+  <span class="kw">return</span>(don)
+}
+trade2 &lt;-<span class="st"> </span><span class="cf">function</span>(don){
+  totrade=<span class="dv">50</span>
+  gain=<span class="fl">1.8</span>
+  don<span class="op">$</span>value[<span class="dv">3</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">3</span>] <span class="op">-</span><span class="st"> </span>totrade
+  don<span class="op">$</span>value[<span class="dv">4</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">4</span>] <span class="op">+</span><span class="st"> </span>totrade
+  don<span class="op">$</span>tot &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">3</span>]
+  don<span class="op">$</span>tot_crypto &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">4</span>]
+  don<span class="op">$</span>arrow1 &lt;-<span class="st"> </span><span class="dv">0</span>
+  don<span class="op">$</span>arrow2 &lt;-<span class="st"> </span><span class="dv">0</span>
+  don<span class="op">$</span>arrow3 &lt;-<span class="st"> </span><span class="dv">1</span>
+  don<span class="op">$</span>arrow4 &lt;-<span class="st"> </span><span class="dv">0</span>
+  <span class="kw">return</span>(don)
+}
+trade2bis &lt;-<span class="st"> </span><span class="cf">function</span>(don){
+  totrade=<span class="dv">50</span>
+  gain=<span class="fl">1.8</span>
+  don<span class="op">$</span>value[<span class="dv">1</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>totrade<span class="op">*</span>gain
+  don<span class="op">$</span>value[<span class="dv">2</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>totrade
+  don<span class="op">$</span>tot &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">3</span>]
+  don<span class="op">$</span>tot_crypto &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">4</span>]
+  don<span class="op">$</span>arrow1 &lt;-<span class="st"> </span><span class="dv">0</span>
+  don<span class="op">$</span>arrow2 &lt;-<span class="st"> </span><span class="dv">0</span>
+  don<span class="op">$</span>arrow3 &lt;-<span class="st"> </span><span class="dv">0</span>
+  don<span class="op">$</span>arrow4 &lt;-<span class="st"> </span><span class="dv">1</span>
+  <span class="kw">return</span>(don)
+}
+
+
+<span class="co"># Loop to do several transaction</span>
+mylist &lt;-<span class="st"> </span><span class="kw">list</span>(init, init, init)
+tmp &lt;-<span class="st"> </span>init
+num &lt;-<span class="st"> </span><span class="dv">1</span>
+<span class="co"># i is the number of cycle</span>
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span>){
+  <span class="co">#step1: </span>
+  num &lt;-<span class="st"> </span>num <span class="op">+</span><span class="st"> </span><span class="dv">1</span> ; tmp &lt;-<span class="st"> </span><span class="kw">trade1</span>(tmp) ; mylist[[num]] &lt;-<span class="st"> </span>tmp
+  
+  <span class="co">#step2</span>
+  num &lt;-<span class="st"> </span>num <span class="op">+</span><span class="st"> </span><span class="dv">1</span> ; tmp &lt;-<span class="st"> </span><span class="kw">trade1bis</span>(tmp) ; mylist[[num]] &lt;-<span class="st"> </span>tmp
+  
+  <span class="co">#step3</span>
+  num &lt;-<span class="st"> </span>num <span class="op">+</span><span class="st"> </span><span class="dv">1</span> ; tmp &lt;-<span class="st"> </span><span class="kw">trade2</span>(tmp) ;  mylist[[num]] &lt;-<span class="st"> </span>tmp
+  
+  <span class="co">#step4</span>
+  num &lt;-<span class="st"> </span>num <span class="op">+</span><span class="st"> </span><span class="dv">1</span> ; tmp &lt;-<span class="st"> </span><span class="kw">trade2bis</span>(tmp) ; mylist[[num]] &lt;-<span class="st"> </span>tmp
+  }
+mylist
+
+<span class="co"># Use tweenR</span>
+tf &lt;-<span class="st"> </span><span class="kw">tween_states</span>(mylist, <span class="dt">tweenlength =</span> <span class="fl">0.01</span>, <span class="dt">statelength =</span> <span class="fl">0.1</span>, <span class="dt">ease =</span> <span class="kw">c</span>(<span class="st">&#39;cubic-in-out&#39;</span>), <span class="dt">nframes =</span> <span class="dv">100</span>)
+tf
+
+
+<span class="co"># Animation</span>
+p &lt;-<span class="st"> </span>tf   <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y, <span class="dt">size=</span>value, <span class="dt">frame=</span>.frame)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_void</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>( <span class="kw">aes</span>(<span class="dt">color=</span><span class="kw">paste</span>(x,y))) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;#69b3a2&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;#69b3a2&quot;</span>, <span class="st">&quot;purple&quot;</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_size_continuous</span>(<span class="dt">range=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">30</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>) <span class="op">+</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="co"># Quantity of money</span>
+<span class="st">  </span><span class="kw">geom_text</span>( <span class="kw">aes</span>(<span class="dt">label=</span><span class="kw">round</span>(value,<span class="dv">0</span>), <span class="dt">x=</span>x, <span class="dt">y=</span>y<span class="op">-</span><span class="fl">0.5</span>, <span class="dt">color=</span><span class="kw">paste</span>(x,y)), <span class="dt">size=</span><span class="dv">6</span>) <span class="op">+</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="co"># Exchange names</span>
+<span class="st">  </span><span class="kw">geom_label</span>( <span class="dt">x=</span><span class="op">-</span><span class="dv">1</span>, <span class="dt">y=</span><span class="dv">3</span>, <span class="dt">label=</span><span class="st">&quot;Exchange 1&quot;</span>, <span class="dt">color=</span><span class="st">&quot;purple&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_label</span>( <span class="dt">x=</span><span class="op">-</span><span class="dv">1</span>, <span class="dt">y=</span><span class="dv">1</span>, <span class="dt">label=</span><span class="st">&quot;Exchange 2&quot;</span>, <span class="dt">color=</span><span class="st">&quot;#69b3a2&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="co"># Arrows: up right / bottom left / bottom right / up left</span>
+<span class="st">  </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">alpha=</span>arrow1), <span class="dt">x=</span><span class="fl">1.8</span>, <span class="dt">xend=</span><span class="fl">3.2</span>, <span class="dt">y=</span><span class="dv">3</span>, <span class="dt">yend=</span><span class="dv">3</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">arrow =</span> <span class="kw">arrow</span>(<span class="dt">length =</span> <span class="kw">unit</span>(<span class="fl">0.5</span>, <span class="st">&quot;cm&quot;</span>))) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">alpha=</span>arrow2), <span class="dt">x=</span><span class="fl">3.2</span>, <span class="dt">xend=</span><span class="fl">1.8</span>, <span class="dt">y=</span><span class="dv">1</span>, <span class="dt">yend=</span><span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">arrow =</span> <span class="kw">arrow</span>(<span class="dt">length =</span> <span class="kw">unit</span>(<span class="fl">0.5</span>, <span class="st">&quot;cm&quot;</span>))) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">alpha=</span>arrow3), <span class="dt">x=</span><span class="fl">1.8</span>, <span class="dt">xend=</span><span class="fl">3.2</span>, <span class="dt">y=</span><span class="dv">1</span>, <span class="dt">yend=</span><span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">arrow =</span> <span class="kw">arrow</span>(<span class="dt">length =</span> <span class="kw">unit</span>(<span class="fl">0.5</span>, <span class="st">&quot;cm&quot;</span>))) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">alpha=</span>arrow4), <span class="dt">x=</span><span class="fl">3.2</span>, <span class="dt">xend=</span><span class="fl">1.8</span>, <span class="dt">y=</span><span class="dv">3</span>, <span class="dt">yend=</span><span class="dv">3</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">arrow =</span> <span class="kw">arrow</span>(<span class="dt">length =</span> <span class="kw">unit</span>(<span class="fl">0.5</span>, <span class="st">&quot;cm&quot;</span>))) <span class="op">+</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="co"># control alpha</span>
+<span class="st">  </span><span class="kw">scale_alpha_continuous</span>(<span class="dt">range=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="op">+</span>
+<span class="st">   </span>
+<span class="st">  </span><span class="co"># Barplot money (y=ax + b avec a=(yb-ya)/(xb-xa) et b=y-ax at a given point)</span>
+<span class="st">  </span><span class="kw">geom_segment</span>(<span class="dt">x=</span><span class="dv">1</span>, <span class="dt">xend=</span><span class="dv">1</span>, <span class="dt">y=</span><span class="op">-</span><span class="dv">1</span>, <span class="kw">aes</span>(<span class="dt">yend=</span>(<span class="dv">0</span><span class="op">-</span>(<span class="op">-</span><span class="fl">0.8</span>)<span class="op">/</span>(<span class="dv">500</span><span class="op">-</span><span class="dv">200</span>))<span class="op">*</span>tot<span class="op">-</span><span class="fl">1.33</span>), <span class="dt">color=</span><span class="st">&quot;yellow&quot;</span>, <span class="dt">size=</span><span class="dv">22</span>, <span class="dt">alpha=</span><span class="fl">0.7</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_segment</span>(<span class="dt">x=</span><span class="dv">4</span>, <span class="dt">xend=</span><span class="dv">4</span>, <span class="dt">y=</span><span class="op">-</span><span class="dv">1</span>, <span class="kw">aes</span>(<span class="dt">yend=</span>(<span class="dv">0</span><span class="op">-</span>(<span class="op">-</span><span class="fl">0.8</span>)<span class="op">/</span>(<span class="dv">500</span><span class="op">-</span><span class="dv">200</span>))<span class="op">*</span>tot_crypto<span class="op">-</span><span class="fl">1.33</span>), <span class="dt">color=</span><span class="st">&quot;yellow&quot;</span>, <span class="dt">size=</span><span class="dv">22</span>, <span class="dt">alpha=</span><span class="fl">0.7</span>) <span class="op">+</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="co"># Total</span>
+<span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">x=</span><span class="dv">1</span>, <span class="dt">y=</span><span class="op">-</span>.<span class="dv">5</span>, <span class="dt">label=</span><span class="st">&quot;Total Euro&quot;</span>, <span class="dt">color=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">x=</span><span class="dv">4</span>, <span class="dt">y=</span><span class="op">-</span>.<span class="dv">5</span>, <span class="dt">label=</span><span class="st">&quot;Total Crypto&quot;</span>, <span class="dt">color=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">x=</span><span class="dv">1</span>, <span class="dt">y=</span><span class="op">-</span>.<span class="dv">8</span>, <span class="kw">aes</span>(<span class="dt">label=</span><span class="kw">round</span>(tot,<span class="dv">0</span>)), <span class="dt">color=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">x=</span><span class="dv">4</span>, <span class="dt">y=</span><span class="op">-</span>.<span class="dv">8</span>, <span class="kw">aes</span>(<span class="dt">label=</span><span class="kw">round</span>(tot_crypto,<span class="dv">0</span>)), <span class="dt">color=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="co"># Money</span>
+<span class="st">  </span><span class="kw">geom_label</span>( <span class="dt">x=</span><span class="dv">1</span>, <span class="dt">y=</span><span class="dv">4</span>, <span class="dt">label=</span><span class="st">&quot;Euro&quot;</span>, <span class="dt">color=</span><span class="st">&quot;black&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_label</span>( <span class="dt">x=</span><span class="dv">4</span>, <span class="dt">y=</span><span class="dv">4</span>, <span class="dt">label=</span><span class="st">&quot;Crypto&quot;</span>, <span class="dt">color=</span><span class="st">&quot;black&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
+<span class="st">  </span>
+
+<span class="st">  </span><span class="co"># Limits</span>
+<span class="st">  </span><span class="kw">xlim</span>(<span class="op">-</span><span class="dv">2</span>,<span class="dv">5</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">4</span>)
+
+<span class="kw">gganimate</span>(p, <span class="dt">interval =</span> .<span class="dv">2</span>, <span class="dt">title_frame =</span> F, <span class="dt">filename=</span><span class="st">&quot;IMG/arbitrage.gif&quot;</span>)</code></pre></div>
+<br><br>
+<center>
+<img src="IMG/arbitrage.gif" alt="img" width="600" height="700">
+</center>
+<p><br><br></p>
+<h1 id="limitation">Limitation</h1>
+<hr />
+<p>Of course the naive example described above encouters several limit in real life. Here is a list of them:</p>
+<ul>
+<li><code>Price differences are rare</code>: you can read the dedicated page where I quantified these differences</li>
+<li><code>Transaction have fees</code>: each time you buy, sell or transfer crypto, fees apply. In most of the exchanges there is a 0.25% fee to buy and sell</li>
+<li><code>Prices evolve quickly</code>: buy the time you discovered a price discrepancy, prices are already different. Doing arbitrage without an automatic bot is impossible.</li>
+<li><code>Crypto transfer takes time</code>: you can buy and sell crypto instantly, however it takes time to send it to another exchange or to/from your bank account</li>
+<li><code>Asymmetry</code>: if it is always the same exchange that is more expensive, all your money will ends up in it. You won’t be able to do any new transaction until you rebalance funds.</li>
+<li><code>Price volatility</code>: let’s say you have a efficient arbitrage algorithm that makes 1% a day. If the crypto price drops down when you have some, your loss will probably higher than your gains.</li>
+</ul>
+<h1 id="the-plan">The plan</h1>
+<hr />
+<p>Most of the limitations above do not have any workaround. However it is possible to change a bit the arbitrage strategy to avoid transfering funds from one exchange to another. Here is how it works:</p>
+<ul>
+<li><em>step1</em> - s</li>
+<li><em>step2</em> - s</li>
+<li><em>step3</em> - s</li>
+<li><em>step4</em> - s</li>
+<li><em>Again</em></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
+<span class="kw">library</span>(gganimate)
+<span class="kw">library</span>(tweenr)
+
+<span class="co"># Initial data</span>
+init &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+  <span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">4</span>),
+  <span class="dt">y =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">1</span>),
+  <span class="dt">value =</span> <span class="kw">rep</span>(<span class="dv">100</span>, <span class="dv">4</span>),
+  <span class="dt">tot =</span> <span class="kw">rep</span>(<span class="dv">200</span>,<span class="dv">4</span>),
+  <span class="dt">tot_crypto =</span> <span class="kw">rep</span>(<span class="dv">200</span>,<span class="dv">4</span>),
+  <span class="dt">arrow1 =</span> <span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">4</span>),
+  <span class="dt">arrow2 =</span> <span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">4</span>),
+  <span class="dt">arrow3 =</span> <span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">4</span>),
+  <span class="dt">arrow4 =</span> <span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">4</span>)
+)
+
+<span class="co"># A function to trade data</span>
+trade1 &lt;-<span class="st"> </span><span class="cf">function</span>(don){
+  totrade=<span class="dv">50</span>
+  gain=<span class="fl">1.8</span>
+  don<span class="op">$</span>value[<span class="dv">1</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>totrade
+  don<span class="op">$</span>value[<span class="dv">2</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>totrade
+  don<span class="op">$</span>tot &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">3</span>]
+  don<span class="op">$</span>tot_crypto &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">4</span>]
+  don<span class="op">$</span>arrow1 &lt;-<span class="st"> </span><span class="dv">1</span>
+  don<span class="op">$</span>arrow2 &lt;-<span class="st"> </span><span class="dv">0</span>
+  don<span class="op">$</span>arrow3 &lt;-<span class="st"> </span><span class="dv">0</span>
+  don<span class="op">$</span>arrow4 &lt;-<span class="st"> </span><span class="dv">0</span>
+  <span class="kw">return</span>(don)
+}
+trade1bis &lt;-<span class="st"> </span><span class="cf">function</span>(don){
+  totrade=<span class="dv">50</span>
+  gain=<span class="fl">1.8</span>
+  don<span class="op">$</span>value[<span class="dv">3</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">3</span>] <span class="op">+</span><span class="st"> </span>totrade<span class="op">*</span>gain 
+  don<span class="op">$</span>value[<span class="dv">4</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">4</span>] <span class="op">-</span><span class="st"> </span>totrade
+  don<span class="op">$</span>tot &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">3</span>]
+  don<span class="op">$</span>tot_crypto &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">4</span>]
+  don<span class="op">$</span>arrow1 &lt;-<span class="st"> </span><span class="dv">0</span>
+  don<span class="op">$</span>arrow2 &lt;-<span class="st"> </span><span class="dv">1</span>
+  don<span class="op">$</span>arrow3 &lt;-<span class="st"> </span><span class="dv">0</span>
+  don<span class="op">$</span>arrow4 &lt;-<span class="st"> </span><span class="dv">0</span>
+  <span class="kw">return</span>(don)
+}
+trade2 &lt;-<span class="st"> </span><span class="cf">function</span>(don){
+  totrade=<span class="dv">50</span>
+  gain=<span class="fl">1.8</span>
+  don<span class="op">$</span>value[<span class="dv">3</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">3</span>] <span class="op">-</span><span class="st"> </span>totrade
+  don<span class="op">$</span>value[<span class="dv">4</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">4</span>] <span class="op">+</span><span class="st"> </span>totrade
+  don<span class="op">$</span>tot &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">3</span>]
+  don<span class="op">$</span>tot_crypto &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">4</span>]
+  don<span class="op">$</span>arrow1 &lt;-<span class="st"> </span><span class="dv">0</span>
+  don<span class="op">$</span>arrow2 &lt;-<span class="st"> </span><span class="dv">0</span>
+  don<span class="op">$</span>arrow3 &lt;-<span class="st"> </span><span class="dv">1</span>
+  don<span class="op">$</span>arrow4 &lt;-<span class="st"> </span><span class="dv">0</span>
+  <span class="kw">return</span>(don)
+}
+trade2bis &lt;-<span class="st"> </span><span class="cf">function</span>(don){
+  totrade=<span class="dv">50</span>
+  gain=<span class="fl">1.8</span>
+  don<span class="op">$</span>value[<span class="dv">1</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>totrade<span class="op">*</span>gain
+  don<span class="op">$</span>value[<span class="dv">2</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>totrade
+  don<span class="op">$</span>tot &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">3</span>]
+  don<span class="op">$</span>tot_crypto &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">4</span>]
+  don<span class="op">$</span>arrow1 &lt;-<span class="st"> </span><span class="dv">0</span>
+  don<span class="op">$</span>arrow2 &lt;-<span class="st"> </span><span class="dv">0</span>
+  don<span class="op">$</span>arrow3 &lt;-<span class="st"> </span><span class="dv">0</span>
+  don<span class="op">$</span>arrow4 &lt;-<span class="st"> </span><span class="dv">1</span>
+  <span class="kw">return</span>(don)
+}
+
+
+<span class="co"># Loop to do several transaction</span>
+mylist &lt;-<span class="st"> </span><span class="kw">list</span>(init, init, init)
+tmp &lt;-<span class="st"> </span>init
+num &lt;-<span class="st"> </span><span class="dv">1</span>
+<span class="co"># i is the number of cycle</span>
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span>){
+  <span class="co">#step1: </span>
+  num &lt;-<span class="st"> </span>num <span class="op">+</span><span class="st"> </span><span class="dv">1</span> ; tmp &lt;-<span class="st"> </span><span class="kw">trade1</span>(tmp) ; mylist[[num]] &lt;-<span class="st"> </span>tmp
+  
+  <span class="co">#step2</span>
+  num &lt;-<span class="st"> </span>num <span class="op">+</span><span class="st"> </span><span class="dv">1</span> ; tmp &lt;-<span class="st"> </span><span class="kw">trade1bis</span>(tmp) ; mylist[[num]] &lt;-<span class="st"> </span>tmp
+  
+  <span class="co">#step3</span>
+  num &lt;-<span class="st"> </span>num <span class="op">+</span><span class="st"> </span><span class="dv">1</span> ; tmp &lt;-<span class="st"> </span><span class="kw">trade2</span>(tmp) ;  mylist[[num]] &lt;-<span class="st"> </span>tmp
+  
+  <span class="co">#step4</span>
+  num &lt;-<span class="st"> </span>num <span class="op">+</span><span class="st"> </span><span class="dv">1</span> ; tmp &lt;-<span class="st"> </span><span class="kw">trade2bis</span>(tmp) ; mylist[[num]] &lt;-<span class="st"> </span>tmp
+  }
+mylist
+
+<span class="co"># Use tweenR</span>
+tf &lt;-<span class="st"> </span><span class="kw">tween_states</span>(mylist, <span class="dt">tweenlength =</span> <span class="fl">0.01</span>, <span class="dt">statelength =</span> <span class="fl">0.1</span>, <span class="dt">ease =</span> <span class="kw">c</span>(<span class="st">&#39;cubic-in-out&#39;</span>), <span class="dt">nframes =</span> <span class="dv">100</span>)
+tf
+
+
+<span class="co"># Animation</span>
+p &lt;-<span class="st"> </span>tf   <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y, <span class="dt">size=</span>value, <span class="dt">frame=</span>.frame)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_void</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>( <span class="kw">aes</span>(<span class="dt">color=</span><span class="kw">paste</span>(x,y))) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;#69b3a2&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;#69b3a2&quot;</span>, <span class="st">&quot;purple&quot;</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_size_continuous</span>(<span class="dt">range=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">30</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>) <span class="op">+</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="co"># Quantity of money</span>
+<span class="st">  </span><span class="kw">geom_text</span>( <span class="kw">aes</span>(<span class="dt">label=</span><span class="kw">round</span>(value,<span class="dv">0</span>), <span class="dt">x=</span>x, <span class="dt">y=</span>y<span class="op">-</span><span class="fl">0.5</span>, <span class="dt">color=</span><span class="kw">paste</span>(x,y)), <span class="dt">size=</span><span class="dv">6</span>) <span class="op">+</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="co"># Exchange names</span>
+<span class="st">  </span><span class="kw">geom_label</span>( <span class="dt">x=</span><span class="op">-</span><span class="dv">1</span>, <span class="dt">y=</span><span class="dv">3</span>, <span class="dt">label=</span><span class="st">&quot;Exchange 1&quot;</span>, <span class="dt">color=</span><span class="st">&quot;purple&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_label</span>( <span class="dt">x=</span><span class="op">-</span><span class="dv">1</span>, <span class="dt">y=</span><span class="dv">1</span>, <span class="dt">label=</span><span class="st">&quot;Exchange 2&quot;</span>, <span class="dt">color=</span><span class="st">&quot;#69b3a2&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="co"># Arrows: up right / bottom left / bottom right / up left</span>
+<span class="st">  </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">alpha=</span>arrow1), <span class="dt">x=</span><span class="fl">1.8</span>, <span class="dt">xend=</span><span class="fl">3.2</span>, <span class="dt">y=</span><span class="dv">3</span>, <span class="dt">yend=</span><span class="dv">3</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">arrow =</span> <span class="kw">arrow</span>(<span class="dt">length =</span> <span class="kw">unit</span>(<span class="fl">0.5</span>, <span class="st">&quot;cm&quot;</span>))) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">alpha=</span>arrow2), <span class="dt">x=</span><span class="fl">3.2</span>, <span class="dt">xend=</span><span class="fl">1.8</span>, <span class="dt">y=</span><span class="dv">1</span>, <span class="dt">yend=</span><span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">arrow =</span> <span class="kw">arrow</span>(<span class="dt">length =</span> <span class="kw">unit</span>(<span class="fl">0.5</span>, <span class="st">&quot;cm&quot;</span>))) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">alpha=</span>arrow3), <span class="dt">x=</span><span class="fl">1.8</span>, <span class="dt">xend=</span><span class="fl">3.2</span>, <span class="dt">y=</span><span class="dv">1</span>, <span class="dt">yend=</span><span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">arrow =</span> <span class="kw">arrow</span>(<span class="dt">length =</span> <span class="kw">unit</span>(<span class="fl">0.5</span>, <span class="st">&quot;cm&quot;</span>))) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">alpha=</span>arrow4), <span class="dt">x=</span><span class="fl">3.2</span>, <span class="dt">xend=</span><span class="fl">1.8</span>, <span class="dt">y=</span><span class="dv">3</span>, <span class="dt">yend=</span><span class="dv">3</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">arrow =</span> <span class="kw">arrow</span>(<span class="dt">length =</span> <span class="kw">unit</span>(<span class="fl">0.5</span>, <span class="st">&quot;cm&quot;</span>))) <span class="op">+</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="co"># control alpha</span>
+<span class="st">  </span><span class="kw">scale_alpha_continuous</span>(<span class="dt">range=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="op">+</span>
+<span class="st">   </span>
+<span class="st">  </span><span class="co"># Barplot money (y=ax + b avec a=(yb-ya)/(xb-xa) et b=y-ax at a given point)</span>
+<span class="st">  </span><span class="kw">geom_segment</span>(<span class="dt">x=</span><span class="dv">1</span>, <span class="dt">xend=</span><span class="dv">1</span>, <span class="dt">y=</span><span class="op">-</span><span class="dv">1</span>, <span class="kw">aes</span>(<span class="dt">yend=</span>(<span class="dv">0</span><span class="op">-</span>(<span class="op">-</span><span class="fl">0.8</span>)<span class="op">/</span>(<span class="dv">500</span><span class="op">-</span><span class="dv">200</span>))<span class="op">*</span>tot<span class="op">-</span><span class="fl">1.33</span>), <span class="dt">color=</span><span class="st">&quot;yellow&quot;</span>, <span class="dt">size=</span><span class="dv">22</span>, <span class="dt">alpha=</span><span class="fl">0.7</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_segment</span>(<span class="dt">x=</span><span class="dv">4</span>, <span class="dt">xend=</span><span class="dv">4</span>, <span class="dt">y=</span><span class="op">-</span><span class="dv">1</span>, <span class="kw">aes</span>(<span class="dt">yend=</span>(<span class="dv">0</span><span class="op">-</span>(<span class="op">-</span><span class="fl">0.8</span>)<span class="op">/</span>(<span class="dv">500</span><span class="op">-</span><span class="dv">200</span>))<span class="op">*</span>tot_crypto<span class="op">-</span><span class="fl">1.33</span>), <span class="dt">color=</span><span class="st">&quot;yellow&quot;</span>, <span class="dt">size=</span><span class="dv">22</span>, <span class="dt">alpha=</span><span class="fl">0.7</span>) <span class="op">+</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="co"># Total</span>
+<span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">x=</span><span class="dv">1</span>, <span class="dt">y=</span><span class="op">-</span>.<span class="dv">5</span>, <span class="dt">label=</span><span class="st">&quot;Total Euro&quot;</span>, <span class="dt">color=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">x=</span><span class="dv">4</span>, <span class="dt">y=</span><span class="op">-</span>.<span class="dv">5</span>, <span class="dt">label=</span><span class="st">&quot;Total Crypto&quot;</span>, <span class="dt">color=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">x=</span><span class="dv">1</span>, <span class="dt">y=</span><span class="op">-</span>.<span class="dv">8</span>, <span class="kw">aes</span>(<span class="dt">label=</span><span class="kw">round</span>(tot,<span class="dv">0</span>)), <span class="dt">color=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">x=</span><span class="dv">4</span>, <span class="dt">y=</span><span class="op">-</span>.<span class="dv">8</span>, <span class="kw">aes</span>(<span class="dt">label=</span><span class="kw">round</span>(tot_crypto,<span class="dv">0</span>)), <span class="dt">color=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="co"># Money</span>
+<span class="st">  </span><span class="kw">geom_label</span>( <span class="dt">x=</span><span class="dv">1</span>, <span class="dt">y=</span><span class="dv">4</span>, <span class="dt">label=</span><span class="st">&quot;Euro&quot;</span>, <span class="dt">color=</span><span class="st">&quot;black&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_label</span>( <span class="dt">x=</span><span class="dv">4</span>, <span class="dt">y=</span><span class="dv">4</span>, <span class="dt">label=</span><span class="st">&quot;Crypto&quot;</span>, <span class="dt">color=</span><span class="st">&quot;black&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
+<span class="st">  </span>
+
+<span class="st">  </span><span class="co"># Limits</span>
+<span class="st">  </span><span class="kw">xlim</span>(<span class="op">-</span><span class="dv">2</span>,<span class="dv">5</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">4</span>)
+
+<span class="kw">gganimate</span>(p, <span class="dt">interval =</span> .<span class="dv">2</span>, <span class="dt">title_frame =</span> F, <span class="dt">filename=</span><span class="st">&quot;IMG/arbitrage.gif&quot;</span>)</code></pre></div>
+<br><br>
+<center>
+<img src="IMG/arbitrage.gif" alt="img" width="600" height="700">
+</center>
+<p><br><br></p>
+<h1 id="next-step">Next step</h1>
+<hr />
+<p>The next step simulates an arbitrage algorithm on a 2 weeks period to assess the potential gain.</p>
+<br>
+<center>
+<button class="btn btn-primary" href>
+Quantifying differences&lt;
+</button>
+<button class="btn btn-primary" href>
+Simulating arbitrage&gt;
+</button>
+</center>
+<p><br><br></p>
+</div>
+
+
+<!-- Insert code for DISQUS comments  -->
+
+      <div class="container">
+        <div id="disqus_thread"></div>
+        <script>
+
+        var disqus_config = function () {
+        this.page.url = https://holtzy.github.io/Cryp-To/content/definition.html;  
+        this.page.identifier = definition; 
+        };
+
+        (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://data-to-viz.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+        })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      </div>
+  <!-- Insert code for DISQUS comments  -->
+    
+
+
+&nbsp;
+<hr />
+<p style="text-align: center;">A work by <a href="https://github.com/holtzy/">Yan Holtz</a> for <a href="https://data-to-viz.com">data-to-viz.com</a></p>
+
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Add font awesome icons -->
+<p style="text-align: center;">
+	<a href="https://twitter.com/r_graph_gallery?lang=en" class="fa fa-twitter"></a>
+	<a href="https://www.linkedin.com/in/yan-holtz-2477534a/" class="fa fa-linkedin"></a>
+	<a href="https://github.com/holtzy/" class="fa fa-github"></a>
+</p>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-79254642-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-79254642-3');
+</script>
+
+
+&nbsp;
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+
+</body>
+</html>

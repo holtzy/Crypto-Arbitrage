@@ -29,7 +29,7 @@ output:
 
 #Data
 ***
-Prices of 5 cryto currencies have been harvested for 2 weeks on 5 different exchanges as described [here](). About 800,000 data points are available, allowing to compare prices between exchanges at a high resolution.
+Prices of `5 cryto currencies` have been harvested for `2 weeks` on `5 different exchanges` every `few seconds` as described [here](). About `800,000 data points` are available, allowing to compare prices between exchanges at a high resolution.
 
 <br>
 
@@ -40,6 +40,8 @@ library(tidyverse)
 library(DT)
 library(plotly)
 library(hrbrthemes)
+library(viridis)
+library(lubridate)
 
 # Load result
 load("../DATA/public_ticker_harvest.Rdata")
@@ -51,12 +53,14 @@ p <- Ticker %>%
   filter(symbol=="ETHEUR") %>%
   ggplot( aes(x=time, y=last, color=platform, group=platform)) +
     geom_line() +
+    scale_color_viridis(discrete=TRUE, name="") +
+    ylab("Etherum price on the exchange") +
     theme_ipsum()
 ggplotly(p)
 ```
 
 
-*Note*: this graphic is interactive: zoom on a specific area and hover lines for more info.
+*Note*: this graphic is `interactive`: zoom on a specific area and hover lines for more info.
 
 
 
@@ -67,10 +71,14 @@ ggplotly(p)
 
 #Differences {.tabset}
 ***
-Can we try to quantify the difference? At each timestamp, we can calculate the difference between 2 exchanges, in euros and in %. We can then represent this difference. Here is an example with the difference between Bitstamp and Cex.
-```{r show_differences, fig.width=10, fig.height=5, warning=FALSE}
-plot_last_difference <- function(plat1, plat2, currency){
+As you can see on the graphic above, there are `discrepencies` between prices of exchanges. Basically, the price is not exactly the same on Bitstamp and on Cex at a given timestamp. The correlation is very strong tough.
 
+<br>
+
+This is what interest us to perform arbitrage. But can we `quantify` these differences? The following graphic displays the price difference (in %) between Kraken and Bitstamp at each time stamp:
+
+```{r show_differences, fig.width=10, fig.height=5, warning=FALSE}
+get_last_difference <- function(plat1, plat2, currency){
   # First I calculate the differnce of the 'last' price between both exchanges:
   diff <- Ticker %>%
     filter(symbol==currency) %>%
@@ -79,30 +87,65 @@ plot_last_difference <- function(plat1, plat2, currency){
     spread(platform, last) %>%
     mutate(diff=.[[4]] - .[[3]], diff_perc=(.[[4]] - .[[3]]) / .[[4]] *100 ) %>%
     filter(!is.na(diff_perc))
+  return(diff)
+}
   
   # Then I plot the result
-  p <- ggplot(diff, aes(x=time, y=diff_perc, group=symbol, fill=symbol)) +
-      geom_area(fill="#69b3a2") +
-      facet_wrap(~symbol, nrow=5) +
-      theme_ipsum() +
-      theme(legend.position="none")
+plot_last_difference <- function(diff, plat1, plat2){
+  p <-  diff %>%
+        sample_frac(0.1) %>%    
+        ggplot( aes(x=time, y=diff_perc, group=symbol, fill=symbol)) +
+          geom_area(fill="#69b3a2") +
+          facet_wrap(~symbol, nrow=5) +
+          theme_ipsum() +
+          theme(legend.position="none") +
+          ylab(paste0("Difference between ", plat1, "and ", plat2)) +
+          xlab("") +
+          ggtitle("") +
+          ylim(-4,4)
   
   ggplotly(p)
 }
 
-plot_last_difference("Kraken", "Bitstamp", "ETHEUR")
+# Run the function for Kraken and bitstamp
+diff <- get_last_difference("Kraken", "Bitstamp", "ETHEUR")
+plot_last_difference(diff, "Kraken", "Bitstamp")
+
+# Compute a few summary statistics
+lengthPeriod <- max(diff$time) - min(diff$time) 
+numTimeStamp <- nrow(diff)
+numOver1 <- diff %>% filter(diff_perc > 1 ) %>% nrow()
+numUnder1 <- diff %>% filter(diff_perc < -1 ) %>% nrow()
+numTot <- numOver1 + numUnder1
+freqOver1 <- numTot / as.numeric(lengthPeriod) %>% round(0)
+
+
+  
+
 ```
 
-*Note*: it is important that this chart represent the price of the last transaction done. However, note that we buy crypto at the `ask` price, and sell it at the `bid` price. Differences are thus smaller than that in reality.
+The chart aboves represents a period of ``r time_length( lengthPeriod, unit="day")  %>% round(1)` days` where `r numTimeStamp` prices have been recovered. In total, `r numOver1` situations with Bitstamp being at least 1% more expensive than Kraken have been observed, and `r numUnder1` reciprocally. This is a total of `r numTot` times with differences over 1%, which is an average of `r freqOver1` per day.
+
+
+*Important note*: this chart represents the price differences of the `last` transaction done. However, note that we buy crypto at the `ask` price, and sell it at the `bid` price. Differences are thus smaller than that in reality.
 
 
 
 
-#- What we really get {.tabset}
+
+
+
+
+
+#Where is the best deal?
 ***
-It's important . For each time stamp, I can calculate the potential gain taking that into account:
-```{r, fig.width=10, fig.height=8, warning=FALSE}
-# A function that calculates the difference between 2 platforms for every currency at each time stamp
+Now that we know there are a few differences between exchanges, we need to know `what pair of exchange` have the most frequent discrepencies. Moreover, we need to figure out if some `currencies have more discrepencies` than others.
+
+<br>
+The next graphic quantifies the number of differences observed per day (Y axis) for a specific threshold (X axis). Four lines are provided, one per currency that exists in both Kraken and Bitstamp. For instance, it appears that differences over 1% happen about `2OO times a day` for bitcoin, and about 300 times a day for litecoin (XRP) and Bitcoincash. It is also interesting to note that differences over ~1.7% basically never happen.
+
+```{r rela,  warning=FALSE, fig.align="center", fig.width=8}
+# A function that calculates the difference between the ASK and the BID of 2 platforms for every currency at each time stamp
 find_askbid_difference <- function(plat1, plat2){
   
   diff <- Ticker %>% 
@@ -124,26 +167,19 @@ find_askbid_difference <- function(plat1, plat2){
   return(diff)
 }
 
+# A function that plot these differences
 plot_askbid_difference <- function(diff){
-  p <- ggplot(diff, aes(x=time, y=diff_perc, group=symbol, fill=symbol)) +
-        geom_area() +
-        facet_wrap(~symbol, nrow=5) +
-        theme(legend.position="none") 
+  p <-  diff %>%
+          sample_frac(0.1) %>%
+          ggplot(aes(x=time, y=diff_perc, group=symbol, fill=symbol)) +
+            geom_area() +
+            facet_wrap(~symbol, nrow=5) +
+            theme(legend.position="none") +
+            ggtitle("")
     
   ggplotly(p)
 } 
-```
 
-
-
-
-
-
-#Significant differences
-***
-What interest us is the number of time the difference between 2 platforms reaches a threshold that allow to perform arbitrage. Let's try to quantify how many times we reach this threshold for every currency between kraken and bitstamp.
-
-```{r relationship_thres_numDiff, align="center", warning=FALSE}
 # A function that counts the number of significant differences for several threshold
 find_signif_diff <- function(diff){
   nbSignifDiff=data.frame()
@@ -159,27 +195,40 @@ find_signif_diff <- function(diff){
   return(nbSignifDiff)
 }
 
-# A function that plot this number of diff
+# A function that plot this number of diff -> plot it PER DAY
 plot_signif_diff <- function(nbSignifDiff){
-  ggplot(nbSignifDiff, aes(x=thres, y=nb_over_thres, group=symbol, color=symbol)) +
-    geom_line() +
-    ylab("Number of cases in x days") +
-    xlab("Difference threshold (%)")
+  p <- nbSignifDiff %>%
+    mutate(nb_over_thres = nb_over_thres / time_length(lengthPeriod, unit="day")) %>%
+    mutate(mytext=paste0("Currency: ", gsub("EUR", "",symbol), "\n", round(nb_over_thres,0)," differences per day observed over ",thres, " %")) %>%
+    ggplot( aes(x=thres, y=nb_over_thres, group=symbol, color=symbol, text=mytext)) +
+      geom_line() +
+      ylab("Number of significant differences per day") +
+      xlab("Difference threshold (%)") +
+      theme_ipsum() +
+      scale_color_viridis(discrete=TRUE, name="")
+    ggplotly(p, tooltip="text")
 }
 
 # Apply that to a first example:
-diff <- find_askbid_difference("Cex", "Bitstamp")
+diff <- find_askbid_difference("Kraken", "Bitstamp")
 nbSignifDiff <- find_signif_diff(diff)
-plot_signif_diff(nbSignifDiff)
+p <- plot_signif_diff(nbSignifDiff)
+
 ```
 
+<center>
+```{r relationship_thres_numDiff,  warning=FALSE, fig.align="center", fig.width=8, show=FALSE}
+p
+```
+</center>
 
 
 
 
-Now, let's make this calculation for every pair of plateform.
-```{r all_over_thres, align="center", warning=FALSE, fig.width=10}
 
+It is possible to build exactly the same graphic for each pair of exchange, giving the following graphic. Note that some currencies are not available on every exchange, that's why most of the pair below give results only for bitcoin that is the most widely used currency.
+
+```{r all_over_thres, align="center", warning=FALSE, fig.width=10, fig.height=6}
 # find all the pairs of platform
 list_platforms <- Ticker$platform %>% unique() %>% as.character()
 list_pairs <- combn(list_platforms, 2)
@@ -193,27 +242,61 @@ for(i in c(1:ncol(list_pairs))){
   bilan <- rbind(bilan, nbSignifDiff)
 }
 
-#
-ggplot(bilan, aes(x=thres, y=nb_over_thres, group=symbol, color=symbol)) +
-  geom_line() +
-  ylab("Number of cases in x days") +
-  xlab("Difference threshold (%)") +
-  facet_wrap(~pair, ncol=5)
+# plot it
+p <- bilan %>%
+  mutate(nb_over_thres = nb_over_thres / time_length(lengthPeriod, unit="day")) %>%
+  mutate(mytext=paste0("Currency: ", gsub("EUR", "",symbol), "\n", nb_over_thres," differences observed over ",thres, " %")) %>%
+  ggplot( aes(x=thres, y=nb_over_thres, group=symbol, color=symbol)) +
+      geom_line() +
+      ylab("Number of significant differences per day") +
+      xlab("Difference threshold (%)") +
+      theme_ipsum() +
+      scale_color_viridis(discrete=TRUE, name="") +
+      facet_wrap(~pair, ncol=5) +
+      theme(
+        panel.spacing = unit(0.3, "lines"),
+        strip.text.x = element_text(size = 8)
+      )   
+ggplotly(p, tooltip="text")
+  
+ 
 ```
+A few observation are of interest:
 
+- The number of significant differences between platform is quite uniform from a currency to another. However for strong differences (~2%) Bitcoin cash and litecoin seem to be of interest.
+- Discrepancies are very different from one pair of exchange to another:
 
-#- Conclusion
+    - Kraken, Coinbase and Bitstamp look to offer very close prices.
+    - Cex and Bitstamp appear to be very different compared to others.
+    
+
+#Conclusion
 ***
 
-- Based on these data, it looks like our best arbitrage opportunity takes place between Cex and Bitstamp.
-- However, since Cex is more expensive than bitstamp on average, it is gonna to keep crypto on Cex and Euro on bitstamp
-- BCH is the best option if we want to perform few transaction with high gain. XRP looks better for more transacation
+- Based on these data, it appears that discrepancies exist between exchange prices.
+- The price differences are slight, almost never reaching 2%.
+- Arbitrage opportunities thus exist, but with low margin available.
+- Best arbitrage opportunity takes place between Cex and Bitstamp.
+- Bitcoinc cash and Litecoin seem to be good targets to maximize the number of transaction with high margin.
+
+
+
+
+
+
+#Next step
+***
+The next step is to understand what arbitrage is in depth, and study its potential limitations.
+
+<br>
+<center>
+<button class="btn btn-primary" href="">< How data was harvested</button>
+<button class="btn btn-primary" href="">What is arbitrage ></button>
+</center>
+<br><br>
+
+
 </div>
-
-
-
-
-
 
 
 

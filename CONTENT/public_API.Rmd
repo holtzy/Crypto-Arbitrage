@@ -152,7 +152,15 @@ Ticker %>%
     )
 ```
 
-Next step: [analysing this dataset]().
+#Next step
+***
+The next step take this dataset and quantifies the differences between platform. If differences are big enough, we have a chance to perform arbitrage.
+
+<br>
+<center>
+<button class="btn btn-primary" href="">Quantifying differences</button>
+</center>
+<br><br>
 
 
 </div>
