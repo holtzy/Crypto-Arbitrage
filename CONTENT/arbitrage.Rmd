@@ -170,7 +170,13 @@ Basically, the prices started around 725 euros to reach 800 euros on the 20th of
 At each time stamp, the arbitrage bot computed the price difference between exchanges in %. These differences are represented on the graphic below:
 
 - the <span class="red">red line</span> represents the price difference between <span class="red">buying at Cex</span> and selling at Bitstamp. 
-- the <span class="blue"> blue line</span> is the opposite: <span class="blue">buying at Bitstamp</span> and selling at Cex. 
+- the <span class="blue"> blue line</span> is the opposite: <span class="blue">buying at Bitstamp</span> and selling at Cex.     
+
+
+
+
+
+
 
 
 ```{r, fig.width=10, fig.height=4, warning=FALSE, message=FALSE}
@@ -179,7 +185,7 @@ col_red <- rgb(255/255, 0/255, 0/255, 0.4)
 col_blue <- rgb(0/255, 0/255, 255/255, 0.4)
 
 # Plot price differences and arbitrage occurence
-bilan %>%
+p <-bilan %>%
   mutate(vline_transac=ifelse(transaction=="yes" & rebalance=="no", time, NA)) %>%
   mutate(vline_rebalance=ifelse(transaction=="yes" & rebalance=="yes", time, NA)) %>%
   mutate(vline_transac=as.POSIXct(vline_transac, origin="1970-01-01")) %>%
@@ -188,7 +194,7 @@ bilan %>%
   select(time, diff_side1, diff_side2, transaction, vline_transac, vline_rebalance) %>%
   gather( key=side, value=value, -c(1,4,5,6,7)) %>%
   ggplot(aes(x=time, y=value, color=side)) +
-    geom_abline(slope=0, intercept=0, color="grey") +
+    #geom_abline(slope=0, intercept=0, color="grey") +
     geom_abline(slope=0, intercept=unique(bilan$thres), color="grey", linetype="dashed") +
     geom_vline( aes(xintercept=vline_transac), color="orange") +
     geom_vline( aes(xintercept=vline_rebalance), color="pink") +
@@ -198,6 +204,10 @@ bilan %>%
     theme_ipsum() +
     ylim(-7,7) +
     theme(legend.position="none") 
+
+p
+ggsave(p, file="IMG/bot_description_step3.png", width=7, height=4)
+
 ```
 
 Since the Cex price is often over the Bitstamp price, it is often better to buy at Bitstamp and sell a Cex (the <span class="blue">blue line</span>).
@@ -271,16 +281,27 @@ So basically, when the bot find that <span class="cex">Cex.io</span> is signific
 #Did it make money?
 ***
 
+<aside style="float: right; margin-right: -170px; width: 150px; color: grey;">
+
+This content will appear in the gutter of the article.
+</aside>
+
 At each transaction the bot is supposed to make a tiny margin, thus the total quantity of euro is suppose to slowly increase. Indeed, the process started with `r start_euro` and finished with `r end_euro`, what is a gain of `r gain_euro`.
+
+
+
 
 ```{r, fig.width=10, fig.height=3, warning=FALSE, message=FALSE}
 # Zoom on the total quantity of euro I have
-bilan %>%
+p <- bilan %>%
   ggplot(aes(x=time, y=total_euro)) +
     geom_line(color="black") +
     theme_ipsum() +
     ylab("Total amount of Euro") +
     xlab("")
+
+p
+ggsave(p, file="IMG/Euro_quantity.png", width=7, height=4)
 
 #p2 <- bilan %>%
 #  ggplot(aes(x=time, y=total_crypto)) +
@@ -320,17 +341,6 @@ Even if this work is a good proof of concept of what crypto arbitrage is, it is 
 
 
 
-
-#Next step
-***
-The next step is to understand what arbitrage is in depth, and study its potential limitations.
-
-<br>
-<center>
-<button class="btn btn-primary" href="">< How data was harvested</button>
-<button class="btn btn-primary" href="">What is arbitrage ></button>
-</center>
-<br><br>
 
 
 </div>

@@ -46,23 +46,42 @@ library(lubridate)
 # Load result
 load("../DATA/public_ticker_harvest.Rdata")
 Ticker$last <- as.numeric(Ticker$last)
-Ticker= head(Ticker, 100000)
+#Ticker= head(Ticker, 100000)
 
 # Plot
 p <- Ticker %>%
   filter(symbol=="ETHEUR") %>%
+  filter(last>400) %>%    # delete a weird value
   ggplot( aes(x=time, y=last, color=platform, group=platform)) +
-    geom_line() +
+    geom_line( size=0.3) +
     scale_color_viridis(discrete=TRUE, name="") +
     ylab("Etherum price on the exchange") +
     theme_ipsum()
-ggplotly(p)
+p
+
+# Save the plot for talk
+ggsave(p, file="IMG/etherum_evolution.png", width=7, height=4)
 ```
 
 
-*Note*: this graphic is `interactive`: zoom on a specific area and hover lines for more info.
+There is a very high correlation between exchange prices. But if we zoom on the first 1,000 data points, a few discrepancies appear:
 
+```{r fig.align="center", warning=FALSE, message=FALSE, fig.width=10}
+# Plot
+p <- Ticker %>%
+  filter(symbol=="ETHEUR") %>%
+  filter(last>400) %>%    # delete a weird value
+  head(1000) %>%
+  ggplot( aes(x=time, y=last, color=platform, group=platform)) +
+    geom_line( size=0.8) +
+    scale_color_viridis(discrete=TRUE, name="") +
+    ylab("Etherum price on the exchange") +
+    theme_ipsum()
+p
 
+# Save the plot for talk
+ggsave(p, file="IMG/etherum_evolution_zoom.png", width=7, height=4)
+```
 
 
 
@@ -102,14 +121,17 @@ plot_last_difference <- function(diff, plat1, plat2){
           ylab(paste0("Difference between ", plat1, "and ", plat2)) +
           xlab("") +
           ggtitle("") +
-          ylim(-4,4)
+          ylim(-3,3)
   
-  ggplotly(p)
+  p
 }
 
 # Run the function for Kraken and bitstamp
 diff <- get_last_difference("Kraken", "Bitstamp", "ETHEUR")
-plot_last_difference(diff, "Kraken", "Bitstamp")
+p <- plot_last_difference(diff, "Kraken", "Bitstamp")
+p
+ggsave(p, file="IMG/price_diff_eth_kraken_bitstamp.png", width=7, height=4)
+
 
 # Compute a few summary statistics
 lengthPeriod <- max(diff$time) - min(diff$time) 
@@ -228,7 +250,7 @@ p
 
 It is possible to build exactly the same graphic for each pair of exchange, giving the following graphic. Note that some currencies are not available on every exchange, that's why most of the pair below give results only for bitcoin that is the most widely used currency.
 
-```{r all_over_thres, align="center", warning=FALSE, fig.width=10, fig.height=6}
+```{r all_over_thres, align="center", warning=FALSE, fig.width=10, fig.height=6, cache=TRUE}
 # find all the pairs of platform
 list_platforms <- Ticker$platform %>% unique() %>% as.character()
 list_pairs <- combn(list_platforms, 2)
@@ -259,8 +281,10 @@ p <- bilan %>%
       )   
 ggplotly(p, tooltip="text")
   
- 
+#ggsave(p, file="IMG/difference_counts_step3.png", width=7, height=4)
+
 ```
+
 A few observation are of interest:
 
 - The number of significant differences between platform is quite uniform from a currency to another. However for strong differences (~2%) Bitcoin cash and litecoin seem to be of interest.
@@ -268,6 +292,9 @@ A few observation are of interest:
 
     - Kraken, Coinbase and Bitstamp look to offer very close prices.
     - Cex and Bitstamp appear to be very different compared to others.
+    
+    
+    
     
 
 #Conclusion
