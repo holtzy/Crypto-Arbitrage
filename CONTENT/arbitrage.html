@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+
+
+
+
+<style>
+.myheader {
+  background-image: url("https://github.com/holtzy/Cryp-To/raw/master/img/area_bitcoin_fadded_long.png");
+    min-height: 400px; 
+    background-size: 10% 100%; !important
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  
+  
+    height: 10%; !important
+    width: 100% !important;
+  }
+.mytitle{
+  text-transform: uppercase;
+  font-family: 'Montserrat';
+  font-size: 200%;
+  font-weight: 500;
+  letter-spacing: 4px;
+  }   
+</style>
+
+<div class="myheader" style="text-align: center;">
+  <br>
+  <div style="text-align: left; margin-left: 5%"><a href="https://holtzy.github.io/Cryp-To/">HOME</a></div>
+  <br><br>
+  <br><br>
+  <p class="mytitle">Running the crypto arbitrage bot.</p>
+  <p style="color: grey; font-size: 16px;">Did it work and why?</p>
+  <br>
+  <br>
+  <br><br>
+</div>
+
+
+
+
+
+<title></title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/navigation-1.1/codefolding.js"></script>
+<link href="libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+div.sourceCode {
+  overflow-x: visible;
+}
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Show Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+
+<div class="mycontent">
+<h1 id="arbitrage-bot-description.">Arbitrage bot description.</h1>
+<hr />
+<p>Previous parts of this analysis <a href="">harvested data</a> on crypto prices for 5 exchanges and 5 currencies. It showed that <a href="">price differences exist</a>, offering arbitrage opportunities. It also described the <a href="">behaviour of a bot</a> realizing arbitrage.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Library</span>
+<span class="kw">library</span>(tidyverse)
+<span class="kw">library</span>(DT)
+<span class="kw">library</span>(plotly)
+<span class="kw">library</span>(viridis)
+<span class="kw">library</span>(lubridate)
+<span class="kw">library</span>(hrbrthemes)
+<span class="kw">library</span>(lubridate)
+<span class="kw">library</span>(ggrepel)
+
+<span class="co"># Load result</span>
+<span class="kw">load</span>(<span class="st">&quot;~/Dropbox/CRYPTO/5_ARBITRAGE/BITSTAMP_CEX/arbitrage_bitstamp_cex_BCHEUR_18Jun.Rdata&quot;</span>)
+bilan[,<span class="op">-</span><span class="kw">which</span>(<span class="kw">colnames</span>(bilan)<span class="op">%in%</span><span class="kw">c</span>(<span class="st">&quot;transaction&quot;</span>, <span class="st">&quot;rebalance&quot;</span>))]=<span class="st"> </span><span class="kw">apply</span>( bilan[,<span class="op">-</span><span class="kw">which</span>(<span class="kw">colnames</span>(bilan)<span class="op">%in%</span><span class="kw">c</span>(<span class="st">&quot;transaction&quot;</span>, <span class="st">&quot;rebalance&quot;</span>))], <span class="dv">2</span>, as.numeric ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.tibble</span>()
+bilan<span class="op">$</span>time=<span class="kw">as.POSIXct</span>( bilan<span class="op">$</span>time, <span class="dt">origin=</span><span class="st">&quot;1970-01-01&quot;</span>)
+
+<span class="co"># For each transaction, I calculate if it made me earn money or not.</span>
+bilan<span class="op">$</span>gain=<span class="ot">NA</span>
+bilan<span class="op">$</span>gain[<span class="kw">which</span>(bilan<span class="op">$</span>transaction<span class="op">==</span><span class="st">&quot;yes&quot;</span>)] =<span class="st"> </span>bilan<span class="op">$</span>total_euro[ <span class="kw">which</span>(bilan<span class="op">$</span>transaction<span class="op">==</span><span class="st">&quot;yes&quot;</span>) ] <span class="op">-</span><span class="st"> </span>bilan<span class="op">$</span>total_euro[ <span class="kw">which</span>(bilan<span class="op">$</span>transaction<span class="op">==</span><span class="st">&quot;yes&quot;</span>)<span class="op">-</span><span class="dv">1</span> ]
+
+
+
+<span class="co"># Time period:</span>
+from &lt;-<span class="st"> </span>bilan<span class="op">$</span>time <span class="op">%&gt;%</span><span class="st"> </span>min <span class="op">%&gt;%</span><span class="st"> </span>as.Date
+to &lt;-<span class="st"> </span>bilan<span class="op">$</span>time <span class="op">%&gt;%</span><span class="st"> </span>max <span class="op">%&gt;%</span><span class="st"> </span>as.Date
+lengthPeriod &lt;-<span class="st"> </span>to <span class="op">-</span><span class="st"> </span>from
+
+<span class="co">#Investment</span>
+investment &lt;-<span class="st"> </span>bilan[<span class="dv">1</span>, <span class="st">&quot;total&quot;</span>]
+
+<span class="co"># Number of transaction</span>
+nb_transac &lt;-<span class="st"> </span>bilan <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(transaction<span class="op">==</span><span class="st">&quot;yes&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">nrow</span>()
+
+<span class="co"># Number of time stamp</span>
+nb_timeStamp &lt;-<span class="st"> </span><span class="kw">nrow</span>(bilan)
+
+<span class="co"># Final amount of money I have</span>
+final=bilan<span class="op">$</span>total[<span class="kw">nrow</span>(bilan)]
+
+<span class="co"># What I would have without arbitrage</span>
+final_without =<span class="st"> </span>bilan<span class="op">$</span>total_without_arbitrage[<span class="kw">nrow</span>(bilan)]
+
+<span class="co"># Gain compare to no arbitrage in euro, and in % of investment</span>
+<span class="co"># --&gt; This is what I have to optimize</span>
+diff=final<span class="op">-</span>final_without
+
+<span class="co"># Gain per 24hours?</span>
+length =<span class="st"> </span>bilan<span class="op">$</span>time[<span class="kw">nrow</span>(bilan)] <span class="op">-</span><span class="st"> </span>bilan<span class="op">$</span>time[<span class="dv">1</span>]    <span class="co"># In character</span>
+length =<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">as.duration</span>(length)) <span class="op">/</span><span class="st"> </span><span class="dv">3600</span>     <span class="co"># In hours</span>
+diff_per_day=<span class="dv">24</span><span class="op">*</span>diff<span class="op">/</span><span class="st"> </span>length
+
+<span class="co"># Quantity of EURO</span>
+start_euro =<span class="st"> </span>bilan<span class="op">$</span>total_euro[<span class="dv">1</span>]
+end_euro =<span class="st"> </span>bilan<span class="op">$</span>total_euro[<span class="kw">nrow</span>(bilan)]
+gain_euro =<span class="st"> </span>end_euro <span class="op">-</span><span class="st"> </span>start_euro
+
+<span class="co"># Quantity of CRYPTO</span>
+start_crypto &lt;-<span class="st"> </span>bilan<span class="op">$</span>total_crypto[<span class="dv">1</span>]
+end_crypto &lt;-<span class="st"> </span>bilan<span class="op">$</span>total_crypto[<span class="kw">nrow</span>(bilan)]
+gain_crypto &lt;-<span class="st"> </span>end_crypto <span class="op">-</span><span class="st"> </span>start_crypto
+gain_crypto_in_euro &lt;-<span class="st"> </span>gain_crypto<span class="op">*</span>bilan<span class="op">$</span>last_plat1[<span class="kw">nrow</span>(bilan)]
+
+<span class="co"># Quantity total</span>
+gain_total &lt;-<span class="st"> </span>gain_euro <span class="op">+</span><span class="st"> </span>gain_crypto_in_euro
+gain_total_percent &lt;-<span class="st"> </span>gain_total <span class="op">/</span><span class="st"> </span>investment <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
+gain_total_percent_day &lt;-<span class="st"> </span>gain_total_percent <span class="op">/</span><span class="st"> </span><span class="kw">time_length</span>( lengthPeriod, <span class="dt">unit=</span><span class="st">&quot;day&quot;</span>)
+gain_total_percent_year &lt;-<span class="st"> </span>gain_total_percent_day <span class="op">*</span><span class="st"> </span><span class="dv">365</span></code></pre></div>
+<p>Here is an overview of the bot features:</p>
+<ul>
+<li><em>Currency</em> - Bitcoin Cash (BCH)</li>
+<li><em>Exchanges</em> - Bitstamp and Cex.io</li>
+<li><em>Period</em> - from the 2018-06-17 to the 2018-06-24 (7 days)</li>
+<li><em>Trade amount</em> - 21 euros</li>
+<li><em>Initial investment</em> - 403.3 euros equally ditributed among exchange and currency</li>
+<li><em>Threshold for arbitrage</em> - transaction were done when a difference over 0.8 % between exchanges was observed</li>
+<li><em>Threshold rebalancing</em> - when a difference over 0.4 % was observed, funds were rebalanced between platform if necessary)</li>
+</ul>
+<h1 id="bitcoin-cash-evolution-on-the-period">Bitcoin cash evolution on the period</h1>
+<hr />
+<style>
+.bitstamp { background-color: rgba(255, 123, 34, 0.5); border-radius: 3px; padding-right: 5px; padding-left: 5px; }
+.cex { background-color: rgba(105, 179, 162, 0.5); border-radius: 3px; padding-right: 5px; padding-left: 5px; }
+</style>
+<p>Bitcoincash prices have been harvested every couple of second on the period, resulting in <code>85072 unique time stamps</code>. The <code>last</code> value is represented on the next chart for both <span class="bitstamp">Bitstamp</span> and <span class="cex">Cex.io</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Build color</span>
+col_bitstamp &lt;-<span class="st"> </span><span class="kw">rgb</span>(<span class="dv">255</span><span class="op">/</span><span class="dv">255</span>, <span class="dv">123</span><span class="op">/</span><span class="dv">255</span>, <span class="dv">34</span><span class="op">/</span><span class="dv">255</span>, <span class="fl">0.8</span>)
+col_cex &lt;-<span class="st"> </span><span class="kw">rgb</span>(<span class="dv">105</span><span class="op">/</span><span class="dv">255</span>, <span class="dv">179</span><span class="op">/</span><span class="dv">255</span>, <span class="dv">162</span><span class="op">/</span><span class="dv">255</span>, <span class="fl">0.8</span>)
+
+<span class="co"># Plot</span>
+bilan <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(time, last_plat1, last_plat2) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gather</span>(plateform, value, <span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">ggplot</span>( <span class="kw">aes</span>(<span class="dt">x=</span>time, <span class="dt">y=</span>value, <span class="dt">color=</span>plateform)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span>
+<span class="st">    </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(col_bitstamp, col_cex), <span class="dt">name=</span><span class="st">&quot;&quot;</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Bitstamp&quot;</span>, <span class="st">&quot;Cex.io&quot;</span>) ) <span class="op">+</span>
+<span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Bitcoin price on the exchange&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">theme_ipsum</span>() <span class="op">+</span>
+<span class="st">    </span><span class="kw">theme</span>(
+      <span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="fl">0.08</span>, <span class="fl">0.2</span>)
+    )</code></pre></div>
+<p><img src="arbitrage_files/figure-html/unnamed-chunk-1-1.png" width="960" /> Basically, the prices started around 725 euros to reach 800 euros on the 20th of June and decrease continuously to reach 600 euros at the end of the period. Prices on both exchanges are very close, but a few discrepencies are visible, what will probably open a few arbitrage opportunities.</p>
+<h1 id="price-differences">Price differences</h1>
+<hr />
+<style>
+.red { background-color: rgba(255, 0, 0, 0.2); border-radius: 3px; padding-right: 5px; padding-left: 5px; }
+.green { background-color: rgba(0, 255, 0, 0.2); border-radius: 3px; padding-right: 5px; padding-left: 5px; }
+.blue { background-color: rgba(0, 0, 255, 0.2); border-radius: 3px; padding-right: 5px; padding-left: 5px; }
+</style>
+<p>At each time stamp, the arbitrage bot computed the price difference between exchanges in %. These differences are represented on the graphic below:</p>
+<ul>
+<li>the <span class="red">red line</span> represents the price difference between <span class="red">buying at Cex</span> and selling at Bitstamp.</li>
+<li>the <span class="blue"> blue line</span> is the opposite: <span class="blue">buying at Bitstamp</span> and selling at Cex.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">col_red &lt;-<span class="st"> </span><span class="kw">rgb</span>(<span class="dv">255</span><span class="op">/</span><span class="dv">255</span>, <span class="dv">0</span><span class="op">/</span><span class="dv">255</span>, <span class="dv">0</span><span class="op">/</span><span class="dv">255</span>, <span class="fl">0.4</span>)
+col_blue &lt;-<span class="st"> </span><span class="kw">rgb</span>(<span class="dv">0</span><span class="op">/</span><span class="dv">255</span>, <span class="dv">0</span><span class="op">/</span><span class="dv">255</span>, <span class="dv">255</span><span class="op">/</span><span class="dv">255</span>, <span class="fl">0.4</span>)
+
+<span class="co"># Plot price differences and arbitrage occurence</span>
+bilan <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">vline_transac=</span><span class="kw">ifelse</span>(transaction<span class="op">==</span><span class="st">&quot;yes&quot;</span> <span class="op">&amp;</span><span class="st"> </span>rebalance<span class="op">==</span><span class="st">&quot;no&quot;</span>, time, <span class="ot">NA</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">vline_rebalance=</span><span class="kw">ifelse</span>(transaction<span class="op">==</span><span class="st">&quot;yes&quot;</span> <span class="op">&amp;</span><span class="st"> </span>rebalance<span class="op">==</span><span class="st">&quot;yes&quot;</span>, time, <span class="ot">NA</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">vline_transac=</span><span class="kw">as.POSIXct</span>(vline_transac, <span class="dt">origin=</span><span class="st">&quot;1970-01-01&quot;</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">vline_rebalance=</span><span class="kw">as.POSIXct</span>(vline_rebalance, <span class="dt">origin=</span><span class="st">&quot;1970-01-01&quot;</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">rowwise</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(time, diff_side1, diff_side2, transaction, vline_transac, vline_rebalance) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gather</span>( <span class="dt">key=</span>side, <span class="dt">value=</span>value, <span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>time, <span class="dt">y=</span>value, <span class="dt">color=</span>side)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_abline</span>(<span class="dt">slope=</span><span class="dv">0</span>, <span class="dt">intercept=</span><span class="dv">0</span>, <span class="dt">color=</span><span class="st">&quot;grey&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_abline</span>(<span class="dt">slope=</span><span class="dv">0</span>, <span class="dt">intercept=</span><span class="kw">unique</span>(bilan<span class="op">$</span>thres), <span class="dt">color=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">linetype=</span><span class="st">&quot;dashed&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_vline</span>( <span class="kw">aes</span>(<span class="dt">xintercept=</span>vline_transac), <span class="dt">color=</span><span class="st">&quot;orange&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_vline</span>( <span class="kw">aes</span>(<span class="dt">xintercept=</span>vline_rebalance), <span class="dt">color=</span><span class="st">&quot;pink&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span>
+<span class="st">    </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(col_red, col_blue)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">theme_ipsum</span>() <span class="op">+</span>
+<span class="st">    </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">7</span>,<span class="dv">7</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>) </code></pre></div>
+<p><img src="arbitrage_files/figure-html/unnamed-chunk-2-1.png" width="960" /></p>
+<p>Since the Cex price is often over the Bitstamp price, it is often better to buy at Bitstamp and sell a Cex (the <span class="blue">blue line</span>).</p>
+<h1 id="arbitrage-bot-behaviour">Arbitrage bot behaviour</h1>
+<hr />
+<p>In the above graphic, vertical orange lines represent an arbitrage transaction. Pink vertical lines represent a rebalancing situation. When the price difference reach the bot treshold of 0.8%, 21 euros of crypto are bought on an exchange and sold on the other.</p>
+<p><br></p>
+<p>These transaction are represented on the next graphic, where the quantity of Euro (top) and the quantity of Crypto (bottom) are represented for <span class="bitstamp">Bitstamp</span> and <span class="cex">Cex.io</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Quantity of euro on both exchanges:</span>
+c=bilan <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(time, euro_plat1, euro_plat2) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gather</span>(plateform, value, <span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">label =</span> <span class="kw">if_else</span>(time <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(time), <span class="kw">as.character</span>(plateform), <span class="ot">NA_character_</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">ggplot</span>( <span class="kw">aes</span>(<span class="dt">x=</span>time, <span class="dt">y=</span>value, <span class="dt">color=</span>plateform, <span class="dt">group=</span>plateform)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_line</span>(<span class="dt">size=</span><span class="fl">1.3</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(col_bitstamp, col_cex), <span class="dt">name=</span><span class="st">&quot;&quot;</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Bitstamp&quot;</span>, <span class="st">&quot;Cex.io&quot;</span>) ) <span class="op">+</span>
+<span class="st">    </span><span class="kw">theme_ipsum</span>() <span class="op">+</span>
+<span class="st">    </span><span class="kw">theme</span>(
+      <span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>,
+      <span class="dt">axis.text.x =</span> <span class="kw">element_blank</span>(),
+      <span class="dt">axis.ticks.x =</span> <span class="kw">element_blank</span>(),
+      <span class="dt">plot.margin =</span> <span class="kw">unit</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>), <span class="st">&quot;cm&quot;</span>)
+    ) <span class="op">+</span>
+<span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Quantity of Euro&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">expand_limits</span>(<span class="dt">y=</span><span class="dv">0</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) 
+    
+
+<span class="co"># Quantity of crypto on both exchanges</span>
+d=bilan <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(time, crypto_plat1, crypto_plat2) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gather</span>(plateform, value, <span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">ggplot</span>( <span class="kw">aes</span>(<span class="dt">x=</span>time, <span class="dt">y=</span>value, <span class="dt">color=</span>plateform)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_line</span>(<span class="dt">size=</span><span class="fl">1.3</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(col_bitstamp, col_cex), <span class="dt">name=</span><span class="st">&quot;&quot;</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Bitstamp&quot;</span>, <span class="st">&quot;Cex.io&quot;</span>) ) <span class="op">+</span>
+<span class="st">    </span><span class="kw">theme_ipsum</span>() <span class="op">+</span>
+<span class="st">    </span><span class="kw">theme</span>(
+      <span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>,
+      <span class="dt">plot.margin =</span> <span class="kw">unit</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>), <span class="st">&quot;cm&quot;</span>)
+    ) <span class="op">+</span>
+<span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Quantity of Crypto&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">expand_limits</span>(<span class="dt">y=</span><span class="dv">0</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>)
+
+<span class="kw">library</span>(patchwork)
+c <span class="op">+</span><span class="st"> </span>d <span class="op">+</span><span class="st"> </span><span class="kw">plot_layout</span>(<span class="dt">ncol =</span> <span class="dv">1</span>)</code></pre></div>
+<p><img src="arbitrage_files/figure-html/unnamed-chunk-3-1.png" width="960" /></p>
+<center>
+<i> Figure: evolution of euro (top) and crypto (bottom) quantities for <span class="bitstamp">Bitstamp</span> and <span class="cex">Cex.io</span> </i>
+</center>
+<p><br></p>
+<p>So basically, when the bot find that <span class="cex">Cex.io</span> is significantly cheaper than <span class="bitstamp">Bitstamp</span> (first break), it buys crypto on <span class="cex">Cex.io</span> and sells some on <span class="bitstamp">Bitstamp</span>. Thus the Bitstamp amount of euro increases and the Bitstamp amount of crypto increases. Conversely for <span class="cex">Cex.io</span>.</p>
+<h1 id="did-it-make-money">Did it make money?</h1>
+<hr />
+<p>At each transaction the bot is supposed to make a tiny margin, thus the total quantity of euro is suppose to slowly increase. Indeed, the process started with 206.88 and finished with 210, what is a gain of 3.12.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Zoom on the total quantity of euro I have</span>
+bilan <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>time, <span class="dt">y=</span>total_euro)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&quot;black&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">theme_ipsum</span>() <span class="op">+</span>
+<span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Total amount of Euro&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>)</code></pre></div>
+<p><img src="arbitrage_files/figure-html/unnamed-chunk-4-1.png" width="960" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#p2 &lt;- bilan %&gt;%</span>
+<span class="co">#  ggplot(aes(x=time, y=total_crypto)) +</span>
+<span class="co">#    geom_line(color=&quot;black&quot;) +</span>
+<span class="co">#    theme_ipsum() +</span>
+<span class="co">#    ylab(&quot;Total amount of Crypto&quot;) +</span>
+<span class="co">#    xlab(&quot;&quot;)</span></code></pre></div>
+<p>However it is important to notice that the bot is imperfect, and the quantity of crypto has not been maintained as planned. Indeed, -0.00293 have been lost, what represents -1.9 euros. Thus the real amount of money we made is actually 1.2165007. This represent a benefit of 0.3016489% of our initial investment.</p>
+<p>Said differently, the bot made a profit of 0.0430927% per day, what looks tiny but still represents a benefit of 15.7288359% a year, which is still much more than the bank would offer me.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bilan <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>time, <span class="dt">y=</span>gain, <span class="dt">color=</span><span class="kw">as.factor</span>(rebalance))) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">    </span><span class="kw">scale_color_viridis</span>(<span class="dt">discrete=</span><span class="ot">TRUE</span>, <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Arbitrage&quot;</span>, <span class="st">&quot;Rebalancing&quot;</span>), <span class="dt">name=</span><span class="st">&quot;&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_abline</span>(<span class="dt">slope=</span><span class="dv">0</span>, <span class="dt">size=</span><span class="fl">0.3</span> ) <span class="op">+</span>
+<span class="st">    </span><span class="kw">theme_ipsum</span>() <span class="op">+</span>
+<span class="st">    </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="kw">c</span>(.<span class="dv">05</span>, .<span class="dv">9</span>))<span class="op">+</span>
+<span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Benefit of the transaction (in % of the trade)&quot;</span>)</code></pre></div>
+<p><img src="arbitrage_files/figure-html/unnamed-chunk-5-1.png" width="960" /></p>
+<h1 id="why-i-wont-become-rich-using-arbitrage">Why I won’t become rich using arbitrage</h1>
+<hr />
+<p>Even if this work is a good proof of concept of what crypto arbitrage is, it is quite unlikely that I will ever get rich using this technique.</p>
+<h1 id="next-step">Next step</h1>
+<hr />
+<p>The next step is to understand what arbitrage is in depth, and study its potential limitations.</p>
+<br>
+<center>
+<button class="btn btn-primary" href>
+&lt; How data was harvested
+</button>
+<button class="btn btn-primary" href>
+What is arbitrage &gt;
+</button>
+</center>
+<p><br><br></p>
+</div>
+
+
+<!-- Insert code for DISQUS comments  -->
+
+      <div class="container">
+        <div id="disqus_thread"></div>
+        <script>
+
+        var disqus_config = function () {
+        this.page.url = https://holtzy.github.io/Cryp-To/content/arbitrage.html;  
+        this.page.identifier = arbitrage; 
+        };
+
+        (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://data-to-viz.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+        })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      </div>
+  <!-- Insert code for DISQUS comments  -->
+    
+
+
+&nbsp;
+<hr />
+<p style="text-align: center;">A work by <a href="https://github.com/holtzy/">Yan Holtz</a> for <a href="https://data-to-viz.com">data-to-viz.com</a></p>
+
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Add font awesome icons -->
+<p style="text-align: center;">
+	<a href="https://twitter.com/r_graph_gallery?lang=en" class="fa fa-twitter"></a>
+	<a href="https://www.linkedin.com/in/yan-holtz-2477534a/" class="fa fa-linkedin"></a>
+	<a href="https://github.com/holtzy/" class="fa fa-github"></a>
+</p>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-79254642-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-79254642-3');
+</script>
+
+
+&nbsp;
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+
+</body>
+</html>

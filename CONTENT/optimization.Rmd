@@ -71,7 +71,7 @@ data <- Ticker %>%
 
 # Plot
 p <- Ticker %>%
-  filter(symbol=="BCHEUR") %>%
+  filter(symbol=="ETHEUR") %>%
   filter(platform=="Bitstamp" | platform=="Cex") %>%
   ggplot( aes(x=time, y=last, color=platform, group=platform)) +
     geom_line() +
