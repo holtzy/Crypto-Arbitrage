@@ -29,7 +29,7 @@ output:
 #Data
 ***
 
-Previous parts of this analysis [harvested data]() on crypto prices for 5 exchanges and 5 currencies. It showed that [price differences exist](), offering arbitrage opportunities. It also described the [behaviour of a bot]() realizing arbitrage.
+Previous parts of this analysis [harvested data](https://holtzy.github.io/Crypto-Arbitrage/CONTENT/public_API.html) on crypto prices for 5 exchanges and 5 currencies. It showed that [price differences exist](https://holtzy.github.io/Crypto-Arbitrage/CONTENT/differences.html), offering arbitrage opportunities. It also described the [behaviour of a bot](https://holtzy.github.io/Crypto-Arbitrage/CONTENT/definition.html) realizing arbitrage.
 
 Here we gonna apply this bot to the harvested dataset. The bot is gonna perform arbitrage on Bitcoin cash between Bitstamp and Cex. Here is description of Bitcoin cash price for these 2 platforms on the period:
 
@@ -44,7 +44,7 @@ library(hrbrthemes)
 library(lubridate)
 
 # Load result
-load("../DATA/public_ticker_harvest.Rdata")
+load(url("https://raw.githubusercontent.com/holtzy/Crypto-Arbitrage/master/DATA/public_ticker_harvest.Rdata"))
 Ticker$last <- as.numeric(Ticker$last)
 Ticker= head(Ticker, 100000)
 
@@ -413,8 +413,8 @@ The next step is to understand what arbitrage is in depth, and study its potenti
 
 <br>
 <center>
-<button class="btn btn-primary" href="">< How data was harvested</button>
-<button class="btn btn-primary" href="">What is arbitrage ></button>
+<a class="btn btn-primary" href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/definition.html">< What is arbitrage</a>
+<a class="btn btn-primary" href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/private_API.html">Calling the private API ></a>
 </center>
 <br><br>
 

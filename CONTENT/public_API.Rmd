@@ -167,7 +167,7 @@ The next step take this dataset and quantifies the differences between platform.
 
 <br>
 <center>
-<button class="btn btn-primary" href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/differences.html">Quantifying differences</button>
+<a class="btn btn-primary" href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/differences.html">Quantifying differences</a>
 </center>
 <br><br>
 

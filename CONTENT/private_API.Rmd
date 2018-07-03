@@ -105,7 +105,7 @@ Now that we have an arbitrage algorithm and a set of function allowing to buy an
 
 <br>
 <center>
-<button class="btn btn-primary" href="">Let's play for real</button>
+<a class="btn btn-primary" href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/arbitrage.html">Let's play for real</a>
 </center>
 <br><br>
 

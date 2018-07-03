@@ -29,7 +29,7 @@ output:
 
 #Data
 ***
-Prices of `5 cryto currencies` have been harvested for `2 weeks` on `5 different exchanges` every `few seconds` as described [here](). About `800,000 data points` are available, allowing to compare prices between exchanges at a high resolution.
+Prices of `5 cryto currencies` have been harvested for `2 weeks` on `5 different exchanges` every `few seconds` as described [here](https://holtzy.github.io/Crypto-Arbitrage/CONTENT/public_API.html). About `800,000 data points` are available, allowing to compare prices between exchanges at a high resolution.
 
 <br>
 
@@ -155,7 +155,7 @@ freqOver1 <- numTot / as.numeric(lengthPeriod) %>% round(0)
 
 ```
 
-The chart aboves represents a period of ``r time_length( lengthPeriod, unit="day")  %>% round(1)` days` where `r numTimeStamp` prices have been recovered. In total, `r numOver1` situations with Bitstamp being at least 1% more expensive than Kraken have been observed, and `r numUnder1` reciprocally. This is a total of `r numTot` times with differences over 1%, which is an average of `r freqOver1` per day.
+The chart aboves represents a period of ``r time_length( lengthPeriod, unit="day")  %>% round(1)` days` where `r numTimeStamp` prices have been recovered. In total, `r numOver1` situations with Bitstamp being at least 1% more expensive than Kraken have been observed, and `r numUnder1` reciprocally. This is a total of `r numTot` times with differences over 1%, which is an average of `r round(freqOver1,0)` per day.
 
 
 *Important note*: this chart represents the price differences of the `last` transaction done. However, note that we buy crypto at the `ask` price, and sell it at the `bid` price. Differences are thus smaller than that in reality.
@@ -252,7 +252,7 @@ p <- plot_signif_diff(nbSignifDiff)
 ```
 
 <center>
-```{r relationship_thres_numDiff,  warning=FALSE, fig.align="center", fig.width=8, show=FALSE}
+```{r relationship_thres_numDiff,  warning=FALSE, fig.align="center", fig.width=8, echo=FALSE}
 p
 ggsave(p, file="IMG/difference_counts_step1.png", width=7, height=4)
 ```
@@ -331,8 +331,8 @@ The next step is to understand what arbitrage is in depth, and study its potenti
 
 <br>
 <center>
-<button class="btn btn-primary" href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/public_API.html">< How data was harvested</button>
-<button class="btn btn-primary" href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/definition.html">What is arbitrage ></button>
+<a class="btn btn-primary" href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/public_API.html">< How data was harvested</a>
+<a class="btn btn-primary" href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/definition.html">What is arbitrage ></a>
 </center>
 <br><br>
 

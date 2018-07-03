@@ -17,7 +17,7 @@
 
 <style>
 .myheader {
-  background-image: url("https://github.com/holtzy/Cryp-To/raw/master/img/area_bitcoin_fadded_long.png");
+  background-image: url("https://github.com/holtzy/Crypto-Arbitrage/raw/master/img/area_bitcoin_fadded_long.png");
     min-height: 400px; 
     background-size: 10% 100%; !important
 
@@ -216,7 +216,7 @@ $(document).ready(function () {
 
 
 <div class="mycontent">
-<p><br></p>
+<p><br><br></p>
 <blockquote>
 <p>“Arbitrage is the practice of taking advantage of a price difference between two or more markets”</p>
 </blockquote>
@@ -225,158 +225,19 @@ $(document).ready(function () {
 </div>
 <h1 id="definition">Definition</h1>
 <hr />
-<p>Crypto currencies are bought and sold on different <code>exchanges</code>. Basically it is like a bank, but for crypto. The price is not allways exactly the same on 2 exchanges, as shown <a href="">here</a>. It is thus possible to buy a crypto where the price is low, and sell it instantly where the price is high to realize a gain without taking any risk.</p>
-<p>Consider the following situation represented in the diagram:</p>
+<p>Crypto currencies are bought and sold on different <code>exchanges</code>. Basically it is like a bank, but for crypto. The price is not allways exactly the same on 2 exchanges, as shown <a href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/differences.html">here</a>. It is thus possible to buy a crypto where the price is low, and sell it instantly where the price is high to realize a gain without taking any risk.</p>
+<p>Consider the following situation as an example:</p>
 <ul>
 <li><em>step 1</em> - the price of etherum is 700 euros on Kraken (exchange 1). I take 700 euros and buy 1 Etherum</li>
 <li><em>step 2</em> - I send this etherum to Bitstamp (exchange 2)</li>
 <li><em>step 3</em> - I sell the etherum on Bitstamp, but the price is different: 750. Thus I now have 750 euros, which is a gain of 50 euros.</li>
 <li><em>Again</em></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(gganimate)
-<span class="kw">library</span>(tweenr)
-
-<span class="co"># Initial data</span>
-init &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
-  <span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">4</span>),
-  <span class="dt">y =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">1</span>),
-  <span class="dt">value =</span> <span class="kw">rep</span>(<span class="dv">100</span>, <span class="dv">4</span>),
-  <span class="dt">tot =</span> <span class="kw">rep</span>(<span class="dv">200</span>,<span class="dv">4</span>),
-  <span class="dt">tot_crypto =</span> <span class="kw">rep</span>(<span class="dv">200</span>,<span class="dv">4</span>),
-  <span class="dt">arrow1 =</span> <span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">4</span>),
-  <span class="dt">arrow2 =</span> <span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">4</span>),
-  <span class="dt">arrow3 =</span> <span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">4</span>),
-  <span class="dt">arrow4 =</span> <span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">4</span>)
-)
-
-<span class="co"># A function to trade data</span>
-trade1 &lt;-<span class="st"> </span><span class="cf">function</span>(don){
-  totrade=<span class="dv">50</span>
-  gain=<span class="fl">1.8</span>
-  don<span class="op">$</span>value[<span class="dv">1</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>totrade
-  don<span class="op">$</span>value[<span class="dv">2</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>totrade
-  don<span class="op">$</span>tot &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">3</span>]
-  don<span class="op">$</span>tot_crypto &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">4</span>]
-  don<span class="op">$</span>arrow1 &lt;-<span class="st"> </span><span class="dv">1</span>
-  don<span class="op">$</span>arrow2 &lt;-<span class="st"> </span><span class="dv">0</span>
-  don<span class="op">$</span>arrow3 &lt;-<span class="st"> </span><span class="dv">0</span>
-  don<span class="op">$</span>arrow4 &lt;-<span class="st"> </span><span class="dv">0</span>
-  <span class="kw">return</span>(don)
-}
-trade1bis &lt;-<span class="st"> </span><span class="cf">function</span>(don){
-  totrade=<span class="dv">50</span>
-  gain=<span class="fl">1.8</span>
-  don<span class="op">$</span>value[<span class="dv">3</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">3</span>] <span class="op">+</span><span class="st"> </span>totrade<span class="op">*</span>gain 
-  don<span class="op">$</span>value[<span class="dv">4</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">4</span>] <span class="op">-</span><span class="st"> </span>totrade
-  don<span class="op">$</span>tot &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">3</span>]
-  don<span class="op">$</span>tot_crypto &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">4</span>]
-  don<span class="op">$</span>arrow1 &lt;-<span class="st"> </span><span class="dv">0</span>
-  don<span class="op">$</span>arrow2 &lt;-<span class="st"> </span><span class="dv">1</span>
-  don<span class="op">$</span>arrow3 &lt;-<span class="st"> </span><span class="dv">0</span>
-  don<span class="op">$</span>arrow4 &lt;-<span class="st"> </span><span class="dv">0</span>
-  <span class="kw">return</span>(don)
-}
-trade2 &lt;-<span class="st"> </span><span class="cf">function</span>(don){
-  totrade=<span class="dv">50</span>
-  gain=<span class="fl">1.8</span>
-  don<span class="op">$</span>value[<span class="dv">3</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">3</span>] <span class="op">-</span><span class="st"> </span>totrade
-  don<span class="op">$</span>value[<span class="dv">4</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">4</span>] <span class="op">+</span><span class="st"> </span>totrade
-  don<span class="op">$</span>tot &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">3</span>]
-  don<span class="op">$</span>tot_crypto &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">4</span>]
-  don<span class="op">$</span>arrow1 &lt;-<span class="st"> </span><span class="dv">0</span>
-  don<span class="op">$</span>arrow2 &lt;-<span class="st"> </span><span class="dv">0</span>
-  don<span class="op">$</span>arrow3 &lt;-<span class="st"> </span><span class="dv">1</span>
-  don<span class="op">$</span>arrow4 &lt;-<span class="st"> </span><span class="dv">0</span>
-  <span class="kw">return</span>(don)
-}
-trade2bis &lt;-<span class="st"> </span><span class="cf">function</span>(don){
-  totrade=<span class="dv">50</span>
-  gain=<span class="fl">1.8</span>
-  don<span class="op">$</span>value[<span class="dv">1</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>totrade<span class="op">*</span>gain
-  don<span class="op">$</span>value[<span class="dv">2</span>] &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>totrade
-  don<span class="op">$</span>tot &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">3</span>]
-  don<span class="op">$</span>tot_crypto &lt;-<span class="st"> </span>don<span class="op">$</span>value[<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>don<span class="op">$</span>value[<span class="dv">4</span>]
-  don<span class="op">$</span>arrow1 &lt;-<span class="st"> </span><span class="dv">0</span>
-  don<span class="op">$</span>arrow2 &lt;-<span class="st"> </span><span class="dv">0</span>
-  don<span class="op">$</span>arrow3 &lt;-<span class="st"> </span><span class="dv">0</span>
-  don<span class="op">$</span>arrow4 &lt;-<span class="st"> </span><span class="dv">1</span>
-  <span class="kw">return</span>(don)
-}
-
-
-<span class="co"># Loop to do several transaction</span>
-mylist &lt;-<span class="st"> </span><span class="kw">list</span>(init, init, init)
-tmp &lt;-<span class="st"> </span>init
-num &lt;-<span class="st"> </span><span class="dv">1</span>
-<span class="co"># i is the number of cycle</span>
-<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span>){
-  <span class="co">#step1: </span>
-  num &lt;-<span class="st"> </span>num <span class="op">+</span><span class="st"> </span><span class="dv">1</span> ; tmp &lt;-<span class="st"> </span><span class="kw">trade1</span>(tmp) ; mylist[[num]] &lt;-<span class="st"> </span>tmp
-  
-  <span class="co">#step2</span>
-  num &lt;-<span class="st"> </span>num <span class="op">+</span><span class="st"> </span><span class="dv">1</span> ; tmp &lt;-<span class="st"> </span><span class="kw">trade1bis</span>(tmp) ; mylist[[num]] &lt;-<span class="st"> </span>tmp
-  
-  <span class="co">#step3</span>
-  num &lt;-<span class="st"> </span>num <span class="op">+</span><span class="st"> </span><span class="dv">1</span> ; tmp &lt;-<span class="st"> </span><span class="kw">trade2</span>(tmp) ;  mylist[[num]] &lt;-<span class="st"> </span>tmp
-  
-  <span class="co">#step4</span>
-  num &lt;-<span class="st"> </span>num <span class="op">+</span><span class="st"> </span><span class="dv">1</span> ; tmp &lt;-<span class="st"> </span><span class="kw">trade2bis</span>(tmp) ; mylist[[num]] &lt;-<span class="st"> </span>tmp
-  }
-mylist
-
-<span class="co"># Use tweenR</span>
-tf &lt;-<span class="st"> </span><span class="kw">tween_states</span>(mylist, <span class="dt">tweenlength =</span> <span class="fl">0.01</span>, <span class="dt">statelength =</span> <span class="fl">0.1</span>, <span class="dt">ease =</span> <span class="kw">c</span>(<span class="st">&#39;cubic-in-out&#39;</span>), <span class="dt">nframes =</span> <span class="dv">100</span>)
-tf
-
-
-<span class="co"># Animation</span>
-p &lt;-<span class="st"> </span>tf   <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y, <span class="dt">size=</span>value, <span class="dt">frame=</span>.frame)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">theme_void</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_point</span>( <span class="kw">aes</span>(<span class="dt">color=</span><span class="kw">paste</span>(x,y))) <span class="op">+</span>
-<span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;#69b3a2&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;#69b3a2&quot;</span>, <span class="st">&quot;purple&quot;</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">scale_size_continuous</span>(<span class="dt">range=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">30</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>
-<span class="st">  </span><span class="co"># Quantity of money</span>
-<span class="st">  </span><span class="kw">geom_text</span>( <span class="kw">aes</span>(<span class="dt">label=</span><span class="kw">round</span>(value,<span class="dv">0</span>), <span class="dt">x=</span>x, <span class="dt">y=</span>y<span class="op">-</span><span class="fl">0.5</span>, <span class="dt">color=</span><span class="kw">paste</span>(x,y)), <span class="dt">size=</span><span class="dv">6</span>) <span class="op">+</span>
-<span class="st">  </span>
-<span class="st">  </span><span class="co"># Exchange names</span>
-<span class="st">  </span><span class="kw">geom_label</span>( <span class="dt">x=</span><span class="op">-</span><span class="dv">1</span>, <span class="dt">y=</span><span class="dv">3</span>, <span class="dt">label=</span><span class="st">&quot;Exchange 1&quot;</span>, <span class="dt">color=</span><span class="st">&quot;purple&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_label</span>( <span class="dt">x=</span><span class="op">-</span><span class="dv">1</span>, <span class="dt">y=</span><span class="dv">1</span>, <span class="dt">label=</span><span class="st">&quot;Exchange 2&quot;</span>, <span class="dt">color=</span><span class="st">&quot;#69b3a2&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
-<span class="st">  </span>
-<span class="st">  </span><span class="co"># Arrows: up right / bottom left / bottom right / up left</span>
-<span class="st">  </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">alpha=</span>arrow1), <span class="dt">x=</span><span class="fl">1.8</span>, <span class="dt">xend=</span><span class="fl">3.2</span>, <span class="dt">y=</span><span class="dv">3</span>, <span class="dt">yend=</span><span class="dv">3</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">arrow =</span> <span class="kw">arrow</span>(<span class="dt">length =</span> <span class="kw">unit</span>(<span class="fl">0.5</span>, <span class="st">&quot;cm&quot;</span>))) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">alpha=</span>arrow2), <span class="dt">x=</span><span class="fl">3.2</span>, <span class="dt">xend=</span><span class="fl">1.8</span>, <span class="dt">y=</span><span class="dv">1</span>, <span class="dt">yend=</span><span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">arrow =</span> <span class="kw">arrow</span>(<span class="dt">length =</span> <span class="kw">unit</span>(<span class="fl">0.5</span>, <span class="st">&quot;cm&quot;</span>))) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">alpha=</span>arrow3), <span class="dt">x=</span><span class="fl">1.8</span>, <span class="dt">xend=</span><span class="fl">3.2</span>, <span class="dt">y=</span><span class="dv">1</span>, <span class="dt">yend=</span><span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">arrow =</span> <span class="kw">arrow</span>(<span class="dt">length =</span> <span class="kw">unit</span>(<span class="fl">0.5</span>, <span class="st">&quot;cm&quot;</span>))) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_segment</span>(<span class="kw">aes</span>(<span class="dt">alpha=</span>arrow4), <span class="dt">x=</span><span class="fl">3.2</span>, <span class="dt">xend=</span><span class="fl">1.8</span>, <span class="dt">y=</span><span class="dv">3</span>, <span class="dt">yend=</span><span class="dv">3</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">arrow =</span> <span class="kw">arrow</span>(<span class="dt">length =</span> <span class="kw">unit</span>(<span class="fl">0.5</span>, <span class="st">&quot;cm&quot;</span>))) <span class="op">+</span>
-<span class="st">  </span>
-<span class="st">  </span><span class="co"># control alpha</span>
-<span class="st">  </span><span class="kw">scale_alpha_continuous</span>(<span class="dt">range=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="op">+</span>
-<span class="st">   </span>
-<span class="st">  </span><span class="co"># Barplot money (y=ax + b avec a=(yb-ya)/(xb-xa) et b=y-ax at a given point)</span>
-<span class="st">  </span><span class="kw">geom_segment</span>(<span class="dt">x=</span><span class="dv">1</span>, <span class="dt">xend=</span><span class="dv">1</span>, <span class="dt">y=</span><span class="op">-</span><span class="dv">1</span>, <span class="kw">aes</span>(<span class="dt">yend=</span>(<span class="dv">0</span><span class="op">-</span>(<span class="op">-</span><span class="fl">0.8</span>)<span class="op">/</span>(<span class="dv">500</span><span class="op">-</span><span class="dv">200</span>))<span class="op">*</span>tot<span class="op">-</span><span class="fl">1.33</span>), <span class="dt">color=</span><span class="st">&quot;yellow&quot;</span>, <span class="dt">size=</span><span class="dv">22</span>, <span class="dt">alpha=</span><span class="fl">0.7</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_segment</span>(<span class="dt">x=</span><span class="dv">4</span>, <span class="dt">xend=</span><span class="dv">4</span>, <span class="dt">y=</span><span class="op">-</span><span class="dv">1</span>, <span class="kw">aes</span>(<span class="dt">yend=</span>(<span class="dv">0</span><span class="op">-</span>(<span class="op">-</span><span class="fl">0.8</span>)<span class="op">/</span>(<span class="dv">500</span><span class="op">-</span><span class="dv">200</span>))<span class="op">*</span>tot_crypto<span class="op">-</span><span class="fl">1.33</span>), <span class="dt">color=</span><span class="st">&quot;yellow&quot;</span>, <span class="dt">size=</span><span class="dv">22</span>, <span class="dt">alpha=</span><span class="fl">0.7</span>) <span class="op">+</span>
-<span class="st">  </span>
-<span class="st">  </span><span class="co"># Total</span>
-<span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">x=</span><span class="dv">1</span>, <span class="dt">y=</span><span class="op">-</span>.<span class="dv">5</span>, <span class="dt">label=</span><span class="st">&quot;Total Euro&quot;</span>, <span class="dt">color=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">x=</span><span class="dv">4</span>, <span class="dt">y=</span><span class="op">-</span>.<span class="dv">5</span>, <span class="dt">label=</span><span class="st">&quot;Total Crypto&quot;</span>, <span class="dt">color=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">x=</span><span class="dv">1</span>, <span class="dt">y=</span><span class="op">-</span>.<span class="dv">8</span>, <span class="kw">aes</span>(<span class="dt">label=</span><span class="kw">round</span>(tot,<span class="dv">0</span>)), <span class="dt">color=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">x=</span><span class="dv">4</span>, <span class="dt">y=</span><span class="op">-</span>.<span class="dv">8</span>, <span class="kw">aes</span>(<span class="dt">label=</span><span class="kw">round</span>(tot_crypto,<span class="dv">0</span>)), <span class="dt">color=</span><span class="st">&quot;grey&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
-<span class="st">  </span>
-<span class="st">  </span><span class="co"># Money</span>
-<span class="st">  </span><span class="kw">geom_label</span>( <span class="dt">x=</span><span class="dv">1</span>, <span class="dt">y=</span><span class="dv">4</span>, <span class="dt">label=</span><span class="st">&quot;Euro&quot;</span>, <span class="dt">color=</span><span class="st">&quot;black&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_label</span>( <span class="dt">x=</span><span class="dv">4</span>, <span class="dt">y=</span><span class="dv">4</span>, <span class="dt">label=</span><span class="st">&quot;Crypto&quot;</span>, <span class="dt">color=</span><span class="st">&quot;black&quot;</span>, <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
-<span class="st">  </span>
-
-<span class="st">  </span><span class="co"># Limits</span>
-<span class="st">  </span><span class="kw">xlim</span>(<span class="op">-</span><span class="dv">2</span>,<span class="dv">5</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">4</span>)
-
-<span class="kw">gganimate</span>(p, <span class="dt">interval =</span> .<span class="dv">2</span>, <span class="dt">title_frame =</span> F, <span class="dt">filename=</span><span class="st">&quot;IMG/arbitrage.gif&quot;</span>)</code></pre></div>
+<p><br></p>
+<p>Here is an illustration using tomatoes, buy at 1 euro / kilo, sold at 1.1 euros / kilo. The idea is to do the same, but instantly and using crypto instead of tomatoes.</p>
 <br><br>
 <center>
-<img src="IMG/arbitrage.gif" alt="img" width="600" height="700">
+<img src="IMG/arbitrage_def.png" alt="img" width="600" height="700">
 </center>
 <p><br><br></p>
 <h1 id="limitation">Limitation</h1>
@@ -385,19 +246,19 @@ p &lt;-<span class="st"> </span>tf   <span class="op">%&gt;%</span><span class="
 <ul>
 <li><code>Price differences are rare</code>: you can read the dedicated page where I quantified these differences</li>
 <li><code>Transaction have fees</code>: each time you buy, sell or transfer crypto, fees apply. In most of the exchanges there is a 0.25% fee to buy and sell</li>
-<li><code>Prices evolve quickly</code>: buy the time you discovered a price discrepancy, prices are already different. Doing arbitrage without an automatic bot is impossible.</li>
+<li><code>Prices evolve quickly</code>: buy the time you discovered a price discrepancy, prices are already different. This is called <em>Slippage risk</em>. Doing arbitrage without an automatic bot is impossible.</li>
 <li><code>Crypto transfer takes time</code>: you can buy and sell crypto instantly, however it takes time to send it to another exchange or to/from your bank account</li>
-<li><code>Asymmetry</code>: if it is always the same exchange that is more expensive, all your money will ends up in it. You won’t be able to do any new transaction until you rebalance funds.</li>
+<li><code>Concentration risk</code>: if it is always the same exchange that is more expensive, all your money will ends up in it. You won’t be able to do any new transaction until you rebalance funds.</li>
 <li><code>Price volatility</code>: let’s say you have a efficient arbitrage algorithm that makes 1% a day. If the crypto price drops down when you have some, your loss will probably higher than your gains.</li>
 </ul>
 <h1 id="the-plan">The plan</h1>
 <hr />
 <p>Most of the limitations above do not have any workaround. However it is possible to change a bit the arbitrage strategy to avoid transfering funds from one exchange to another. Here is how it works:</p>
 <ul>
-<li><em>step1</em> - s</li>
-<li><em>step2</em> - s</li>
-<li><em>step3</em> - s</li>
-<li><em>step4</em> - s</li>
+<li><em>step1</em> - crypto is cheaper on exchange 1 than on exchange 2. I buy some crypto on it.</li>
+<li><em>step2</em> - in the same time, I sell exactly the same amount of crypto on exchange 2.</li>
+<li><em>step3</em> - wait for a new price differences in the other side.</li>
+<li><em>step4</em> - perform exactly the same think but in the other side.</li>
 <li><em>Again</em></li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
@@ -546,17 +407,21 @@ p &lt;-<span class="st"> </span>tf   <span class="op">%&gt;%</span><span class="
 <img src="IMG/arbitrage.gif" alt="img" width="600" height="700">
 </center>
 <p><br><br></p>
+<h1 id="litterature">Litterature</h1>
+<hr />
+<p>Several methods of arbitrage exist and I’m far from being the only one trying to do it. Here is a selection of a few really promising project that are worth visiting:</p>
+<ul>
+<li><a href="http://cryptoarbitrager.com">CryptoArbitrager</a>: use the fact that the evolution of different currencies are strongly correlated. Sometimes a delay is observed, what is an arbitrage opportunity.</li>
+<li><a href="https://github.com/butor/blackbird">Blackbird</a>: has the advantage of being Market neutral: no loss if the global price of the currency drop down.</li>
+<li><a href="https://github.com/bitrinjani/r2">R2</a></li>
+<li><a href="https://github.com/wardbradt/peregrine">Peregrine</a></li>
+</ul>
 <h1 id="next-step">Next step</h1>
 <hr />
 <p>The next step simulates an arbitrage algorithm on a 2 weeks period to assess the potential gain.</p>
 <br>
 <center>
-<button class="btn btn-primary" href>
-Quantifying differences&lt;
-</button>
-<button class="btn btn-primary" href>
-Simulating arbitrage&gt;
-</button>
+<a class="btn btn-primary" href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/differences.html">&lt; Quantifying differences</a> <a class="btn btn-primary" href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/optimization.html">Simulating arbitrage &gt;</a>
 </center>
 <p><br><br></p>
 </div>

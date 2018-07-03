@@ -17,7 +17,7 @@
 
 <style>
 .myheader {
-  background-image: url("https://github.com/holtzy/Cryp-To/raw/master/img/area_bitcoin_fadded_long.png");
+  background-image: url("https://github.com/holtzy/Crypto-Arbitrage/raw/master/img/area_bitcoin_fadded_long.png");
     min-height: 400px; 
     background-size: 10% 100%; !important
 
@@ -225,7 +225,7 @@ $(document).ready(function () {
 <div class="mycontent">
 <h1 id="data">Data</h1>
 <hr />
-<p>Prices of <code>5 cryto currencies</code> have been harvested for <code>2 weeks</code> on <code>5 different exchanges</code> every <code>few seconds</code> as described <a href="">here</a>. About <code>800,000 data points</code> are available, allowing to compare prices between exchanges at a high resolution.</p>
+<p>Prices of <code>5 cryto currencies</code> have been harvested for <code>2 weeks</code> on <code>5 different exchanges</code> every <code>few seconds</code> as described <a href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/public_API.html">here</a>. About <code>800,000 data points</code> are available, allowing to compare prices between exchanges at a high resolution.</p>
 <p><br></p>
 <p>Here is an overview of the Etherum price on the period on the 5 exchanges:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Library</span>
@@ -328,7 +328,7 @@ numOver1 &lt;-<span class="st"> </span>diff <span class="op">%&gt;%</span><span 
 numUnder1 &lt;-<span class="st"> </span>diff <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(diff_perc <span class="op">&lt;</span><span class="st"> </span><span class="op">-</span><span class="dv">1</span> ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">nrow</span>()
 numTot &lt;-<span class="st"> </span>numOver1 <span class="op">+</span><span class="st"> </span>numUnder1
 freqOver1 &lt;-<span class="st"> </span>numTot <span class="op">/</span><span class="st"> </span><span class="kw">as.numeric</span>(lengthPeriod) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">0</span>)</code></pre></div>
-<p>The chart aboves represents a period of <code>14 days</code> where 42087 prices have been recovered. In total, 2293 situations with Bitstamp being at least 1% more expensive than Kraken have been observed, and 644 reciprocally. This is a total of 2937 times with differences over 1%, which is an average of 209.7857143 per day.</p>
+<p>The chart aboves represents a period of <code>14 days</code> where 42087 prices have been recovered. In total, 2293 situations with Bitstamp being at least 1% more expensive than Kraken have been observed, and 644 reciprocally. This is a total of 2937 times with differences over 1%, which is an average of 210 per day.</p>
 <p><em>Important note</em>: this chart represents the price differences of the <code>last</code> transaction done. However, note that we buy crypto at the <code>ask</code> price, and sell it at the <code>bid</code> price. Differences are thus smaller than that in reality.</p>
 <h1 id="where-is-the-best-deal">Where is the best deal?</h1>
 <hr />
@@ -407,9 +407,7 @@ diff &lt;-<span class="st"> </span><span class="kw">find_askbid_difference</span
 nbSignifDiff &lt;-<span class="st"> </span><span class="kw">find_signif_diff</span>(diff)
 p &lt;-<span class="st"> </span><span class="kw">plot_signif_diff</span>(nbSignifDiff)</code></pre></div>
 <center>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p</code></pre></div>
-<p><img src="differences_files/figure-html/relationship_thres_numDiff-1.png" width="768" style="display: block; margin: auto;" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsave</span>(p, <span class="dt">file=</span><span class="st">&quot;IMG/difference_counts_step1.png&quot;</span>, <span class="dt">width=</span><span class="dv">7</span>, <span class="dt">height=</span><span class="dv">4</span>)</code></pre></div>
+<img src="differences_files/figure-html/relationship_thres_numDiff-1.png" width="768" style="display: block; margin: auto;" />
 </center>
 <p>It is possible to build exactly the same graphic for each pair of exchange, giving the following graphic. Note that some currencies are not available on every exchange, that’s why most of the pair below give results only for bitcoin that is the most widely used currency.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># find all the pairs of platform</span>
@@ -467,12 +465,7 @@ p &lt;-<span class="st"> </span>bilan <span class="op">%&gt;%</span>
 <p>The next step is to understand what arbitrage is in depth, and study its potential limitations.</p>
 <br>
 <center>
-<button class="btn btn-primary" href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/public_API.html">
-&lt; How data was harvested
-</button>
-<button class="btn btn-primary" href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/definition.html">
-What is arbitrage &gt;
-</button>
+<a class="btn btn-primary" href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/public_API.html">&lt; How data was harvested</a> <a class="btn btn-primary" href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/definition.html">What is arbitrage &gt;</a>
 </center>
 <p><br><br></p>
 </div>
