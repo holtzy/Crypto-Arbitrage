@@ -296,7 +296,10 @@ d=bilan %>%
     xlab("")
 
 library(patchwork)
-c + d + plot_layout(ncol = 1)
+p <- c + d + plot_layout(ncol = 1)
+p
+ggsave(p, file="IMG/amount_evolution.png", width=7, height=4)
+
 ```
 
 <center><i>
@@ -320,7 +323,6 @@ This content will appear in the gutter of the article.
 </aside>
 
 At each transaction the bot is supposed to make a tiny margin, thus the total quantity of euro is suppose to slowly increase. Indeed, the process started with `r start_euro` and finished with `r end_euro`, what is a gain of `r gain_euro`.
-
 
 
 
