@@ -4,6 +4,8 @@ Crypto arbitrage: a feasibility analysis
 analysis available online: [holtzy.github.io/Cryp-To/](https://holtzy.github.io/Cryp-To/)
 
 
+<br>
+
 
 Overview
 --------
@@ -11,6 +13,9 @@ Overview
 Arbitrage is defined as the simultaneous buying and selling of currency in different platforms in order to take advantage of differing prices. This document gives a few insight on its potential application on crypto currencies.
 
 Analysis are made using the R software and published using R Markdown. You can see it [here](https://holtzy.github.io/Cryp-To/)
+
+
+<br>
 
 
 
@@ -26,6 +31,9 @@ The study is split in sections:
 - *Simulation* - Simulating an arbitrage algorithm on the dataset to assess potential benefit and optimize parameters. [Read more]()
 - *Private APIs and command line* - How to buy and sell crypto currencies using programing and private APIs? [Read more]()
 - *Recovering prices* - The algorithm is finally run for real. Does it make any money? [Read more]()
+
+
+<br>
 
 
 
