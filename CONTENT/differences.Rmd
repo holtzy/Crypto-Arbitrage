@@ -44,7 +44,7 @@ library(viridis)
 library(lubridate)
 
 # Load result
-load("../DATA/public_ticker_harvest.Rdata")
+load(url("https://raw.githubusercontent.com/holtzy/Crypto-Arbitrage/master/DATA/public_ticker_harvest.Rdata"))
 Ticker$last <- as.numeric(Ticker$last)
 #Ticker= head(Ticker, 100000)
 
@@ -331,8 +331,8 @@ The next step is to understand what arbitrage is in depth, and study its potenti
 
 <br>
 <center>
-<button class="btn btn-primary" href="">< How data was harvested</button>
-<button class="btn btn-primary" href="">What is arbitrage ></button>
+<button class="btn btn-primary" href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/public_API.html">< How data was harvested</button>
+<button class="btn btn-primary" href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/definition.html">What is arbitrage ></button>
 </center>
 <br><br>
 
