@@ -17,7 +17,7 @@
 
 <style>
 .myheader {
-  background-image: url("https://github.com/holtzy/Cryp-To/raw/master/img/area_bitcoin_fadded_long.png");
+  background-image: url("https://github.com/holtzy/Crypto-Arbitrage/raw/master/img/area_bitcoin_fadded_long.png");
     min-height: 400px; 
     background-size: 10% 100%; !important
 
@@ -230,7 +230,7 @@ $(document).ready(function () {
 <span class="kw">library</span>(ggrepel)
 
 <span class="co"># Load result</span>
-<span class="kw">load</span>(<span class="st">&quot;~/Dropbox/CRYPTO/5_ARBITRAGE/BITSTAMP_CEX/arbitrage_bitstamp_cex_BCHEUR_18Jun.Rdata&quot;</span>)
+<span class="kw">load</span>(<span class="kw">url</span>(<span class="st">&quot;https://raw.githubusercontent.com/holtzy/Crypto-Arbitrage/master/DATA/arbitrage_bitstamp_cex_BCHEUR_18Jun.Rdata&quot;</span>))
 bilan[,<span class="op">-</span><span class="kw">which</span>(<span class="kw">colnames</span>(bilan)<span class="op">%in%</span><span class="kw">c</span>(<span class="st">&quot;transaction&quot;</span>, <span class="st">&quot;rebalance&quot;</span>))]=<span class="st"> </span><span class="kw">apply</span>( bilan[,<span class="op">-</span><span class="kw">which</span>(<span class="kw">colnames</span>(bilan)<span class="op">%in%</span><span class="kw">c</span>(<span class="st">&quot;transaction&quot;</span>, <span class="st">&quot;rebalance&quot;</span>))], <span class="dv">2</span>, as.numeric ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.tibble</span>()
 bilan<span class="op">$</span>time=<span class="kw">as.POSIXct</span>( bilan<span class="op">$</span>time, <span class="dt">origin=</span><span class="st">&quot;1970-01-01&quot;</span>)
 
@@ -335,7 +335,7 @@ bilan <span class="op">%&gt;%</span>
 col_blue &lt;-<span class="st"> </span><span class="kw">rgb</span>(<span class="dv">0</span><span class="op">/</span><span class="dv">255</span>, <span class="dv">0</span><span class="op">/</span><span class="dv">255</span>, <span class="dv">255</span><span class="op">/</span><span class="dv">255</span>, <span class="fl">0.4</span>)
 
 <span class="co"># Plot price differences and arbitrage occurence</span>
-p &lt;-bilan <span class="op">%&gt;%</span>
+p &lt;-<span class="st"> </span>bilan <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">vline_transac=</span><span class="kw">ifelse</span>(transaction<span class="op">==</span><span class="st">&quot;yes&quot;</span> <span class="op">&amp;</span><span class="st"> </span>rebalance<span class="op">==</span><span class="st">&quot;no&quot;</span>, time, <span class="ot">NA</span>)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">vline_rebalance=</span><span class="kw">ifelse</span>(transaction<span class="op">==</span><span class="st">&quot;yes&quot;</span> <span class="op">&amp;</span><span class="st"> </span>rebalance<span class="op">==</span><span class="st">&quot;yes&quot;</span>, time, <span class="ot">NA</span>)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">vline_transac=</span><span class="kw">as.POSIXct</span>(vline_transac, <span class="dt">origin=</span><span class="st">&quot;1970-01-01&quot;</span>)) <span class="op">%&gt;%</span>
@@ -350,10 +350,12 @@ p &lt;-bilan <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">geom_vline</span>( <span class="kw">aes</span>(<span class="dt">xintercept=</span>vline_rebalance), <span class="dt">color=</span><span class="st">&quot;pink&quot;</span>) <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span>
 <span class="st">    </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(col_red, col_blue)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span>
 <span class="st">    </span><span class="kw">theme_ipsum</span>() <span class="op">+</span>
 <span class="st">    </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">7</span>,<span class="dv">7</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;none&quot;</span>) 
+<span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Price difference (%)&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Day (June)&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">ggtitle</span>(<span class="kw">paste0</span>(<span class="st">&quot;Bitcoincash price difference between Bitstamp and Cex&quot;</span>)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">scale_x_datetime</span>(<span class="dt">date_breaks =</span> <span class="st">&quot;1 day&quot;</span>, <span class="dt">date_labels =</span> <span class="st">&quot;%d&quot;</span>, <span class="dt">minor_breaks=</span><span class="ot">NULL</span>) 
 
 p</code></pre></div>
 <p><img src="arbitrage_files/figure-html/unnamed-chunk-2-1.png" width="960" /></p>
@@ -410,11 +412,9 @@ c <span class="op">+</span><span class="st"> </span>d <span class="op">+</span><
 <p>So basically, when the bot find that <span class="cex">Cex.io</span> is significantly cheaper than <span class="bitstamp">Bitstamp</span> (first break), it buys crypto on <span class="cex">Cex.io</span> and sells some on <span class="bitstamp">Bitstamp</span>. Thus the Bitstamp amount of euro increases and the Bitstamp amount of crypto increases. Conversely for <span class="cex">Cex.io</span>.</p>
 <h1 id="did-it-make-money">Did it make money?</h1>
 <hr />
-<aside style="float: right; margin-right: -170px; width: 150px; color: grey;">
 This content will appear in the gutter of the article.
 </aside>
 <p>At each transaction the bot is supposed to make a tiny margin, thus the total quantity of euro is suppose to slowly increase. Indeed, the process started with 206.88 and finished with 210, what is a gain of 3.12.</p>
-<p><link rel="stylesheet" href="tufte.css"/> <label for="mn-demo" class="margin-toggle">⊕</label> <input type="checkbox" id="mn-demo" class="margin-toggle"/> <span class="marginnote"> This is a margin note. Notice there isn’t a number preceding the note. </span></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Zoom on the total quantity of euro I have</span>
 p &lt;-<span class="st"> </span>bilan <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>time, <span class="dt">y=</span>total_euro)) <span class="op">+</span>
