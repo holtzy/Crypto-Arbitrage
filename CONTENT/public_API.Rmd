@@ -15,7 +15,7 @@ output:
       toc_depth: 2
       number_sections: TRUE
       df_print: "paged"
-      code_folding: "hide"
+      code_folding: "show"
       includes: 
         after_body: footer.html
 ---
@@ -70,8 +70,13 @@ ticker <- getURLContent(adress)
 # Make the format more readable
 require(jsonlite)
 tmp <- fromJSON(ticker)$result[[1]]
-result = data.frame(ask=tmp$a[1], bid=tmp$b[1], last=tmp$c[1], open=tmp$o, low=tmp$l[1], high=tmp$h[1], volume=tmp$v[1], volumeQuote=NA, timestamp=NA)
+result <- data.frame(ask=tmp$a[1], bid=tmp$b[1], last=tmp$c[1], open=tmp$o, low=tmp$l[1], high=tmp$h[1], volume=tmp$v[1], volumeQuote=NA, timestamp=NA)
 
+# Show result
+```
+
+
+```{r, warning=FALSE, message=FALSE, eval=TRUE, echo=FALSE}
 # Show result
 library(kableExtra)
 options(knitr.table.format = "html")
@@ -91,17 +96,16 @@ apply(tmp, 2, function(x){round(as.numeric(x),0)}) %>%
 
 I've written a [set of functions](https://github.com/holtzy/Cryp-To/blob/master/FUNCTIONS/Public_Market_Functions.R) allowing to get the price of many different currencies for the 5 main exchanges. You can easily use these functions. For instance, type the code below in R:
 
-<div style="background-color:#F8F8F8; border-radius: 1px; padding: 20px;">
+```{r, warning=FALSE, message=FALSE, eval=FALSE}
+# Source functions that are stored on github  
+source("https://raw.githubusercontent.com/holtzy/Crypto-Arbitrage/master/FUNCTIONS/Public_Market_Functions.R")
+
+# Use it: price of the bitcoin on bitstamp  
+get_bitstamp(Sys.time(), "BTCEUR")
+```
 
 
- # Source de functions that are stored on github  
- source("https://raw.githubusercontent.com/holtzy/Cryp-To/master/FUNCTIONS/Public_Market_Functions.R")
 
- # Use it: price of the bitcoin on bitstamp  
- get_bitstamp(time, "BTCEUR")
-
-
-</div>
 
 
 
@@ -116,27 +120,30 @@ I've harvested crypto prices:
 - *for 5 exchanges* - Coinbase, Kraken, Bitstamp, Bitfinex and Cex.io
 
 
-This was easily done using an infinite loop that called the functions described above. The exact script used for this work is available [here](). 800,000 data points were recovered.
+This was easily done using an infinite loop that called the functions described above. The exact script used for this work is available [here](https://github.com/holtzy/Crypto-Arbitrage/blob/master/FUNCTIONS/Run_API_public_market_harvest.R). 800,000 data points were recovered.
 
 <br>
 
 
 The resulting dataset is available on [github]() in a compressed format. You can easily read it in R doing:
 
-<div style="background-color:#F8F8F8; border-radius: 1px; padding: 20px;">
+```{r, warning=FALSE, message=FALSE, eval=FALSE}
+ # Load the data
+load(url("https://raw.githubusercontent.com/holtzy/Crypto-Arbitrage/master/DATA/public_ticker_harvest.Rdata"))  
 
- load("../DATA/public_ticker_harvest.Rdata")  
- head(Ticker)
-
-</div>
+# Have a look to the first lines
+head(Ticker)
+```
 
 <br>
 
 As a teaser, here is the evolution of the etherum price on Bitstamp on this period of time:
 
 ```{r, fig.align="center", warning=FALSE, cache=TRUE, fig.width=9, message=FALSE, fig.height=4}
-load("../DATA/public_ticker_harvest.Rdata")
+# Load the data
+load(url("https://raw.githubusercontent.com/holtzy/Crypto-Arbitrage/master/DATA/public_ticker_harvest.Rdata"))
 
+# Make the plot
 library(hrbrthemes)
 Ticker %>%
   filter( symbol == "ETHEUR" ) %>%
@@ -152,13 +159,15 @@ Ticker %>%
     )
 ```
 
+
+
 #Next step
 ***
 The next step take this dataset and quantifies the differences between platform. If differences are big enough, we have a chance to perform arbitrage.
 
 <br>
 <center>
-<button class="btn btn-primary" href="">Quantifying differences</button>
+<button class="btn btn-primary" href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/differences.html">Quantifying differences</button>
 </center>
 <br><br>
 

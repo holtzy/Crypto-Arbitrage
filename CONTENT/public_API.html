@@ -190,7 +190,7 @@ $(document).ready(function () {
 </style>
 <script>
 $(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
+  window.initializeCodeFolding("show" === "show");
 });
 </script>
 
@@ -243,18 +243,9 @@ ticker &lt;-<span class="st"> </span><span class="kw">getURLContent</span>(adres
 <span class="co"># Make the format more readable</span>
 <span class="kw">require</span>(jsonlite)
 tmp &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(ticker)<span class="op">$</span>result[[<span class="dv">1</span>]]
-result =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">ask=</span>tmp<span class="op">$</span>a[<span class="dv">1</span>], <span class="dt">bid=</span>tmp<span class="op">$</span>b[<span class="dv">1</span>], <span class="dt">last=</span>tmp<span class="op">$</span>c[<span class="dv">1</span>], <span class="dt">open=</span>tmp<span class="op">$</span>o, <span class="dt">low=</span>tmp<span class="op">$</span>l[<span class="dv">1</span>], <span class="dt">high=</span>tmp<span class="op">$</span>h[<span class="dv">1</span>], <span class="dt">volume=</span>tmp<span class="op">$</span>v[<span class="dv">1</span>], <span class="dt">volumeQuote=</span><span class="ot">NA</span>, <span class="dt">timestamp=</span><span class="ot">NA</span>)
+result &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">ask=</span>tmp<span class="op">$</span>a[<span class="dv">1</span>], <span class="dt">bid=</span>tmp<span class="op">$</span>b[<span class="dv">1</span>], <span class="dt">last=</span>tmp<span class="op">$</span>c[<span class="dv">1</span>], <span class="dt">open=</span>tmp<span class="op">$</span>o, <span class="dt">low=</span>tmp<span class="op">$</span>l[<span class="dv">1</span>], <span class="dt">high=</span>tmp<span class="op">$</span>h[<span class="dv">1</span>], <span class="dt">volume=</span>tmp<span class="op">$</span>v[<span class="dv">1</span>], <span class="dt">volumeQuote=</span><span class="ot">NA</span>, <span class="dt">timestamp=</span><span class="ot">NA</span>)
 
-<span class="co"># Show result</span>
-<span class="kw">library</span>(kableExtra)
-<span class="kw">options</span>(<span class="dt">knitr.table.format =</span> <span class="st">&quot;html&quot;</span>)
-
-tmp &lt;-<span class="st"> </span>result <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>volumeQuote, <span class="op">-</span>timestamp)
-<span class="kw">apply</span>(tmp, <span class="dv">2</span>, <span class="cf">function</span>(x){<span class="kw">round</span>(<span class="kw">as.numeric</span>(x),<span class="dv">0</span>)}) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">t</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">kable</span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">kable_styling</span>(<span class="dt">bootstrap_options =</span> <span class="st">&quot;striped&quot;</span>, <span class="dt">full_width =</span> F)</code></pre></div>
+<span class="co"># Show result</span></code></pre></div>
 <table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -284,25 +275,25 @@ volume
 <tbody>
 <tr>
 <td style="text-align:right;">
-5076
+5686
 </td>
 <td style="text-align:right;">
-5076
+5683
 </td>
 <td style="text-align:right;">
-5076
+5687
 </td>
 <td style="text-align:right;">
-5061
+5686
 </td>
 <td style="text-align:right;">
-4963
+5671
 </td>
 <td style="text-align:right;">
-5119
+5689
 </td>
 <td style="text-align:right;">
-1486
+43
 </td>
 </tr>
 </tbody>
@@ -310,12 +301,11 @@ volume
 <h1 id="code-resource">Code resource</h1>
 <hr />
 <p>I’ve written a <a href="https://github.com/holtzy/Cryp-To/blob/master/FUNCTIONS/Public_Market_Functions.R">set of functions</a> allowing to get the price of many different currencies for the 5 main exchanges. You can easily use these functions. For instance, type the code below in R:</p>
-<div style="background-color:#F8F8F8; border-radius: 1px; padding: 20px;">
-<p># Source de functions that are stored on github<br />
-source(“<a href="https://raw.githubusercontent.com/holtzy/Cryp-To/master/FUNCTIONS/Public_Market_Functions.R" class="uri">https://raw.githubusercontent.com/holtzy/Cryp-To/master/FUNCTIONS/Public_Market_Functions.R</a>”)</p>
-<p># Use it: price of the bitcoin on bitstamp<br />
-get_bitstamp(time, “BTCEUR”)</p>
-</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Source functions that are stored on github  </span>
+<span class="kw">source</span>(<span class="st">&quot;https://raw.githubusercontent.com/holtzy/Crypto-Arbitrage/master/FUNCTIONS/Public_Market_Functions.R&quot;</span>)
+
+<span class="co"># Use it: price of the bitcoin on bitstamp  </span>
+<span class="kw">get_bitstamp</span>(<span class="kw">Sys.time</span>(), <span class="st">&quot;BTCEUR&quot;</span>)</code></pre></div>
 <h1 id="harvesting-a-lot-of-data">Harvesting (a lot of) data</h1>
 <hr />
 <p>I’ve harvested crypto prices:</p>
@@ -324,17 +314,20 @@ get_bitstamp(time, “BTCEUR”)</p>
 <li><em>for 5 currencies</em> - bitcoin (BTC), bitcoin cash (BCH), etherum (ETH), litecoin (LTC) and ripple (XRP)</li>
 <li><em>for 5 exchanges</em> - Coinbase, Kraken, Bitstamp, Bitfinex and Cex.io</li>
 </ul>
-<p>This was easily done using an infinite loop that called the functions described above. The exact script used for this work is available <a href="">here</a>. 800,000 data points were recovered.</p>
+<p>This was easily done using an infinite loop that called the functions described above. The exact script used for this work is available <a href="https://github.com/holtzy/Crypto-Arbitrage/blob/master/FUNCTIONS/Run_API_public_market_harvest.R">here</a>. 800,000 data points were recovered.</p>
 <p><br></p>
 <p>The resulting dataset is available on <a href="">github</a> in a compressed format. You can easily read it in R doing:</p>
-<div style="background-color:#F8F8F8; border-radius: 1px; padding: 20px;">
-<p>load(“../DATA/public_ticker_harvest.Rdata”)<br />
-head(Ticker)</p>
-</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="co"># Load the data</span>
+<span class="kw">load</span>(<span class="kw">url</span>(<span class="st">&quot;https://raw.githubusercontent.com/holtzy/Crypto-Arbitrage/master/DATA/public_ticker_harvest.Rdata&quot;</span>))  
+
+<span class="co"># Have a look to the first lines</span>
+<span class="kw">head</span>(Ticker)</code></pre></div>
 <p><br></p>
 <p>As a teaser, here is the evolution of the etherum price on Bitstamp on this period of time:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">load</span>(<span class="st">&quot;../DATA/public_ticker_harvest.Rdata&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load the data</span>
+<span class="kw">load</span>(<span class="kw">url</span>(<span class="st">&quot;https://raw.githubusercontent.com/holtzy/Crypto-Arbitrage/master/DATA/public_ticker_harvest.Rdata&quot;</span>))
 
+<span class="co"># Make the plot</span>
 <span class="kw">library</span>(hrbrthemes)
 Ticker <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">filter</span>( symbol <span class="op">==</span><span class="st"> &quot;ETHEUR&quot;</span> ) <span class="op">%&gt;%</span>
@@ -348,13 +341,13 @@ Ticker <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">theme</span>(
       <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">12</span>)
     )</code></pre></div>
-<p><img src="public_API_files/figure-html/unnamed-chunk-2-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p><img src="public_API_files/figure-html/unnamed-chunk-5-1.png" width="864" style="display: block; margin: auto;" /></p>
 <h1 id="next-step">Next step</h1>
 <hr />
 <p>The next step take this dataset and quantifies the differences between platform. If differences are big enough, we have a chance to perform arbitrage.</p>
 <br>
 <center>
-<button class="btn btn-primary" href>
+<button class="btn btn-primary" href="https://holtzy.github.io/Crypto-Arbitrage/CONTENT/differences.html">
 Quantifying differences
 </button>
 </center>
