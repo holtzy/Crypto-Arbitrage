@@ -25,7 +25,7 @@ Detail
 The study is split in sections:  
 
 
-- *Recovering prices* - I recovered prices of 5 crypto currencies on 5 exchanges for several weeks. About a million points were harvested. Script and output data frame are available. [Read more]()
+- *Recovering prices* - I recovered prices of 5 crypto currencies on 5 exchanges for several weeks. About a million points were harvested. Script and output data frame are available. [Read more](https://holtzy.github.io/Cryp-To/CONTENT/public_API.html)
 - *Comparing prices* - A comparison of prices on the long and on the short term. Is there any differences between exchanges? [Read more]()
 - *What is arbitrage* - A quick introduction to arbitrage: what it is and what are the potential limitations. [Read more]()
 - *Simulation* - Simulating an arbitrage algorithm on the dataset to assess potential benefit and optimize parameters. [Read more]()
