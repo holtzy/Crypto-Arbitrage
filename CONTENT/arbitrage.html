@@ -42,7 +42,7 @@
 
 <div class="myheader" style="text-align: center;">
   <br>
-  <div style="text-align: left; margin-left: 5%"><a href="https://holtzy.github.io/Cryp-To/">HOME</a></div>
+  <div style="text-align: left; margin-left: 5%"><a href="https://holtzy.github.io/Crypto-arbitrage/">HOME</a></div>
   <br><br>
   <br><br>
   <p class="mytitle">Running the crypto arbitrage bot.</p>
@@ -403,8 +403,10 @@ d=bilan <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>)
 
 <span class="kw">library</span>(patchwork)
-c <span class="op">+</span><span class="st"> </span>d <span class="op">+</span><span class="st"> </span><span class="kw">plot_layout</span>(<span class="dt">ncol =</span> <span class="dv">1</span>)</code></pre></div>
+p &lt;-<span class="st"> </span>c <span class="op">+</span><span class="st"> </span>d <span class="op">+</span><span class="st"> </span><span class="kw">plot_layout</span>(<span class="dt">ncol =</span> <span class="dv">1</span>)
+p</code></pre></div>
 <p><img src="arbitrage_files/figure-html/unnamed-chunk-3-1.png" width="960" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsave</span>(p, <span class="dt">file=</span><span class="st">&quot;IMG/amount_evolution.png&quot;</span>, <span class="dt">width=</span><span class="dv">7</span>, <span class="dt">height=</span><span class="dv">4</span>)</code></pre></div>
 <center>
 <i> Figure: evolution of euro (top) and crypto (bottom) quantities for <span class="bitstamp">Bitstamp</span> and <span class="cex">Cex.io</span> </i>
 </center>
@@ -452,28 +454,7 @@ p</code></pre></div>
 </div>
 
 
-<!-- Insert code for DISQUS comments  -->
 
-      <div class="container">
-        <div id="disqus_thread"></div>
-        <script>
-
-        var disqus_config = function () {
-        this.page.url = https://holtzy.github.io/Cryp-To/content/arbitrage.html;  
-        this.page.identifier = arbitrage; 
-        };
-
-        (function() { // DON'T EDIT BELOW THIS LINE
-        var d = document, s = d.createElement('script');
-        s.src = 'https://data-to-viz.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-        })();
-        </script>
-        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-      </div>
-  <!-- Insert code for DISQUS comments  -->
-    
 
 
 &nbsp;
