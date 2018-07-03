@@ -174,11 +174,6 @@ At each time stamp, the arbitrage bot computed the price difference between exch
 
 
 
-
-
-
-
-
 ```{r, fig.width=10, fig.height=4, warning=FALSE, message=FALSE}
 
 col_red <- rgb(255/255, 0/255, 0/255, 0.4)
@@ -200,10 +195,12 @@ p <-bilan %>%
     geom_vline( aes(xintercept=vline_rebalance), color="pink") +
     geom_line() +
     scale_color_manual(values=c(col_red, col_blue)) +
-    xlab("") +
     theme_ipsum() +
     ylim(-7,7) +
-    theme(legend.position="none") 
+    ylab("Price difference (%)") +
+    xlab("Day (June)") +
+    ggtitle(paste0("Bitcoincash price difference between Bitstamp and Cex")) +
+    scale_x_datetime(date_breaks = "1 day", date_labels = "%d", minor_breaks=NULL) +
 
 p
 ggsave(p, file="IMG/bot_description_step3.png", width=7, height=4)
@@ -211,6 +208,43 @@ ggsave(p, file="IMG/bot_description_step3.png", width=7, height=4)
 ```
 
 Since the Cex price is often over the Bitstamp price, it is often better to buy at Bitstamp and sell a Cex (the <span class="blue">blue line</span>).
+
+
+
+
+```{r show_differences, fig.width=10, fig.height=5, warning=FALSE, echo=FALSE, eval=FALSE}
+# Plot for the talk at useR: simplified version since I cannot explain the bid and ask story
+bilan %>%
+    #sample_frac(0.1) %>%  
+    mutate(vline_transac=ifelse(transaction=="yes" & rebalance=="no", time, NA)) %>%
+    mutate(vline_rebalance=ifelse(transaction=="yes" & rebalance=="yes", time, NA)) %>%
+    mutate(vline_transac=as.POSIXct(vline_transac, origin="1970-01-01")) %>%
+    mutate(vline_rebalance=as.POSIXct(vline_rebalance, origin="1970-01-01")) %>%
+    rowwise() %>%
+    mutate(best_gain = max(diff_side1, diff_side2) ) %>%
+    ggplot( aes(x=time, y=best_gain)) +
+          geom_abline(slope=0, intercept=unique(bilan$thres), color="grey", linetype="dashed") +
+          geom_vline( aes(xintercept=vline_transac), color="orange") +
+          geom_vline( aes(xintercept=vline_rebalance), color="pink") +
+          geom_area(fill="#69b3a2") +
+          theme_ipsum() +
+          theme(
+            legend.position="none",
+            plot.title = element_text(size=12, color="grey")
+          ) +
+          ylab("Price difference (%)") +
+          xlab("Day (June)") +
+          ggtitle("Bitcoincash price difference between Bitstamp and Cex")+
+          scale_x_datetime(date_breaks = "1 day", date_labels = "%d", minor_breaks=NULL) +
+          ylim(-3,3)
+
+# Run the function for Kraken and bitstamp
+diff <- get_last_difference("Kraken", "Bitstamp", "ETHEUR")
+p <- plot_last_difference(diff, "Kraken", "Bitstamp")
+p
+ggsave(p, file="IMG/price_diff_eth_kraken_bitstamp.png", width=7, height=4)
+```
+
 
 
 
@@ -281,7 +315,6 @@ So basically, when the bot find that <span class="cex">Cex.io</span> is signific
 #Did it make money?
 ***
 
-<aside style="float: right; margin-right: -170px; width: 150px; color: grey;">
 
 This content will appear in the gutter of the article.
 </aside>

@@ -53,14 +53,20 @@ p <- Ticker %>%
   filter(symbol=="ETHEUR") %>%
   filter(last>400) %>%    # delete a weird value
   ggplot( aes(x=time, y=last, color=platform, group=platform)) +
-    geom_line( size=0.3) +
-    scale_color_viridis(discrete=TRUE, name="") +
-    ylab("Etherum price on the exchange") +
-    theme_ipsum()
+    geom_line( size=0.8, size=0.4) +
+    scale_color_viridis(discrete=TRUE, name="Exchange") +
+    ylab("Etherum price") +
+    xlab("Day (February)") +
+    theme_ipsum() +
+    scale_x_datetime(date_breaks = "1 day", date_labels = "%d", minor_breaks=NULL) +
+    ggtitle("Etherum price evolution for 4 exchanges") +
+    theme( plot.title = element_text(size=12, color="grey"))
 p
 
 # Save the plot for talk
 ggsave(p, file="IMG/etherum_evolution.png", width=7, height=4)
+
+
 ```
 
 
@@ -74,9 +80,12 @@ p <- Ticker %>%
   head(1000) %>%
   ggplot( aes(x=time, y=last, color=platform, group=platform)) +
     geom_line( size=0.8) +
-    scale_color_viridis(discrete=TRUE, name="") +
-    ylab("Etherum price on the exchange") +
-    theme_ipsum()
+    scale_color_viridis(discrete=TRUE, name="Exchange") +
+    ylab("Etherum price") +
+    theme_ipsum() +
+    ggtitle("zoom on the 1000 first data points") +
+    theme( plot.title = element_text(size=12, color="grey")) 
+  
 p
 
 # Save the plot for talk
@@ -115,12 +124,15 @@ plot_last_difference <- function(diff, plat1, plat2){
         sample_frac(0.1) %>%    
         ggplot( aes(x=time, y=diff_perc, group=symbol, fill=symbol)) +
           geom_area(fill="#69b3a2") +
-          facet_wrap(~symbol, nrow=5) +
           theme_ipsum() +
-          theme(legend.position="none") +
-          ylab(paste0("Difference between ", plat1, "and ", plat2)) +
-          xlab("") +
-          ggtitle("") +
+          theme(
+            legend.position="none",
+            plot.title = element_text(size=12, color="grey")
+          ) +
+          ylab("Price difference (%)") +
+          xlab("Day (February)") +
+          ggtitle(paste0("Etherum price difference between ", plat1, " and ", plat2)) +
+          scale_x_datetime(date_breaks = "1 day", date_labels = "%d", minor_breaks=NULL) +
           ylim(-3,3)
   
   p
@@ -140,9 +152,6 @@ numOver1 <- diff %>% filter(diff_perc > 1 ) %>% nrow()
 numUnder1 <- diff %>% filter(diff_perc < -1 ) %>% nrow()
 numTot <- numOver1 + numUnder1
 freqOver1 <- numTot / as.numeric(lengthPeriod) %>% round(0)
-
-
-  
 
 ```
 
@@ -220,15 +229,19 @@ find_signif_diff <- function(diff){
 # A function that plot this number of diff -> plot it PER DAY
 plot_signif_diff <- function(nbSignifDiff){
   p <- nbSignifDiff %>%
+    filter(symbol=="BCHEUR") %>%
     mutate(nb_over_thres = nb_over_thres / time_length(lengthPeriod, unit="day")) %>%
     mutate(mytext=paste0("Currency: ", gsub("EUR", "",symbol), "\n", round(nb_over_thres,0)," differences per day observed over ",thres, " %")) %>%
+    mutate(symbol = gsub("EUR", "", symbol)) %>%
     ggplot( aes(x=thres, y=nb_over_thres, group=symbol, color=symbol, text=mytext)) +
       geom_line() +
-      ylab("Number of significant differences per day") +
-      xlab("Difference threshold (%)") +
+      ylab("Number of differences / day") +
+      xlab("Difference in %") +
+      ggtitle("Number of price differences between Kraken and Bitstamp") +
       theme_ipsum() +
-      scale_color_viridis(discrete=TRUE, name="")
-    ggplotly(p, tooltip="text")
+      theme(plot.title = element_text(size=12, color="grey")) +
+      scale_color_viridis(discrete=TRUE, name="Currency")
+    #ggplotly(p, tooltip="text")
 }
 
 # Apply that to a first example:
@@ -241,6 +254,7 @@ p <- plot_signif_diff(nbSignifDiff)
 <center>
 ```{r relationship_thres_numDiff,  warning=FALSE, fig.align="center", fig.width=8, show=FALSE}
 p
+ggsave(p, file="IMG/difference_counts_step1.png", width=7, height=4)
 ```
 </center>
 
