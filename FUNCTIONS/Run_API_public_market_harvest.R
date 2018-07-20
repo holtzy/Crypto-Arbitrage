@@ -1,24 +1,18 @@
-# This script call the API of plateforms during an infinite amount of time.
-# It build a huge 'ticker' data frame
+# --------------------------------------
+# This script calls the public APIs of crypto currency echanges for an infinite amount of time.
 
-# 3 arguments: 
+# Input: 3 arguments: 
   # - currency: BTCEUR / ETHEUR / XRPEUR / LTCEUR / BCHEUR
-  # - Time to wait during 2 API calls
-  # - output file (.R format)
+  # - Time to wait between 2 API calls
+  # - output file name (.R format)
 
-# This script can be run locally or on the cluster doing:
-# -- Cluster
-# 
-# qsub -b y -cwd -e tmp_BTCEUR.e -o tmp_BTCEUR.o -l vf=10G,h_vmem=10G   "/clusterdata/apps/R-3.2.3/bin/Rscript  /ibscratch/wrayvisscher/Yan_Holtz/X_CRYPTO/Run_API_public_market_harvest.R BTCEUR 1 /ibscratch/wrayvisscher/Yan_Holtz/X_CRYPTO/PublicMarket_BTCEUR.R"
+# Output:
+  # A 'ticker' file with the prices of the currency: last, bid, ask...
 
-# -- Locally
-# cd ~/Dropbox/CRYPTO/4_DATASET
-# Rscript ../3_FUNCTIONS/Run_API_public_market_harvest.R BTCEUR 10 ticked_data_BTC_26_jun.Rdata
-# Rscript ../3_FUNCTIONS/Run_API_public_market_harvest.R ETHEUR 10 ticked_data_ETH_26_jun.Rdata
-# Rscript ../3_FUNCTIONS/Run_API_public_market_harvest.R XRPEUR 10 ticked_data_XRP_26_jun.Rdata
-# Rscript ../3_FUNCTIONS/Run_API_public_market_harvest.R LTCEUR 10 ticked_data_LTC_26_jun.Rdata
-# Rscript ../3_FUNCTIONS/Run_API_public_market_harvest.R BCHEUR 10 ticked_data_BCH_26_jun.Rdata
-
+# Run the script doing: 
+# wget https://raw.githubusercontent.com/holtzy/Crypto-Arbitrage/master/FUNCTIONS/Run_API_public_market_harvest.R
+# Rscript Run_API_public_market_harvest.R BTCEUR 10 ticked_data_currency_date.Rdata
+# --------------------------------------
 
 
 # Get the arguments
@@ -69,7 +63,7 @@ while(TRUE){
   }
   
   # Every ten loop I save the file
-  if (num %% 10 == 0){
+  if (num %% 100 == 0){
       cat("--------- SAVE -------- ")
       save(Ticker, file=output)
   }
