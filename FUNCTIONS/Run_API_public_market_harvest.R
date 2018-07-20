@@ -33,7 +33,7 @@ library(RJSONIO)        # To transform a JSON format in a data frame.
 library(dplyr)
 
 # Source the functions to request each API
-source("~/Dropbox/CRYPTO/3_FUNCTIONS/Public_Market_Functions.R")
+source("https://raw.githubusercontent.com/holtzy/Crypto-Arbitrage/master/FUNCTIONS/Public_Market_Functions.R")
 
 #Initialize an emtpy result table
 Ticker=as.data.frame(matrix(NA, 0, 12))
