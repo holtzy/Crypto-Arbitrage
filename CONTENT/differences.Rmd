@@ -33,7 +33,7 @@ Prices of `5 cryto currencies` have been harvested for `2 weeks` on `5 different
 
 <br>
 
-Here is an overview of the Etherum price on the period on the 5 exchanges:
+Here is an overview of the BitcoinCash price on the period on the 5 exchanges:
 ```{r load_data, fig.align="center", warning=FALSE, message=FALSE, fig.width=10}
 # Library
 library(tidyverse)
@@ -50,21 +50,21 @@ Ticker$last <- as.numeric(Ticker$last)
 
 # Plot
 p <- Ticker %>%
-  filter(symbol=="ETHEUR") %>%
+  filter(symbol=="BCHEUR") %>%
   filter(last>400) %>%    # delete a weird value
   ggplot( aes(x=time, y=last, color=platform, group=platform)) +
-    geom_line( size=0.8, size=0.4) +
+    geom_line( size=0.8, size=0.2) +
     scale_color_viridis(discrete=TRUE, name="Exchange") +
-    ylab("Etherum price") +
+    ylab("BitcoinCash price") +
     xlab("Day (February)") +
     theme_ipsum() +
     scale_x_datetime(date_breaks = "1 day", date_labels = "%d", minor_breaks=NULL) +
-    ggtitle("Etherum price evolution for 4 exchanges") +
+    ggtitle("BitcoinCash price evolution for 4 exchanges") +
     theme( plot.title = element_text(size=12, color="grey"))
 p
 
 # Save the plot for talk
-ggsave(p, file="IMG/etherum_evolution.png", width=7, height=4)
+ggsave(p, file="IMG/bitcoincash_evolution.png", width=7, height=4)
 
 
 ```
@@ -75,13 +75,13 @@ There is a very high correlation between exchange prices. But if we zoom on the 
 ```{r fig.align="center", warning=FALSE, message=FALSE, fig.width=10}
 # Plot
 p <- Ticker %>%
-  filter(symbol=="ETHEUR") %>%
+  filter(symbol=="BCHEUR") %>%
   filter(last>400) %>%    # delete a weird value
   head(1000) %>%
   ggplot( aes(x=time, y=last, color=platform, group=platform)) +
     geom_line( size=0.8) +
     scale_color_viridis(discrete=TRUE, name="Exchange") +
-    ylab("Etherum price") +
+    ylab("BitcoinCash price") +
     theme_ipsum() +
     ggtitle("zoom on the 1000 first data points") +
     theme( plot.title = element_text(size=12, color="grey")) 
@@ -89,7 +89,7 @@ p <- Ticker %>%
 p
 
 # Save the plot for talk
-ggsave(p, file="IMG/etherum_evolution_zoom.png", width=7, height=4)
+ggsave(p, file="IMG/bitcoincash_evolution_zoom.png", width=7, height=4)
 ```
 
 
@@ -103,7 +103,7 @@ As you can see on the graphic above, there are `discrepencies` between prices of
 
 <br>
 
-This is what interest us to perform arbitrage. But can we `quantify` these differences? The following graphic displays the price difference (in %) between Kraken and Bitstamp at each time stamp:
+This is what interest us to perform arbitrage. But can we `quantify` these differences? The following graphic displays the price difference (in %) between Cex.io and Bitstamp at each time stamp:
 
 ```{r show_differences, fig.width=10, fig.height=5, warning=FALSE}
 get_last_difference <- function(plat1, plat2, currency){
@@ -133,16 +133,16 @@ plot_last_difference <- function(diff, plat1, plat2){
           xlab("Day (February)") +
           ggtitle(paste0("Etherum price difference between ", plat1, " and ", plat2)) +
           scale_x_datetime(date_breaks = "1 day", date_labels = "%d", minor_breaks=NULL) +
-          ylim(-3,3)
+          ylim(-4,4)
   
   p
 }
 
 # Run the function for Kraken and bitstamp
-diff <- get_last_difference("Kraken", "Bitstamp", "ETHEUR")
-p <- plot_last_difference(diff, "Kraken", "Bitstamp")
+diff <- get_last_difference("Cex", "Bitstamp", "BCHEUR")
+p <- plot_last_difference(diff, "Cex", "Bitstamp")
 p
-ggsave(p, file="IMG/price_diff_eth_kraken_bitstamp.png", width=7, height=4)
+ggsave(p, file="IMG/price_diff_bch_cex_bitstamp.png", width=7, height=4)
 
 
 # Compute a few summary statistics
@@ -173,7 +173,7 @@ The chart aboves represents a period of ``r time_length( lengthPeriod, unit="day
 Now that we know there are a few differences between exchanges, we need to know `what pair of exchange` have the most frequent discrepencies. Moreover, we need to figure out if some `currencies have more discrepencies` than others.
 
 <br>
-The next graphic quantifies the number of differences observed per day (Y axis) for a specific threshold (X axis). Four lines are provided, one per currency that exists in both Kraken and Bitstamp. For instance, it appears that differences over 1% happen about `2OO times a day` for bitcoin, and about 300 times a day for litecoin (XRP) and Bitcoincash. It is also interesting to note that differences over ~1.7% basically never happen.
+The next graphic quantifies the number of differences observed per day (Y axis) for a specific threshold (X axis). Four lines are provided, one per currency that exists in both Cex and Bitstamp. For instance, it appears that differences over 1% happen about `2OO times a day` for bitcoin, and about 300 times a day for litecoin (XRP) and Bitcoincash. It is also interesting to note that differences over ~1.7% basically never happen.
 
 ```{r rela,  warning=FALSE, fig.align="center", fig.width=8}
 # A function that calculates the difference between the ASK and the BID of 2 platforms for every currency at each time stamp
@@ -229,7 +229,6 @@ find_signif_diff <- function(diff){
 # A function that plot this number of diff -> plot it PER DAY
 plot_signif_diff <- function(nbSignifDiff){
   p <- nbSignifDiff %>%
-    filter(symbol=="BCHEUR") %>%
     mutate(nb_over_thres = nb_over_thres / time_length(lengthPeriod, unit="day")) %>%
     mutate(mytext=paste0("Currency: ", gsub("EUR", "",symbol), "\n", round(nb_over_thres,0)," differences per day observed over ",thres, " %")) %>%
     mutate(symbol = gsub("EUR", "", symbol)) %>%
@@ -237,7 +236,7 @@ plot_signif_diff <- function(nbSignifDiff){
       geom_line() +
       ylab("Number of differences / day") +
       xlab("Difference in %") +
-      ggtitle("Number of price differences between Kraken and Bitstamp") +
+      ggtitle("Number of price differences between Cex and Bitstamp") +
       theme_ipsum() +
       theme(plot.title = element_text(size=12, color="grey")) +
       scale_color_viridis(discrete=TRUE, name="Currency")
@@ -245,7 +244,7 @@ plot_signif_diff <- function(nbSignifDiff){
 }
 
 # Apply that to a first example:
-diff <- find_askbid_difference("Kraken", "Bitstamp")
+diff <- find_askbid_difference("Cex", "Bitstamp")
 nbSignifDiff <- find_signif_diff(diff)
 p <- plot_signif_diff(nbSignifDiff)
 
@@ -254,7 +253,7 @@ p <- plot_signif_diff(nbSignifDiff)
 <center>
 ```{r relationship_thres_numDiff,  warning=FALSE, fig.align="center", fig.width=8, echo=FALSE}
 p
-ggsave(p, file="IMG/difference_counts_step1.png", width=7, height=4)
+ggsave(p, file="IMG/difference_counts_allcurrency.png", width=7, height=4)
 ```
 </center>
 
